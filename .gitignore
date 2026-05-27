@@ -1,0 +1,15 @@
+# Node
+node_modules/
+ 
+# Logok
+*.log
+ 
+# OS
+.DS_Store
+Thumbs.db
+ 
+# Editor
+.vscode/
+.idea/
+ 
+# A WordPress core és az uploads a ~/.wp-env/ alatt él, NEM a projektben – nincs mit ignorálni.
