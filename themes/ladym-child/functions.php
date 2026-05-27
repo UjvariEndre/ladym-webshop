@@ -24,3 +24,23 @@ add_action( 'wp_enqueue_scripts', function () {
         wp_get_theme()->get( 'Version' )
     );
 }, 20 );
+
+/**
+ * SVG feltöltés engedélyezése a médiatárba (a brand-logóhoz).
+ * Csak a beállításokat kezelő szerepkörnek (admin) – kontrollált használat.
+ */
+add_filter( 'upload_mimes', function ( $mimes ) {
+    if ( current_user_can( 'manage_options' ) ) {
+        $mimes['svg']  = 'image/svg+xml';
+        $mimes['svgz'] = 'image/svg+xml';
+    }
+    return $mimes;
+} );
+
+add_filter( 'wp_check_filetype_and_ext', function ( $data, $file, $filename, $mimes ) {
+    if ( preg_match( '/\.svgz?$/i', $filename ) ) {
+        $data['ext']  = 'svg';
+        $data['type'] = 'image/svg+xml';
+    }
+    return $data;
+}, 10, 4 );

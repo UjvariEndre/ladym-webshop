@@ -11,11 +11,11 @@
 
 ## Fázis 2 – Kétnyelvűség (HU/EN) ⏸️ (szüneteltetve – jelenleg CSAK HU)
 
-> **Döntés (2026-05-27):** az EN nyelvet egyelőre **elrejtettük**, az oldal **egynyelvű (HU)**.
-> Ok: a Shop-nak nincs EN párja (termékek HU-only), ezért a nyelvváltó a shopon a főoldalra/HU-ra ugrott.
+> **Döntés (2026-05-27):** az EN **egyelőre elrejtve, csak magyar piac**. A kétnyelvűség struktúrája megvan,
+> később visszakapcsolható. Ok: a Shop-nak nincs EN párja (termékek HU-only), ezért a nyelvváltó a shopon a HU-ra ugrott.
 > **Mi történt (reverzibilis):** az EN nyelv törölve a Polylangból (nincs nyelvváltó, nincs `/en/`, nincs hreflang),
-> az EN oldalak (*About us* #17, *Contact* #18) **draft**-ra állítva (tartalom megőrizve), az EN menü törölve,
-> a nyelvváltó eltávolítva a Főmenüből. A Polylang **telepítve marad**.
+> az EN oldalak (*About us* #17, *Contact* #18) a **kukába** helyezve (trash, nem végleges – visszaállítható),
+> az EN menü törölve, a nyelvváltó eltávolítva a Főmenüből. A Polylang **telepítve és aktív marad**.
 > **Visszakapcsolás:** lásd a lenti „Kész" lépéseket – az EN nyelv újra felvétele + EN menü + váltó újraépítése
 > (a child theme `.lang-item` CSS-e bent maradt, újra él, amint van switcher). Előbb a Shop EN-stratégiát kell rendezni
 > (Fázis 2.5), különben ugyanaz a shop-bug visszajön.
@@ -54,6 +54,21 @@ kiegészítő kell. Mivel **most nem telepítünk fizetőset**, a termékkataló
 Döntési input: katalógusméret növekedése + EN forgalom aránya (IG/TikTok). A katalógus kicsi marad →
 egyelőre **B** is elég lehet; ha nő az EN konverzió → **A**.
 
-## Fázis 3 – Éles üzem (terv)
+## Fázis 3 – Tartalom & arculat (főoldal) 🟡 (folyamatban)
+
+**1. lépés – HERO + logó ✅ (kész, csak HU):**
+- **Kép-logó:** `assets/ladym-logo.svg` a médiatárba importálva (att. #27), Blocksy `custom_logo` theme_mod-ra állítva,
+  ~40px magasság a child theme CSS-éből (a fragilis header-builder `logoMaxHeight` theme_mod helyett). SVG-feltöltés
+  engedélyezve `functions.php`-ben (admin-only `upload_mimes` + `wp_check_filetype_and_ext` szűrő).
+- **HERO:** child theme `front-page.php` (verziózott, egy forrás; brand tokenek CSS-ben, nincs hardcode hex).
+  Bal kártya (eyebrow / „Lady M" + dőlt bordó „Hungary" / tagline / intro / 2 CTA → Shop), jobb 4/5 kép-placeholder
+  sötét feliratsávval (EGYEDI DARAB / *One-of-a-kind*). `.hero-pattern` folk-textúra háttér. Mobil-first
+  (mobilon kép felül, nagy képernyőn 7/5 bal szöveg/jobb kép), `.ladym-fade-up` animáció.
+- **Statikus kezdőlap:** „Főoldal" oldal (#28) létrehozva, `show_on_front=page`, `page_on_front=28`.
+
+**Hátralévő lépések (terv):** termékkiemelő/„Új érkezések" szekció, About/atelier sztori-blokk, Instagram-feed,
+hírlevél/CTA-sáv, lábléc-tartalom. A 4/5 placeholder cseréje valódi termékfotóra (Fázis 4 / fotózás).
+
+## Fázis 4 – Éles üzem (terv)
 
 - Rackhost WP Midi + Cloudflare, képoptimalizálás (WebP/AVIF), gyorsítótár, SEO/hreflang ellenőrzés élesben.

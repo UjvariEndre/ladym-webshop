@@ -4,7 +4,7 @@ Theme URI: https://ladymhungary.hu
 Description: LadyMHungary egyedi child theme (szülő: Blocksy). Arculat a webellus.com/ladym landing page alapján.
 Author: LadyMHungary
 Template: blocksy
-Version: 0.2.0
+Version: 0.3.0
 Text Domain: ladym
 */
 
@@ -195,4 +195,184 @@ hr,
   margin: 0 0.5em 0 0.25em;
   background: var(--color-line);
   vertical-align: middle;
+}
+
+/* =========================================================
+   Logó (Fázis 3) – kép-logó ~40px magasan a fejlécben
+   ========================================================= */
+.ct-header .site-logo-container img,
+.ct-logo-container img,
+.site-logo-container .ct-image-default {
+  max-height: 40px;
+  width: auto;
+  height: auto;
+}
+
+/* =========================================================
+   HERO – főoldal (Fázis 3 / 1. lépés)
+   ========================================================= */
+.hero-pattern {
+  background-color: var(--color-cream-warm);
+  background-image: url("assets/folk-pattern.svg");
+  background-repeat: repeat;
+  background-size: 160px 160px;
+}
+
+.ladym-hero {
+  border-bottom: 1px solid var(--color-line);
+  padding: clamp(2.5rem, 6vw, 5.5rem) 1.25rem;
+}
+
+.ladym-hero__inner {
+  max-width: 1152px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(1.75rem, 4vw, 3rem);
+  align-items: center;
+}
+
+/* Mobilon a kép felülre, a szöveg alá. */
+.ladym-hero__media { order: -1; }
+
+/* Nagy képernyő: bal szöveg / jobb kép, ~7/5 arány. */
+@media (min-width: 1000px) {
+  .ladym-hero__inner {
+    grid-template-columns: 7fr 5fr;
+  }
+  .ladym-hero__media { order: 0; }
+}
+
+/* --- Bal oldali kártya --- */
+.ladym-hero__text {
+  background-color: var(--color-ivory);
+  border: 1px solid var(--color-line);
+  box-shadow: 0 18px 40px -28px rgba(19, 24, 48, 0.45);
+  padding: clamp(1.75rem, 4vw, 3rem);
+}
+
+.ladym-hero__eyebrow {
+  margin: 0 0 1.25rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-mocha);
+}
+
+.ladym-hero__title {
+  margin: 0 0 1rem;
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+  font-size: clamp(2.75rem, 7vw, 4.5rem);
+  color: var(--color-ink);
+}
+
+.ladym-hero__title-accent {
+  display: block;
+  font-style: italic;
+  font-weight: 500;
+  color: var(--color-burgundy);
+}
+
+.ladym-hero__tagline {
+  margin: 0 0 1.25rem;
+  font-family: "Playfair Display", Georgia, serif;
+  font-style: italic;
+  font-size: clamp(1.2rem, 2.4vw, 1.5rem);
+  line-height: 1.35;
+  color: var(--color-ink-soft);
+}
+
+.ladym-hero__intro {
+  margin: 0 0 2rem;
+  max-width: 46ch;
+  font-size: 1.02rem;
+  line-height: 1.75;
+  color: var(--color-ink-soft);
+}
+
+/* --- CTA gombok (editorial, lekerekítés nélkül) --- */
+.ladym-hero__cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+}
+
+.ladym-btn {
+  display: inline-block;
+  border-radius: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 1em 2.1em;
+  border: 1px solid transparent;
+  transition: background-color 320ms var(--ladym-ease),
+              color 320ms var(--ladym-ease),
+              border-color 320ms var(--ladym-ease);
+}
+
+.ladym-btn--primary {
+  background-color: var(--color-burgundy);
+  border-color: var(--color-burgundy);
+  color: var(--color-ivory);
+}
+.ladym-btn--primary:hover {
+  background-color: var(--color-burgundy-deep);
+  border-color: var(--color-burgundy-deep);
+  color: var(--color-ivory);
+}
+
+.ladym-btn--ghost {
+  background-color: transparent;
+  border-color: var(--color-ink);
+  color: var(--color-ink);
+}
+.ladym-btn--ghost:hover {
+  background-color: var(--color-ink);
+  color: var(--color-ivory);
+}
+
+/* --- Jobb oldali kiemelt kép + feliratsáv --- */
+.ladym-hero__media {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--color-line);
+  background-color: var(--color-paper);
+}
+
+.ladym-hero__image {
+  aspect-ratio: 4 / 5;
+  background-color: var(--color-blush);
+  background-image: linear-gradient(140deg, var(--color-blush) 0%, var(--color-cream-warm) 55%, var(--color-line) 100%);
+}
+
+.ladym-hero__caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.85rem 1.15rem;
+  background-color: rgba(19, 24, 48, 0.85); /* --color-ink @ 85% fallback */
+  background-color: color-mix(in srgb, var(--color-ink) 85%, transparent);
+  color: var(--color-ivory);
+}
+
+.ladym-hero__caption-left {
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.ladym-hero__caption-right {
+  font-family: "Playfair Display", Georgia, serif;
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--color-blush);
 }
