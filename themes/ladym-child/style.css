@@ -1,11 +1,173 @@
 /*
 Theme Name: LadyM Child
 Theme URI: https://ladymhungary.hu
-Description: LadyMHungary egyedi child theme (szülő: Blocksy).
+Description: LadyMHungary egyedi child theme (szülő: Blocksy). Arculat a webellus.com/ladym landing page alapján.
 Author: LadyMHungary
 Template: blocksy
-Version: 0.1.0
+Version: 0.2.0
 Text Domain: ladym
 */
- 
-/* Egyedi brand-stílusok ide kerülnek. */
+
+/* =========================================================
+   LadyM Hungary – Brand tokenek (a landing page-ből)
+   ========================================================= */
+:root {
+  --color-ivory: #fbfaf6;
+  --color-paper: #ffffff;
+  --color-cream-warm: #f4eee3;
+  --color-ink: #131830;
+  --color-ink-soft: #4a5673;
+  --color-burgundy: #8e1f2e;
+  --color-burgundy-deep: #6b1422;
+  --color-blush: #e8d4c8;
+  --color-mocha: #5a6585;
+  --color-line: #e5ded1;
+
+  --ladym-ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* =========================================================
+   Alap tipográfia és háttér
+   ========================================================= */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-ivory);
+  color: var(--color-ink);
+  font-family: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, h5,
+.entry-title,
+.woocommerce-loop-product__title,
+.woocommerce div.product .product_title,
+.wc-block-grid__product-title {
+  font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+  color: var(--color-ink);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+::selection {
+  background: var(--color-burgundy);
+  color: var(--color-ivory);
+}
+
+a {
+  color: var(--color-burgundy);
+  text-decoration: none;
+}
+a:hover {
+  color: var(--color-burgundy-deep);
+}
+
+/* =========================================================
+   Gombok – editorial, lekerekítés nélküli, nagybetűs
+   ========================================================= */
+.wp-block-button__link,
+.wp-element-button,
+button.button,
+input[type="submit"],
+.woocommerce a.button,
+.woocommerce button.button,
+.woocommerce .button,
+.woocommerce #respond input#submit,
+.woocommerce a.button.alt,
+.woocommerce button.button.alt {
+  background-color: var(--color-burgundy);
+  color: var(--color-ivory);
+  border: 1px solid var(--color-burgundy);
+  border-radius: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 0.9em 1.8em;
+  transition: background-color 300ms var(--ladym-ease),
+              color 300ms var(--ladym-ease);
+}
+
+.wp-block-button__link:hover,
+.wp-element-button:hover,
+button.button:hover,
+input[type="submit"]:hover,
+.woocommerce a.button:hover,
+.woocommerce button.button:hover,
+.woocommerce .button:hover,
+.woocommerce #respond input#submit:hover,
+.woocommerce a.button.alt:hover,
+.woocommerce button.button.alt:hover {
+  background-color: var(--color-burgundy-deep);
+  border-color: var(--color-burgundy-deep);
+  color: var(--color-ivory);
+}
+
+/* Másodlagos / outline gomb */
+.button.is-style-outline,
+.woocommerce a.button.ghost {
+  background-color: transparent;
+  color: var(--color-burgundy);
+}
+
+/* =========================================================
+   WooCommerce – ár, termékkártya, keretek
+   ========================================================= */
+.woocommerce ul.products li.product .price,
+.woocommerce div.product p.price,
+.woocommerce div.product span.price {
+  color: var(--color-burgundy);
+  font-weight: 600;
+}
+
+.woocommerce ul.products li.product {
+  text-align: left;
+}
+
+.woocommerce ul.products li.product .woocommerce-loop-product__title {
+  font-size: 1.05rem;
+  padding-top: 0.6em;
+}
+
+.woocommerce span.onsale {
+  background-color: var(--color-ink);
+  color: var(--color-ivory);
+  border-radius: 0;
+}
+
+/* Finom keretek és elválasztók a brand vonalszínnel */
+hr,
+.woocommerce table.shop_table,
+.woocommerce .cart-collaterals,
+.woocommerce-tabs {
+  border-color: var(--color-line);
+}
+
+/* =========================================================
+   Finom mozgás (a landing page-ről átemelve)
+   ========================================================= */
+.underline-grow {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 0 1px;
+  transition: background-size 450ms var(--ladym-ease);
+  padding-bottom: 2px;
+}
+.underline-grow:hover {
+  background-size: 100% 1px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes ladymFadeUp {
+    from { opacity: 0; transform: translateY(22px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .ladym-fade-up {
+    opacity: 0;
+    animation: ladymFadeUp 900ms var(--ladym-ease) forwards;
+  }
+}
