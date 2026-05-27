@@ -171,3 +171,28 @@ hr,
     animation: ladymFadeUp 900ms var(--ladym-ease) forwards;
   }
 }
+/* =========================================================
+   Polylang nyelvváltó (Fázis 2) – zászló nélkül, nyelvkód (HU/EN)
+   A switcher a Főmenüben "slug" módban jelenik meg (hu/en),
+   itt nagybetűsítjük és kicsit elkülönítjük a fejlécben.
+   ========================================================= */
+.lang-item > a {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.82em;
+  font-weight: 600;
+}
+.lang-item.current-lang > a {
+  color: var(--color-burgundy);
+}
+/* vékony elválasztó az első nyelvi elem előtt a fejléc menüben */
+.header-menu .lang-item-first::before,
+.ct-header .lang-item-first::before {
+  content: "";
+  display: inline-block;
+  width: 1px;
+  height: 0.9em;
+  margin: 0 0.5em 0 0.25em;
+  background: var(--color-line);
+  vertical-align: middle;
+}

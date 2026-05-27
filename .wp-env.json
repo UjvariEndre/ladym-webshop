@@ -3,6 +3,7 @@
   "phpVersion": "8.2",
   "plugins": [
     "https://downloads.wordpress.org/plugin/woocommerce.zip",
+    "https://downloads.wordpress.org/plugin/polylang.zip",
     "./plugins/ladym-core"
   ],
   "themes": [
