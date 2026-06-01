@@ -251,3 +251,27 @@ add_filter( 'gettext', function ( $translated, $original, $domain ) {
     }
     return isset( $map[ $original ] ) ? $map[ $original ] : $translated;
 }, 20, 3 );
+
+/**
+ * Szállítás (Fázis 5 / a. lépés).
+ *
+ * A `vp_pont` shipping method (Hungarian Pickup Points plugin) az ingyenes verzióban
+ * NEM olvassa az instance-szintű "title" beállítást a rate-feliratba — minden példánya
+ * "Pickup points" felirattal jelenik meg a checkout-on. Itt a `woocommerce_package_rates`
+ * filterrel rate-szinten felülírjuk a label-t az instance settings "title" mezőjéből,
+ * így a HU zónában megjelenő Foxpost / GLS / MPL csomagpont opciók egyenként a maguk
+ * brand-feliratával jönnek (és külön ár-tier-rel).
+ */
+add_filter( 'woocommerce_package_rates', function ( $rates ) {
+    foreach ( $rates as $rate_key => $rate ) {
+        if ( 'vp_pont' !== $rate->method_id ) {
+            continue;
+        }
+        $opt = get_option( "woocommerce_vp_pont_{$rate->instance_id}_settings", array() );
+        if ( ! empty( $opt['title'] ) ) {
+            $rate->label = $opt['title'];
+            $rates[ $rate_key ] = $rate;
+        }
+    }
+    return $rates;
+}, 20 );
