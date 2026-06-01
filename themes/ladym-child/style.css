@@ -4,7 +4,7 @@ Theme URI: https://ladymhungary.hu
 Description: LadyMHungary egyedi child theme (szülő: Blocksy). Arculat a webellus.com/ladym landing page alapján.
 Author: LadyMHungary
 Template: blocksy
-Version: 0.6.0
+Version: 0.7.0
 Text Domain: ladym
 */
 
@@ -1379,4 +1379,282 @@ hr,
 .ladym-thankyou__return {
   text-align: center;
   margin-top: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+/* =========================================================
+   Legal pages (Fázis 7) – ÁSZF, Adatvédelem, Elállás, Impresszum
+   ========================================================= */
+
+.page-template-default.page .entry-content > .ladym-legal-warning {
+  /* belső szabály lentebb */
+}
+
+/* Blocksy default hero le ezekre az oldalakra (a saját kiemelt blokk veszi át). */
+.page-id-59 .hero-section,
+.page-id-60 .hero-section,
+.page-id-61 .hero-section,
+.page-id-62 .hero-section {
+  display: none !important;
+}
+
+/* Kiemelt sárga figyelmeztetés a 4 sablon-oldal tetején */
+.ladym-legal-warning {
+  margin: 1.5rem 0 2.5rem;
+  padding: 1.1rem 1.4rem;
+  background-color: #fff8e1;
+  border: 1px solid #e0c97f;
+  border-left: 4px solid var(--color-burgundy);
+  color: var(--color-ink);
+  font-size: 0.92rem;
+  line-height: 1.55;
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+.ladym-legal-warning p {
+  margin: 0;
+}
+.ladym-legal-warning strong {
+  color: var(--color-burgundy);
+}
+
+/* Editorial tipográfia a jogi oldalakon (ÁSZF, Adatvédelem, Elállás, Impresszum). */
+.page-id-59 .entry-content,
+.page-id-60 .entry-content,
+.page-id-61 .entry-content,
+.page-id-62 .entry-content {
+  max-width: 65ch;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: clamp(2rem, 5vw, 4rem);
+}
+.page-id-59 .entry-content,
+.page-id-60 .entry-content,
+.page-id-61 .entry-content,
+.page-id-62 .entry-content {
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  color: var(--color-ink-soft);
+  font-size: 1.02rem;
+  line-height: 1.75;
+}
+
+.ladym-legal-eyebrow {
+  margin: 0 0 0.85rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-mocha);
+}
+.ladym-legal-lead {
+  margin: 0 0 clamp(1.75rem, 3vw, 2.5rem);
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 500;
+  font-style: italic;
+  font-size: clamp(1.1rem, 1.8vw, 1.25rem);
+  line-height: 1.55;
+  color: var(--color-ink);
+}
+
+.page-id-59 .entry-content h2,
+.page-id-60 .entry-content h2,
+.page-id-61 .entry-content h2,
+.page-id-62 .entry-content h2 {
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  font-size: clamp(1.35rem, 2.4vw, 1.6rem);
+  color: var(--color-ink);
+  margin: clamp(2rem, 4vw, 2.5rem) 0 0.85rem;
+  padding-top: clamp(1.25rem, 2.5vw, 1.75rem);
+  border-top: 1px solid var(--color-line);
+}
+.page-id-59 .entry-content h2:first-of-type,
+.page-id-60 .entry-content h2:first-of-type,
+.page-id-61 .entry-content h2:first-of-type,
+.page-id-62 .entry-content h2:first-of-type {
+  border-top: none;
+  padding-top: 0;
+}
+.page-id-59 .entry-content h3,
+.page-id-60 .entry-content h3,
+.page-id-61 .entry-content h3,
+.page-id-62 .entry-content h3 {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.15rem;
+  color: var(--color-ink);
+  margin: 1.5rem 0 0.5rem;
+}
+
+.page-id-59 .entry-content a,
+.page-id-60 .entry-content a,
+.page-id-61 .entry-content a,
+.page-id-62 .entry-content a {
+  color: var(--color-burgundy);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+.page-id-59 .entry-content a:hover,
+.page-id-60 .entry-content a:hover,
+.page-id-61 .entry-content a:hover,
+.page-id-62 .entry-content a:hover {
+  color: var(--color-burgundy-deep);
+}
+
+.page-id-59 .entry-content ul,
+.page-id-60 .entry-content ul,
+.page-id-61 .entry-content ul,
+.page-id-62 .entry-content ul {
+  padding-left: 1.2em;
+  margin: 0 0 1.25rem;
+}
+.page-id-59 .entry-content li,
+.page-id-60 .entry-content li,
+.page-id-61 .entry-content li,
+.page-id-62 .entry-content li {
+  margin: 0.35rem 0;
+}
+
+.ladym-legal-blockquote {
+  margin: 1.5rem 0;
+  padding: 1.25rem 1.5rem;
+  background: var(--color-cream-warm);
+  border-left: 3px solid var(--color-burgundy);
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.96rem;
+  line-height: 1.65;
+  color: var(--color-ink);
+}
+.ladym-legal-address {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.1rem;
+  color: var(--color-ink);
+  margin: 1rem 0;
+  line-height: 1.5;
+}
+.ladym-legal-update {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-line);
+  font-size: 0.85rem;
+  color: var(--color-mocha);
+}
+
+.ladym-legal-table {
+  width: 100%;
+  margin: 1rem 0 1.5rem;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+.ladym-legal-table th,
+.ladym-legal-table td {
+  border: 1px solid var(--color-line);
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+  vertical-align: top;
+}
+.ladym-legal-table thead th {
+  background: var(--color-cream-warm);
+  color: var(--color-ink);
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* =========================================================
+   Cookie banner – Complianz brand-stilizálás (Fázis 7)
+   ========================================================= */
+
+#cmplz-cookiebanner-container .cmplz-cookiebanner {
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif !important;
+  background-color: var(--color-ivory) !important;
+  color: var(--color-ink) !important;
+  border: 1px solid var(--color-line) !important;
+  border-radius: 0 !important;
+  box-shadow: 0 24px 60px -20px rgba(19, 24, 48, 0.25) !important;
+  font-size: 0.92rem !important;
+  line-height: 1.55 !important;
+  max-width: 28rem !important;
+}
+#cmplz-cookiebanner-container .cmplz-cookiebanner .cmplz-title {
+  font-family: "Playfair Display", Georgia, serif !important;
+  font-weight: 600 !important;
+  font-size: 1.2rem !important;
+  color: var(--color-ink) !important;
+}
+#cmplz-cookiebanner-container .cmplz-cookiebanner .cmplz-message,
+#cmplz-cookiebanner-container .cmplz-cookiebanner .cmplz-description,
+#cmplz-cookiebanner-container .cmplz-cookiebanner .cmplz-description span {
+  color: var(--color-ink-soft) !important;
+  font-family: inherit !important;
+}
+#cmplz-cookiebanner-container .cmplz-cookiebanner .cmplz-category-title {
+  color: var(--color-ink) !important;
+  font-weight: 600 !important;
+  font-size: 0.95rem !important;
+}
+#cmplz-cookiebanner-container .cmplz-cookiebanner .cmplz-divider,
+#cmplz-cookiebanner-container .cmplz-cookiebanner .cmplz-category {
+  border-color: var(--color-line) !important;
+}
+
+/* Gombok – Accept (bordó, primary), Deny (ghost), Save/View prefs (ghost) */
+#cmplz-cookiebanner-container .cmplz-btn {
+  border-radius: 0 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  font-size: 0.78rem !important;
+  font-weight: 600 !important;
+  padding: 0.85em 1.4em !important;
+  border: 1px solid transparent !important;
+  cursor: pointer !important;
+  transition: background-color 220ms var(--ladym-ease),
+              color 220ms var(--ladym-ease),
+              border-color 220ms var(--ladym-ease) !important;
+}
+#cmplz-cookiebanner-container .cmplz-btn.cmplz-accept {
+  background-color: var(--color-burgundy) !important;
+  border-color: var(--color-burgundy) !important;
+  color: var(--color-ivory) !important;
+}
+#cmplz-cookiebanner-container .cmplz-btn.cmplz-accept:hover {
+  background-color: var(--color-burgundy-deep) !important;
+  border-color: var(--color-burgundy-deep) !important;
+}
+#cmplz-cookiebanner-container .cmplz-btn.cmplz-deny,
+#cmplz-cookiebanner-container .cmplz-btn.cmplz-save-preferences,
+#cmplz-cookiebanner-container .cmplz-btn.cmplz-view-preferences {
+  background-color: transparent !important;
+  color: var(--color-ink) !important;
+  border-color: var(--color-ink) !important;
+}
+#cmplz-cookiebanner-container .cmplz-btn.cmplz-deny:hover,
+#cmplz-cookiebanner-container .cmplz-btn.cmplz-save-preferences:hover,
+#cmplz-cookiebanner-container .cmplz-btn.cmplz-view-preferences:hover {
+  background-color: var(--color-ink) !important;
+  color: var(--color-ivory) !important;
+}
+
+/* Toggle-kapcsoló (slider) – burgundy aktív állapot */
+#cmplz-cookiebanner-container input.cmplz-consent-checkbox:checked + label::before,
+#cmplz-cookiebanner-container .cmplz-banner-checkbox input:checked + label {
+  background-color: var(--color-burgundy) !important;
+  border-color: var(--color-burgundy) !important;
+}
+
+/* Bezáró × ikon */
+#cmplz-cookiebanner-container .cmplz-close svg {
+  color: var(--color-ink-soft) !important;
+}
+#cmplz-cookiebanner-container .cmplz-close:hover svg {
+  color: var(--color-burgundy) !important;
+}
+
+/* "Sütibeállítások" megnyitó pirula a sarkon */
+.cmplz-manage-consent.manage-consent-1 {
+  background-color: var(--color-ink) !important;
+  color: var(--color-ivory) !important;
+  border-radius: 0 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  font-size: 0.7rem !important;
 }
