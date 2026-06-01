@@ -87,3 +87,167 @@ remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_pr
 add_filter( 'loop_shop_columns', function () {
     return 4;
 } );
+
+/**
+ * Single product (Fázis 3 / 3. lépés) – tabok / upsells / sidebar le,
+ * "Add to cart" felirat magyarul, related limit 3 / 3 oszlop.
+ */
+
+// Tabok, upsells, breadcrumb (WC) – a saját single layout-ban nem kellenek.
+remove_action( 'woocommerce_after_single_product_summary', 'woocommerce_output_product_data_tabs', 10 );
+remove_action( 'woocommerce_after_single_product_summary', 'woocommerce_upsell_display', 15 );
+remove_action( 'woocommerce_before_main_content', 'woocommerce_breadcrumb', 20 );
+
+// Single product oldalon ne legyen sidebar (Blocksy filter + Woo sidebar action törlés).
+remove_action( 'woocommerce_sidebar', 'woocommerce_get_sidebar', 10 );
+add_filter( 'blocksy:sidebar:has-sidebar', function ( $has_sidebar ) {
+    if ( function_exists( 'is_product' ) && is_product() ) {
+        return false;
+    }
+    return $has_sidebar;
+} );
+
+// Blocksy a single product oldalon ne rajzolja ki a saját page-hero-t (a saját breadcrumb + cím átveszi).
+add_filter( 'blocksy:hero:enabled', function ( $enabled, $type = null ) {
+    if ( function_exists( 'is_product' ) && is_product() ) {
+        return false;
+    }
+    return $enabled;
+}, 10, 2 );
+
+// Related products: 3 db, 3 oszlop (CSS-ben ez a 4-helyetti viselkedés a single oldalon).
+add_filter( 'woocommerce_output_related_products_args', function ( $args ) {
+    $args['posts_per_page'] = 3;
+    $args['columns']        = 3;
+    return $args;
+} );
+
+// "Add to cart" felirat magyarul a single product oldalon.
+add_filter( 'woocommerce_product_single_add_to_cart_text', function () {
+    return __( 'Hozzáadás a kosárhoz', 'ladym' );
+} );
+
+/**
+ * Cart / Checkout / Thank-you (Fázis 3 / 4. lépés) – fashion-editorial styling.
+ *
+ * Stratégia: a WC default templatek többségét NEM cseréljük, csak hookolunk és CSS-szel
+ * stilizálunk. Egyedi markup csak ott készül, ahol komplett magyar tartalom kell
+ * (cart-empty, thankyou).
+ */
+
+// Saját kosár-fejléc – a táblázat fölött.
+add_action( 'woocommerce_before_cart', function () {
+    if ( ! function_exists( 'is_cart' ) || ! is_cart() ) {
+        return;
+    }
+    if ( function_exists( 'WC' ) && WC()->cart && WC()->cart->is_empty() ) {
+        return; // üres kosárnál a cart-empty.php saját markup-pal jön.
+    }
+    ?>
+    <header class="ladym-cart-header">
+        <p class="ladym-cart-header__eyebrow"><?php esc_html_e( 'Kosár', 'ladym' ); ?></p>
+        <h1 class="ladym-cart-header__title"><?php esc_html_e( 'A kosarad', 'ladym' ); ?></h1>
+        <p class="ladym-cart-header__lead"><?php esc_html_e( 'Egy lépéssel közelebb a saját darabodhoz.', 'ladym' ); ?></p>
+    </header>
+    <?php
+}, 5 );
+
+// Saját checkout-fejléc.
+add_action( 'woocommerce_before_checkout_form', function () {
+    if ( ! function_exists( 'is_checkout' ) || ! is_checkout() ) {
+        return;
+    }
+    // Order-received oldalon a thankyou.php saját fejlecet rajzol – itt ne duplázzunk.
+    if ( function_exists( 'is_wc_endpoint_url' ) && is_wc_endpoint_url( 'order-received' ) ) {
+        return;
+    }
+    ?>
+    <header class="ladym-checkout-header">
+        <p class="ladym-checkout-header__eyebrow"><?php esc_html_e( 'Pénztár', 'ladym' ); ?></p>
+        <h1 class="ladym-checkout-header__title"><?php esc_html_e( 'Befejezés', 'ladym' ); ?></h1>
+        <p class="ladym-checkout-header__lead"><?php esc_html_e( 'Add meg az adataid, és pár nap múlva érkezik a darabod.', 'ladym' ); ?></p>
+    </header>
+    <?php
+}, 5 );
+
+// Cross-sells a kosár oldalon: le.
+remove_action( 'woocommerce_cart_collaterals', 'woocommerce_cross_sell_display' );
+
+// Kupon-UI: most ki (a default `apply_coupon` mező eltűnik a cart-on és a checkout-on).
+add_filter( 'woocommerce_coupons_enabled', '__return_false' );
+
+// Cart oldalon a sidebart kapcsoljuk le.
+add_filter( 'blocksy:sidebar:has-sidebar', function ( $has_sidebar ) {
+    if ( function_exists( 'is_cart' ) && is_cart() ) {
+        return false;
+    }
+    if ( function_exists( 'is_checkout' ) && is_checkout() ) {
+        return false;
+    }
+    return $has_sidebar;
+} );
+
+// Blocksy default page-hero le a cart / checkout / order-received oldalakon (a saját fejléc helyettesíti).
+add_filter( 'blocksy:hero:enabled', function ( $enabled, $type = null ) {
+    if (
+        ( function_exists( 'is_cart' ) && is_cart() )
+        || ( function_exists( 'is_checkout' ) && is_checkout() )
+    ) {
+        return false;
+    }
+    return $enabled;
+}, 10, 2 );
+
+// "Place order" gomb felirata magyarul.
+add_filter( 'woocommerce_order_button_text', function () {
+    return __( 'Megrendelés véglegesítése', 'ladym' );
+} );
+
+// "Your personal data will be used..." privacy szöveg – magyar verzió (link a /adatvedelem/-re, Fázis 7-ben jön az oldal).
+add_filter( 'woocommerce_get_privacy_policy_text', function ( $text, $type ) {
+    return sprintf(
+        '<a href="%s">%s</a>',
+        esc_url( home_url( '/adatvedelem/' ) ),
+        esc_html__( 'A személyes adataid kezelése az Adatvédelmi tájékoztatónk szerint történik.', 'ladym' )
+    );
+}, 10, 2 );
+
+// "Return to shop" felirat magyarul (csak vésztartalék – cart-empty.php sajat CTA-t rajzol).
+add_filter( 'woocommerce_return_to_shop_text', function () {
+    return __( 'Vissza a kollekcióhoz', 'ladym' );
+} );
+
+// Magyar feliratok a cart / checkout WC-szövegekre. Csak addig kell, amíg a Polylang
+// fordítási projektje fel nem dolgozta a `woocommerce` text domaint.
+add_filter( 'gettext', function ( $translated, $original, $domain ) {
+    if ( 'woocommerce' !== $domain ) {
+        return $translated;
+    }
+    static $map = null;
+    if ( null === $map ) {
+        $map = array(
+            // Cart oldal
+            'Product'                        => 'Termék',
+            'Price'                          => 'Egységár',
+            'Quantity'                       => 'Mennyiség',
+            'Subtotal'                       => 'Részösszeg',
+            'Update cart'                    => 'Kosár frissítése',
+            'Remove this item'               => 'Eltávolítás',
+            'Cart totals'                    => 'Kosár összesen',
+            'Shipping'                       => 'Szállítás',
+            'Total'                          => 'Végösszeg',
+            'Proceed to checkout'            => 'Tovább a pénztárhoz',
+            'Free shipping'                  => 'Ingyenes szállítás',
+            // Checkout oldal
+            'Billing details'                => 'Számlázási adatok',
+            'Ship to a different address?'   => 'Más címre szállítsuk?',
+            'Your order'                     => 'A megrendelésed',
+            'Order notes'                    => 'Megrendelési megjegyzés',
+            'Notes about your order, e.g. special notes for delivery.' => 'Megjegyzés a szállításhoz (opcionális).',
+            'Additional information'         => 'További információ',
+            // Köszönő oldal alap-szöveg (a sajat thankyou.php felülírja, de itt biztosítjuk a fallback fordítást)
+            'Thank you. Your order has been received.' => 'Köszönjük! A megrendelésed megérkezett.',
+        );
+    }
+    return isset( $map[ $original ] ) ? $map[ $original ] : $translated;
+}, 20, 3 );

@@ -4,7 +4,7 @@ Theme URI: https://ladymhungary.hu
 Description: LadyMHungary egyedi child theme (szülő: Blocksy). Arculat a webellus.com/ladym landing page alapján.
 Author: LadyMHungary
 Template: blocksy
-Version: 0.4.0
+Version: 0.6.0
 Text Domain: ladym
 */
 
@@ -536,4 +536,847 @@ hr,
 /* a sans betűkép a kártya-áron felülírja a brand-szintű h-szerű tipográfiát */
 .ladym-card .price {
   color: var(--color-burgundy);
+}
+
+/* =========================================================
+   Single product (Fázis 3 / 3. lépés)
+   ========================================================= */
+
+/* Single oldalon a Blocksy hero / sidebar le – a saját breadcrumb veszi át a fejet,
+   a main legyen full-width. */
+.single-product .hero-section,
+.single-product header.entry-header,
+.single-product .page-title {
+  display: none !important;
+}
+.single-product .ct-sidebar,
+.single-product aside[class*="sidebar"] {
+  display: none !important;
+}
+.single-product [class*="ct-container"][data-vertical-spacing],
+.single-product .entry-content > .product {
+  width: 100%;
+}
+
+/* Breadcrumb */
+.ladym-single__breadcrumb {
+  margin: clamp(1.5rem, 3vw, 2.25rem) 0 clamp(1.25rem, 2.5vw, 1.75rem);
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-mocha);
+}
+.ladym-single__breadcrumb a {
+  color: var(--color-mocha);
+  text-decoration: none;
+  transition: color 220ms var(--ladym-ease);
+}
+.ladym-single__breadcrumb a:hover {
+  color: var(--color-burgundy);
+}
+.ladym-single__breadcrumb-sep {
+  margin: 0 0.5em;
+  color: var(--color-line);
+}
+.ladym-single__breadcrumb-current {
+  color: var(--color-ink);
+}
+
+/* Layout – 1 oszlop mobilon, 2 oszlop ≥1024px (55/45) */
+.ladym-single__layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(2rem, 4vw, 3.25rem);
+  margin-bottom: clamp(3rem, 6vw, 5rem);
+}
+@media (min-width: 1024px) {
+  .ladym-single__layout {
+    grid-template-columns: minmax(0, 55fr) minmax(0, 45fr);
+    align-items: start;
+  }
+}
+
+/* Galéria – bal oszlop */
+.ladym-single__gallery {
+  min-width: 0;
+}
+.ladym-single__main {
+  margin: 0;
+  background-color: var(--color-cream-warm);
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  box-shadow: 0 30px 80px -25px rgba(19, 24, 48, 0.18);
+}
+.ladym-single__main-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.ladym-single__main--placeholder {
+  background-image: linear-gradient(140deg, var(--color-blush) 0%, var(--color-cream-warm) 55%, var(--color-line) 100%);
+}
+
+.ladym-single__thumbs {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(64px, 80px));
+  gap: 0.5rem;
+}
+.ladym-single__thumb-item {
+  margin: 0;
+}
+.ladym-single__thumb {
+  display: block;
+  width: 80px;
+  height: 100px;
+  padding: 0;
+  border: 1px solid var(--color-line);
+  background: var(--color-cream-warm);
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color 220ms var(--ladym-ease), opacity 220ms var(--ladym-ease);
+  opacity: 0.85;
+}
+.ladym-single__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.ladym-single__thumb:hover {
+  opacity: 1;
+  border-color: var(--color-mocha);
+}
+.ladym-single__thumb.is-active {
+  border-color: var(--color-burgundy);
+  opacity: 1;
+}
+
+/* Summary – jobb oszlop */
+.ladym-single__summary {
+  min-width: 0;
+}
+
+/* "1 / 1 — EGYEDI DARAB" badge */
+.ladym-single__badge {
+  display: inline-block;
+  margin: 0 0 1.25rem;
+  padding: 0.45em 0.95em;
+  background-color: var(--color-burgundy);
+  color: var(--color-ivory);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.ladym-single__title {
+  margin: 0 0 1rem;
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  font-size: clamp(2rem, 3.5vw, 2.5rem);
+  color: var(--color-ink);
+}
+
+.ladym-single__price {
+  margin: 0 0 1.5rem;
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 1.5rem;
+  color: var(--color-burgundy);
+}
+.ladym-single__price .woocommerce-Price-amount,
+.ladym-single__price .price {
+  color: var(--color-burgundy);
+}
+
+.ladym-single__excerpt {
+  margin: 0 0 1.75rem;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--color-ink-soft);
+  max-width: 56ch;
+}
+.ladym-single__excerpt p:last-child {
+  margin-bottom: 0;
+}
+
+/* Add to cart – a quantity input rejtve (mindenből 1 db), a gomb nagyobb és mobilon full-width. */
+.ladym-single__cart {
+  margin: 0 0 2rem;
+}
+.ladym-single__cart form.cart {
+  display: flex;
+  align-items: stretch;
+  gap: 0.75rem;
+  margin: 0;
+}
+.ladym-single__cart .quantity {
+  display: none !important;
+}
+.ladym-single__cart button.single_add_to_cart_button {
+  padding: 1.1em 2.2em;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  width: 100%;
+}
+@media (min-width: 640px) {
+  .ladym-single__cart button.single_add_to_cart_button {
+    width: auto;
+    min-width: 18rem;
+  }
+}
+
+.ladym-single__description {
+  margin: 0 0 2rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--color-line);
+  max-width: 60ch;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--color-ink-soft);
+}
+.ladym-single__description p:last-child {
+  margin-bottom: 0;
+}
+
+.ladym-single__meta {
+  margin: 0;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-mocha);
+}
+.ladym-single__meta a {
+  color: var(--color-mocha);
+  text-decoration: none;
+  transition: color 220ms var(--ladym-ease);
+}
+.ladym-single__meta a:hover {
+  color: var(--color-burgundy);
+}
+.ladym-single__meta-sep {
+  margin: 0 0.35em;
+  color: var(--color-line);
+}
+
+/* Related products – "Hasonló darabok" */
+.ladym-related {
+  margin: clamp(3rem, 6vw, 5rem) 0;
+  padding-top: clamp(2.5rem, 5vw, 3.5rem);
+  border-top: 1px solid var(--color-line);
+}
+.ladym-related__header {
+  margin: 0 0 clamp(1.75rem, 3vw, 2.5rem);
+  text-align: left;
+}
+.ladym-related__eyebrow {
+  margin: 0 0 0.75rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-mocha);
+}
+.ladym-related__title {
+  margin: 0;
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  font-size: clamp(1.4rem, 2.6vw, 1.6rem);
+  color: var(--color-ink);
+}
+/* Related grid: a single oldalon 3 termékre 1/2/3 oszlop. A shop-grid szabálya átöröklődik,
+   de a related-en a 4-oszlopos szabályt nem akarjuk – fix max 3. */
+.ladym-related ul.products {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+@media (min-width: 768px) {
+  .ladym-related ul.products {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1280px) {
+  .ladym-related ul.products {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* =========================================================
+   Cart (Fázis 3 / 4. lépés)
+   ========================================================= */
+
+/* Blocksy default page-title / sidebar le a kosár oldalon */
+.woocommerce-cart .hero-section,
+.woocommerce-cart header.entry-header,
+.woocommerce-cart .page-title,
+.woocommerce-cart .ct-sidebar,
+.woocommerce-cart aside[class*="sidebar"] {
+  display: none !important;
+}
+
+/* Saját kosár-fejléc */
+.ladym-cart-header {
+  margin: clamp(1.5rem, 4vw, 3rem) 0 clamp(1.5rem, 4vw, 2.5rem);
+  padding-bottom: clamp(1.25rem, 3vw, 2rem);
+  border-bottom: 1px solid var(--color-line);
+}
+.ladym-cart-header__eyebrow {
+  margin: 0 0 0.85rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-mocha);
+}
+.ladym-cart-header__title {
+  margin: 0 0 0.85rem;
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+  color: var(--color-ink);
+  font-size: clamp(2rem, 4.6vw, 2.75rem);
+}
+.ladym-cart-header__lead {
+  margin: 0;
+  max-width: 56ch;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--color-ink-soft);
+}
+
+/* Kosár táblázat */
+.woocommerce-cart .woocommerce-cart-form {
+  margin-bottom: clamp(2rem, 5vw, 3rem);
+}
+.woocommerce-cart table.cart {
+  border: 1px solid var(--color-line);
+  border-collapse: collapse;
+  width: 100%;
+}
+.woocommerce-cart table.cart th,
+.woocommerce-cart table.cart td {
+  border: none;
+  border-bottom: 1px solid var(--color-line);
+  padding: 1.25rem 1rem;
+  vertical-align: middle;
+  background-color: var(--color-paper);
+}
+.woocommerce-cart table.cart thead th {
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-mocha);
+  font-weight: 600;
+  background-color: var(--color-cream-warm);
+}
+.woocommerce-cart table.cart td.product-thumbnail img {
+  width: 120px;
+  max-width: 120px;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  display: block;
+  border: 1px solid var(--color-line);
+}
+.woocommerce-cart table.cart td.product-thumbnail {
+  width: 140px;
+}
+.woocommerce-cart table.cart td.product-name a {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--color-ink);
+}
+.woocommerce-cart table.cart td.product-name a:hover {
+  color: var(--color-burgundy);
+}
+.woocommerce-cart table.cart td.product-price,
+.woocommerce-cart table.cart td.product-subtotal,
+.woocommerce-cart table.cart .woocommerce-Price-amount {
+  color: var(--color-burgundy);
+  font-weight: 600;
+}
+.woocommerce-cart table.cart td.product-remove a.remove {
+  color: var(--color-mocha) !important;
+  font-size: 1.1rem;
+  width: auto;
+  background: transparent;
+}
+.woocommerce-cart table.cart td.product-remove a.remove:hover {
+  color: var(--color-burgundy) !important;
+  background: transparent;
+}
+/* Quantity – egyedi daraboknál sold_individually → 1, ezért inputot rejtjük az olvashatóságért. */
+.woocommerce-cart table.cart .quantity {
+  display: inline-flex;
+  align-items: center;
+}
+.woocommerce-cart table.cart .quantity input.qty {
+  width: 4rem;
+  padding: 0.5em 0.6em;
+  border: 1px solid var(--color-line);
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: inherit;
+  text-align: center;
+}
+
+/* "Frissítés" gomb – outline, visszafogott */
+.woocommerce-cart table.cart .actions {
+  background: var(--color-cream-warm);
+  text-align: right;
+}
+.woocommerce-cart table.cart .actions .button[name="update_cart"] {
+  background: transparent;
+  color: var(--color-ink);
+  border: 1px solid var(--color-ink);
+  letter-spacing: 0.08em;
+}
+.woocommerce-cart table.cart .actions .button[name="update_cart"]:hover {
+  background: var(--color-ink);
+  color: var(--color-ivory);
+}
+/* Kupon-blokk most rejtve (a filter is __return_false-ra van) */
+.woocommerce-cart .coupon {
+  display: none !important;
+}
+
+/* Cart totals (a jobb oldali / alsó "Kosár összesen" blokk) */
+.woocommerce-cart .cart-collaterals {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+@media (min-width: 1024px) {
+  .woocommerce-cart .cart-collaterals {
+    grid-template-columns: 1fr 1fr;
+  }
+  /* a cart_totals legyen a jobb oszlopban */
+  .woocommerce-cart .cart-collaterals .cart_totals {
+    grid-column: 2;
+  }
+}
+.woocommerce-cart .cart_totals {
+  border: 1px solid var(--color-line);
+  background: var(--color-paper);
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+}
+.woocommerce-cart .cart_totals h2 {
+  margin: 0 0 1rem;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.25rem;
+  color: var(--color-ink);
+}
+.woocommerce-cart .cart_totals table.shop_table {
+  border: none;
+  width: 100%;
+}
+.woocommerce-cart .cart_totals table.shop_table th,
+.woocommerce-cart .cart_totals table.shop_table td {
+  border: none;
+  border-bottom: 1px solid var(--color-line);
+  padding: 0.85rem 0;
+  font-size: 0.95rem;
+  background: transparent;
+}
+.woocommerce-cart .cart_totals table.shop_table th {
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-mocha);
+  font-weight: 600;
+  width: 40%;
+}
+.woocommerce-cart .cart_totals .order-total td .woocommerce-Price-amount,
+.woocommerce-cart .cart_totals .order-total td strong {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-burgundy);
+}
+.woocommerce-cart .wc-proceed-to-checkout {
+  margin-top: 1.25rem;
+  padding: 0;
+}
+.woocommerce-cart .wc-proceed-to-checkout .checkout-button {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 1.1em 1.5em;
+}
+
+/* Üres kosár blokk */
+.ladym-cart-empty {
+  margin: clamp(2.5rem, 6vw, 4.5rem) auto;
+  padding: clamp(2rem, 5vw, 3.25rem);
+  max-width: 38rem;
+  border: 1px solid var(--color-line);
+  background: var(--color-paper);
+  text-align: center;
+}
+.ladym-cart-empty__eyebrow {
+  margin: 0 0 0.75rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-mocha);
+}
+.ladym-cart-empty__title {
+  margin: 0 0 0.85rem;
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 600;
+  font-size: clamp(1.6rem, 3.5vw, 2rem);
+  color: var(--color-ink);
+}
+.ladym-cart-empty__lead {
+  margin: 0 0 1.5rem;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--color-ink-soft);
+}
+.ladym-cart-empty__cta {
+  margin: 0;
+}
+
+/* =========================================================
+   Checkout (Fázis 3 / 4. lépés)
+   ========================================================= */
+
+.woocommerce-checkout .hero-section,
+.woocommerce-checkout header.entry-header,
+.woocommerce-checkout .page-title,
+.woocommerce-checkout .ct-sidebar,
+.woocommerce-checkout aside[class*="sidebar"] {
+  display: none !important;
+}
+
+.ladym-checkout-header {
+  margin: clamp(1.5rem, 4vw, 3rem) 0 clamp(1.75rem, 4vw, 2.75rem);
+  padding-bottom: clamp(1.25rem, 3vw, 2rem);
+  border-bottom: 1px solid var(--color-line);
+}
+.ladym-checkout-header__eyebrow {
+  margin: 0 0 0.85rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-mocha);
+}
+.ladym-checkout-header__title {
+  margin: 0 0 0.85rem;
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+  color: var(--color-ink);
+  font-size: clamp(2rem, 4.6vw, 2.75rem);
+}
+.ladym-checkout-header__lead {
+  margin: 0;
+  max-width: 60ch;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--color-ink-soft);
+}
+
+/* 2 oszlopos checkout layout ≥1024px (col2-set | order_review) */
+.woocommerce-checkout form.checkout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(1.5rem, 4vw, 2.5rem);
+}
+@media (min-width: 1024px) {
+  .woocommerce-checkout form.checkout {
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    align-items: start;
+  }
+  .woocommerce-checkout form.checkout #customer_details {
+    grid-column: 1;
+  }
+  .woocommerce-checkout form.checkout h3#order_review_heading,
+  .woocommerce-checkout form.checkout #order_review {
+    grid-column: 2;
+  }
+  .woocommerce-checkout form.checkout h3#order_review_heading {
+    margin-top: 0;
+  }
+  /* Sticky order review */
+  .woocommerce-checkout form.checkout #order_review {
+    position: sticky;
+    top: 1.5rem;
+  }
+}
+
+/* col2-set: a billing / shipping már egymás alatt legyen */
+.woocommerce-checkout .col2-set,
+.woocommerce-checkout #customer_details.col2-set {
+  display: block;
+}
+.woocommerce-checkout .col2-set .col-1,
+.woocommerce-checkout .col2-set .col-2 {
+  width: 100%;
+  float: none;
+  margin-bottom: 1.5rem;
+}
+
+/* Form mezők – brand */
+.woocommerce-checkout .form-row label {
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-mocha);
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+  display: block;
+}
+.woocommerce-checkout .form-row label .required,
+.woocommerce-checkout .form-row label abbr.required {
+  color: var(--color-burgundy);
+  text-decoration: none;
+  margin-left: 0.15em;
+}
+.woocommerce-checkout .form-row input.input-text,
+.woocommerce-checkout .form-row textarea,
+.woocommerce-checkout .form-row select,
+.woocommerce-checkout .select2-container--default .select2-selection--single {
+  width: 100%;
+  padding: 0.85em 0.95em;
+  border: 1px solid var(--color-line);
+  border-radius: 2px;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: inherit;
+  font-size: 0.95rem;
+  transition: border-color 220ms var(--ladym-ease),
+              box-shadow 220ms var(--ladym-ease);
+  box-shadow: none;
+}
+.woocommerce-checkout .form-row input.input-text:focus,
+.woocommerce-checkout .form-row textarea:focus,
+.woocommerce-checkout .form-row select:focus,
+.woocommerce-checkout .select2-container--default.select2-container--focus .select2-selection--single {
+  outline: none;
+  border-color: var(--color-burgundy);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-burgundy) 14%, transparent);
+}
+.woocommerce-checkout h3 {
+  margin: 0 0 1rem;
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 600;
+  font-size: 1.3rem;
+  color: var(--color-ink);
+}
+
+/* Order review tábla */
+.woocommerce-checkout #order_review {
+  border: 1px solid var(--color-line);
+  background: var(--color-paper);
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+}
+.woocommerce-checkout #order_review table.shop_table {
+  border: none;
+  width: 100%;
+}
+.woocommerce-checkout #order_review table.shop_table th,
+.woocommerce-checkout #order_review table.shop_table td {
+  border: none;
+  border-bottom: 1px solid var(--color-line);
+  padding: 0.85rem 0;
+  background: transparent;
+}
+.woocommerce-checkout #order_review .order-total td .woocommerce-Price-amount,
+.woocommerce-checkout #order_review .order-total td strong {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-burgundy);
+}
+
+/* Payment methods */
+.woocommerce-checkout #payment {
+  background: transparent;
+  border-radius: 0;
+}
+.woocommerce-checkout ul.payment_methods {
+  list-style: none;
+  margin: 0 0 1.25rem;
+  padding: 1rem 0;
+  border-top: 1px solid var(--color-line);
+  border-bottom: 1px solid var(--color-line);
+}
+.woocommerce-checkout ul.payment_methods li {
+  padding: 0.5rem 0;
+}
+.woocommerce-checkout ul.payment_methods li label {
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  color: var(--color-ink);
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 0.95rem;
+  display: inline;
+}
+.woocommerce-checkout ul.payment_methods li .payment_box {
+  background: var(--color-cream-warm);
+  color: var(--color-ink-soft);
+  font-size: 0.9rem;
+  line-height: 1.55;
+  padding: 1rem 1.1rem;
+  margin: 0.6rem 0;
+  border: none;
+}
+.woocommerce-checkout ul.payment_methods li .payment_box::before {
+  display: none;
+}
+
+/* "Megrendelés véglegesítése" gomb – nagy, full-width */
+.woocommerce-checkout #payment .place-order {
+  padding: 0;
+  margin-top: 1.25rem;
+}
+.woocommerce-checkout #place_order {
+  display: block;
+  width: 100%;
+  padding: 1.1em 1.5em;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+}
+
+/* Privacy szöveg */
+.woocommerce-checkout .woocommerce-privacy-policy-text,
+.woocommerce-checkout .woocommerce-terms-and-conditions-wrapper {
+  font-size: 0.85rem;
+  color: var(--color-ink-soft);
+  line-height: 1.55;
+}
+.woocommerce-checkout .woocommerce-privacy-policy-text a,
+.woocommerce-checkout .woocommerce-terms-and-conditions-wrapper a {
+  color: var(--color-burgundy);
+}
+
+/* =========================================================
+   Köszönő oldal (Fázis 3 / 4. lépés)
+   ========================================================= */
+
+.woocommerce-order-received .hero-section,
+.woocommerce-order-received header.entry-header,
+.woocommerce-order-received .page-title {
+  display: none !important;
+}
+
+.ladym-thankyou {
+  max-width: 720px;
+  margin: clamp(2rem, 5vw, 4rem) auto;
+  padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1rem, 3vw, 2rem);
+}
+.ladym-thankyou__header {
+  text-align: center;
+  margin-bottom: clamp(2rem, 4vw, 2.75rem);
+  padding-bottom: clamp(1.5rem, 3vw, 2rem);
+  border-bottom: 1px solid var(--color-line);
+}
+.ladym-thankyou__eyebrow {
+  margin: 0 0 0.85rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-mocha);
+}
+.ladym-thankyou__title {
+  margin: 0 0 0.85rem;
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  color: var(--color-ink);
+  font-size: clamp(2rem, 4.6vw, 2.75rem);
+}
+.ladym-thankyou__lead {
+  margin: 0 auto;
+  max-width: 50ch;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--color-ink-soft);
+}
+
+.ladym-thankyou__overview {
+  list-style: none;
+  margin: 0 0 clamp(1.75rem, 4vw, 2.5rem);
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.85rem;
+  border: 1px solid var(--color-line);
+  background: var(--color-paper);
+  padding: 1.5rem;
+}
+@media (min-width: 640px) {
+  .ladym-thankyou__overview {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.ladym-thankyou__overview li {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  border-bottom: none;
+  padding: 0;
+}
+.ladym-thankyou__overview-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-mocha);
+  font-weight: 600;
+}
+.ladym-thankyou__overview li strong {
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 500;
+  font-size: 1.05rem;
+  color: var(--color-ink);
+}
+
+/* A WC-default rendelés-részletek táblák (woocommerce_thankyou) */
+.ladym-thankyou .woocommerce-order-details,
+.ladym-thankyou .woocommerce-customer-details {
+  margin: 1.5rem 0;
+}
+.ladym-thankyou .woocommerce-order-details h2,
+.ladym-thankyou .woocommerce-customer-details h2 {
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: var(--color-ink);
+  margin: 0 0 1rem;
+}
+.ladym-thankyou table.shop_table {
+  width: 100%;
+  border: 1px solid var(--color-line);
+  border-collapse: collapse;
+}
+.ladym-thankyou table.shop_table th,
+.ladym-thankyou table.shop_table td {
+  border: none;
+  border-bottom: 1px solid var(--color-line);
+  padding: 0.85rem 1rem;
+  background: var(--color-paper);
+}
+.ladym-thankyou table.shop_table tfoot tr:last-child td,
+.ladym-thankyou table.shop_table tfoot tr:last-child th {
+  font-family: "Playfair Display", Georgia, serif;
+  color: var(--color-burgundy);
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.ladym-thankyou__return {
+  text-align: center;
+  margin-top: clamp(1.5rem, 4vw, 2.5rem);
 }
