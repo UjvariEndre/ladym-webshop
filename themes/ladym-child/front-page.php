@@ -1,6 +1,6 @@
 <?php
 /**
- * Front page – LadyM Hungary HERO (Fázis 3 / 1. lépés).
+ * Front page – LadyM Hungary HERO (Fázis 3).
  *
  * Csak magyar. Brand tokenek a style.css-ben (var(--color-*)), itt nincs hardcode hex.
  * A szülő Blocksy fejléce (logó) + lábléce a get_header()/get_footer() révén marad.
@@ -14,6 +14,32 @@ get_header();
 $shop_url = function_exists( 'wc_get_page_id' ) ? get_permalink( wc_get_page_id( 'shop' ) ) : home_url( '/shop/' );
 if ( ! $shop_url ) {
 	$shop_url = home_url( '/shop/' );
+}
+
+$hero_product   = null;
+$hero_image_url = '';
+$hero_image_alt = __( 'Kézzel készített, egyedi LadyM darab', 'ladym' );
+$hero_link_url  = '';
+$hero_name      = __( 'One-of-a-kind', 'ladym' );
+
+if ( function_exists( 'wc_get_products' ) ) {
+	$featured = wc_get_products(
+		array(
+			'featured' => true,
+			'limit'    => 1,
+			'status'   => 'publish',
+		)
+	);
+	if ( ! empty( $featured ) ) {
+		$hero_product = $featured[0];
+		$image_id     = $hero_product->get_image_id();
+		if ( $image_id ) {
+			$hero_image_url = wp_get_attachment_image_url( $image_id, 'large' );
+		}
+		$hero_image_alt = $hero_product->get_name();
+		$hero_link_url  = get_permalink( $hero_product->get_id() );
+		$hero_name      = $hero_product->get_name();
+	}
 }
 ?>
 
@@ -39,10 +65,23 @@ if ( ! $shop_url ) {
 		</div>
 
 		<figure class="ladym-hero__media ladym-fade-up">
-			<div class="ladym-hero__image" role="img" aria-label="<?php esc_attr_e( 'Kézzel készített, egyedi LadyM darab', 'ladym' ); ?>"></div>
+			<?php if ( $hero_image_url && $hero_link_url ) : ?>
+				<a class="ladym-hero__image-link" href="<?php echo esc_url( $hero_link_url ); ?>">
+					<img
+						class="ladym-hero__image ladym-hero__image--photo"
+						src="<?php echo esc_url( $hero_image_url ); ?>"
+						alt="<?php echo esc_attr( $hero_image_alt ); ?>"
+						loading="eager"
+						decoding="async"
+					/>
+				</a>
+			<?php else : ?>
+				<div class="ladym-hero__image" role="img" aria-label="<?php echo esc_attr( $hero_image_alt ); ?>"></div>
+			<?php endif; ?>
+
 			<figcaption class="ladym-hero__caption">
 				<span class="ladym-hero__caption-left"><?php esc_html_e( 'EGYEDI DARAB', 'ladym' ); ?></span>
-				<span class="ladym-hero__caption-right"><?php esc_html_e( 'One-of-a-kind', 'ladym' ); ?></span>
+				<span class="ladym-hero__caption-right"><?php echo esc_html( $hero_name ); ?></span>
 			</figcaption>
 		</figure>
 
