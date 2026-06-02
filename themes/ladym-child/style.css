@@ -524,16 +524,19 @@ hr,
   color: inherit;
 }
 
-/* 4:5 képtartó, object-cover, slow scale hover. */
+/* 2:3 képtartó (a termékfotók domináns/legmagasabb aránya). Minden kártyakép
+   EGYFORMA magas. object-cover: a kép a teljes magasságában látszik (a tetejéből/
+   aljából NEM vágunk – a fej megmarad), szélesebb képnél viszont az oldalaiból vág.
+   A 2:3 vágatlan woocommerce_single forrással a 2:3 fotók pontosan kitöltik a tartót. */
 .ladym-card__media {
   position: relative;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 2 / 3;
   overflow: hidden;
   background-color: var(--color-cream-warm);
   border: 1px solid var(--color-line);
 }
 .ladym-card__media img,
-.ladym-card__media .attachment-woocommerce_thumbnail,
+.ladym-card__media .attachment-woocommerce_single,
 .ladym-card__media .wp-post-image {
   width: 100%;
   height: 100%;
@@ -592,6 +595,16 @@ hr,
   width: 100%;
 }
 
+/* A termékoldal tartalma ne feszüljön a képernyő széléig: a közös szülőt
+   (article – ebben van a termék ÉS a "Hasonló darabok" is) max-szélességre
+   fogjuk + középre, reszponzív oldalsó gutterrel (mobilon ~20px, nagy
+   képernyőn ~100px-ig nyíló levegő a két oldalon). */
+.single-product .ct-container-full > article {
+  max-width: 1400px;
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 7vw, 100px);
+}
+
 /* Breadcrumb */
 .ladym-single__breadcrumb {
   margin: clamp(1.5rem, 3vw, 2.25rem) 0 clamp(1.25rem, 2.5vw, 1.75rem);
@@ -637,7 +650,9 @@ hr,
 .ladym-single__main {
   margin: 0;
   background-color: var(--color-cream-warm);
-  aspect-ratio: 4 / 5;
+  /* 2:3 – a fotók aránya, így a cover nem a tetejéből/aljából (fej!), hanem
+     csak az oldalból vág, ha kell. Egyezik a shop kártyák logikájával. */
+  aspect-ratio: 2 / 3;
   overflow: hidden;
   box-shadow: 0 30px 80px -25px rgba(19, 24, 48, 0.18);
 }
@@ -665,7 +680,7 @@ hr,
 .ladym-single__thumb {
   display: block;
   width: 80px;
-  height: 100px;
+  height: 120px;
   padding: 0;
   border: 1px solid var(--color-line);
   background: var(--color-cream-warm);

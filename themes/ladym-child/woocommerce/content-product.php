@@ -17,7 +17,9 @@ if ( ! is_a( $product, WC_Product::class ) || ! $product->is_visible() ) {
 }
 
 $product_link = get_permalink( $product->get_id() );
-$image_html   = $product->get_image( 'woocommerce_thumbnail' );
+// A 'woocommerce_thumbnail' méret 1:1-re vágott (a fej levágódna). A 'woocommerce_single'
+// (600×900) vágatlan, eredeti arányt tartó kép — így a teljes darab látszik a kártyán.
+$image_html   = $product->get_image( 'woocommerce_single' );
 $name         = $product->get_name();
 $price_html   = $product->get_price_html();
 ?>
