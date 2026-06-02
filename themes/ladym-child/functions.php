@@ -323,3 +323,53 @@ add_filter( 'woocommerce_package_rates', function ( $rates ) {
     }
     return $rates;
 }, 20 );
+
+/**
+ * Fejléc-elrendezés (Fázis 5 / b. lépés) – 3 oszlop.
+ *
+ * Bal: menü (Header Menu 1 → Főoldal, Shop, Rólunk, Kapcsolat) · Közép: logó ·
+ * Jobb: keresés + kosár. A Blocksy header-buildert NEM a DB-ben (header_placements
+ * theme_mod) szabjuk testre, hanem a `blocksy:header:default_value` szűrővel, így a
+ * konfiguráció verziózott a child theme-ben és visszafordítható.
+ *
+ * A kosár a Blocksy natív `cart` eleme (ikon + élő tételszámláló badge). A
+ * `has_cart_dropdown => 'no'` beállítással nincs mini-cart dropdown: a gomb egyből a
+ * kosár oldalra navigál. Mobilon a kosár a fejléc-sorban (a hamburger mellett) látszik.
+ */
+add_filter( 'blocksy:header:default_value', function ( $value, $builder ) {
+    $section = $builder->get_structure_for( array(
+        'id'    => 'type-1',
+        'mode'  => 'placements',
+        'items' => array(
+            'desktop' => array(
+                'middle-row' => array(
+                    'start'  => array( 'menu' ),
+                    'middle' => array( 'logo' ),
+                    'end'    => array( 'search', 'cart' ),
+                ),
+            ),
+            'mobile'  => array(
+                'middle-row' => array(
+                    'start' => array( 'logo' ),
+                    'end'   => array( 'cart', 'trigger' ),
+                ),
+                'offcanvas'  => array(
+                    'start' => array( 'mobile-menu' ),
+                ),
+            ),
+        ),
+    ) );
+
+    // Kosár-elem beállítása: sima link a kosár oldalra (nincs dropdown mini-cart).
+    $section['items'] = array(
+        array(
+            'id'     => 'cart',
+            'values' => array( 'has_cart_dropdown' => 'no' ),
+        ),
+    );
+
+    return array(
+        'current_section' => 'type-1',
+        'sections'        => array( $section ),
+    );
+}, 10, 2 );

@@ -1722,3 +1722,20 @@ hr,
   letter-spacing: 0.08em !important;
   font-size: 0.7rem !important;
 }
+
+/* =========================================================
+   Fejléc-kosár (Blocksy natív cart elem) – tiszta "ikon + számláló":
+   a feliratot és a részösszeget elrejtjük, a badge bordó.
+   ========================================================= */
+.ct-header [data-id="cart"] .ct-label,
+.ct-header [data-id="cart"] .ct-amount {
+  display: none !important;
+}
+.ct-header [data-id="cart"] .ct-dynamic-count-cart {
+  background-color: var(--color-burgundy);
+  color: var(--color-ivory);
+}
+/* Üres kosárnál ne villogjon a "0" badge. */
+.ct-header [data-id="cart"] .ct-dynamic-count-cart[data-count="0"] {
+  display: none;
+}
