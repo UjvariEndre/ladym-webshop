@@ -124,11 +124,30 @@ function ladym_spark( $mod = '' ) {
 		<?php if ( ! empty( $lookbook ) ) : ?>
 			<div class="ladym-arches">
 				<?php
-				$tones = array( 'cream', 'blush', 'pop', 'mocha', 'cream', 'blush' );
-				$hgts  = array( 'h2', 'h1', 'h3', 'h1', 'h2', 'h1' );
+				// Piramis-elrendezés: a magasság a középtől való távolság szerint nő
+				// (szélek alacsonyak, közép a legmagasabb), a bordó "pop" a csúcson.
+				$n      = count( $lookbook );
+				$center = ( $n - 1 ) / 2;
+				$maxd   = $center > 0 ? $center : 1;
+				$pop_i  = (int) round( $center );
 				foreach ( $lookbook as $i => $shot ) :
-					$tone = $tones[ $i % count( $tones ) ];
-					$h    = $hgts[ $i % count( $hgts ) ];
+					$ratio = abs( $i - $center ) / $maxd; // 0 (közép) … 1 (szél)
+					if ( $ratio < 0.34 ) {
+						$h = 'h3';
+					} elseif ( $ratio < 0.67 ) {
+						$h = 'h2';
+					} else {
+						$h = 'h1';
+					}
+					if ( $i === $pop_i ) {
+						$tone = 'pop';
+					} elseif ( $ratio < 0.5 ) {
+						$tone = 'blush';
+					} elseif ( $ratio < 0.85 ) {
+						$tone = 'cream';
+					} else {
+						$tone = 'mocha';
+					}
 					?>
 					<figure class="ladym-arch ladym-arch--<?php echo esc_attr( $tone ); ?> ladym-arch--<?php echo esc_attr( $h ); ?>">
 						<img class="ladym-arch__img" src="<?php echo esc_url( $shot['url'] ); ?>" alt="<?php echo esc_attr( $shot['alt'] ); ?>" loading="lazy" decoding="async" />
