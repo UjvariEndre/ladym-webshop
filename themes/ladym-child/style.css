@@ -198,7 +198,10 @@ hr,
 }
 
 /* =========================================================
-   Logó (Fázis 3) – kép-logó ~40px magasan a fejlécben
+   Logó – fashion-masthead (monogram + "LADY M / HUNGARY" wordmark)
+   A logó inline SVG-ként renderelődik (lásd functions.php), így az oldal
+   Playfair Display + Inter fontját használja. A duplikált szöveges
+   site-címet elrejtjük, mert a wordmark már tartalmazza a nevet.
    ========================================================= */
 .ct-header .site-logo-container img,
 .ct-logo-container img,
@@ -206,6 +209,28 @@ hr,
   max-height: 40px;
   width: auto;
   height: auto;
+}
+
+/* Inline SVG masthead-logó méretezése. */
+.site-logo-container svg.ladym-logo-mark {
+  height: 50px;
+  width: auto;
+  max-width: 100%;
+  display: block;
+}
+
+/* A Blocksy külön site-cím szövege felesleges – a wordmark viszi a nevet. */
+.ct-header .site-title-container,
+.ct-header .site-title,
+.ct-header .site-description {
+  display: none !important;
+}
+
+/* Keskeny / mobil fejléc: kisebb logó. */
+@media (max-width: 999.98px) {
+  .site-logo-container svg.ladym-logo-mark {
+    height: 38px;
+  }
 }
 
 /* =========================================================
@@ -1632,6 +1657,21 @@ hr,
 #cmplz-cookiebanner-container .cmplz-btn.cmplz-view-preferences:hover {
   background-color: var(--color-ink) !important;
   color: var(--color-ivory) !important;
+}
+
+/* Gomb-elrendezés: a keskeny (bottom-right) banneren a Complianz egy sorba
+   flexeli a gombokat (nowrap, fix 45px magasság). A nagybetűs + betűközös,
+   nagyobb paddingű brand-gombok így túlcsordulnak és az utolsó kilóg.
+   Megoldás: full-szélességű, egymás alá tördelt gombok, auto magassággal. */
+#cmplz-cookiebanner-container .cmplz-cookiebanner .cmplz-buttons {
+  flex-wrap: wrap !important;
+}
+#cmplz-cookiebanner-container .cmplz-cookiebanner .cmplz-buttons .cmplz-btn {
+  flex: 1 1 100% !important;
+  width: 100% !important;
+  white-space: normal !important;
+  height: auto !important;
+  min-height: 45px !important;
 }
 
 /* Toggle-kapcsoló (slider) – burgundy aktív állapot */

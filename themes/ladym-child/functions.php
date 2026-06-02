@@ -46,6 +46,54 @@ add_filter( 'wp_check_filetype_and_ext', function ( $data, $file, $filename, $mi
 }, 10, 4 );
 
 /**
+ * Brand-logó (Fázis 1 finomítás).
+ *
+ * A fejlécben korábban a feltöltött "M"-négyzet SVG + külön a site-cím szöveg jelent meg,
+ * két sorban, esetlenül. Helyette egy igazi fashion-masthead logót rakunk be:
+ * bordó "M" monogram + stacked "LADY M / HUNGARY" wordmark (a child theme assets-éből).
+ *
+ * A logót INLINE SVG-ként adjuk vissza (nem <img>), így a `<text>` az oldalon már betöltött
+ * Playfair Display + Inter Google-fontot használja — éles, font-független, könnyű. A favicon
+ * (site_icon) változatlanul a bordó "M"-négyzet marad, mert az külön kódúton (wp_site_icon)
+ * renderelődik, nem ezen a szűrőn keresztül.
+ *
+ * Scope: csak akkor cserélünk, ha (a) ez a custom_logo attachment ÉS (b) Blocksy a
+ * `default-logo` osztállyal kéri (azaz tényleg fejléc-logóként) — tartalomba illesztett
+ * képet nem érint.
+ */
+add_filter( 'wp_get_attachment_image', function ( $html, $attachment_id, $size, $icon, $attr ) {
+    $logo_id = (int) get_theme_mod( 'custom_logo' );
+    if ( ! $logo_id || (int) $attachment_id !== $logo_id ) {
+        return $html;
+    }
+    $class = isset( $attr['class'] ) ? $attr['class'] : '';
+    if ( false === strpos( $class, 'default-logo' ) ) {
+        return $html;
+    }
+
+    $svg_path = get_stylesheet_directory() . '/assets/ladym-logo-wordmark.svg';
+    if ( ! is_readable( $svg_path ) ) {
+        return $html;
+    }
+    $svg = file_get_contents( $svg_path );
+    if ( false === $svg ) {
+        return $html;
+    }
+
+    // Blocksy logó-osztályait + a saját kampót a gyökér <svg>-re injektáljuk (a forrásfájl
+    // <svg>-jén nincs class, így nincs duplikáció).
+    $classes = trim( $class . ' ladym-logo-mark' );
+    $svg = preg_replace(
+        '/<svg\b/',
+        '<svg class="' . esc_attr( $classes ) . '"',
+        $svg,
+        1
+    );
+
+    return $svg;
+}, 10, 5 );
+
+/**
  * Shop (Fázis 3 / 2. lépés) – fashion-editorial fejléc, Blocksy page-title elrejtése,
  * "Add to cart" gomb kikapcsolása a kártyán, eredménysor és rendezés elrejtése.
  */
