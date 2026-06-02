@@ -345,13 +345,13 @@ add_filter( 'blocksy:header:default_value', function ( $value, $builder ) {
                 'middle-row' => array(
                     'start'  => array( 'menu' ),
                     'middle' => array( 'logo' ),
-                    'end'    => array( 'search', 'cart' ),
+                    'end'    => array( 'search', 'cart', 'text' ),
                 ),
             ),
             'mobile'  => array(
                 'middle-row' => array(
                     'start' => array( 'logo' ),
-                    'end'   => array( 'cart', 'trigger' ),
+                    'end'   => array( 'text', 'cart', 'trigger' ),
                 ),
                 'offcanvas'  => array(
                     'start' => array( 'mobile-menu' ),
@@ -360,11 +360,17 @@ add_filter( 'blocksy:header:default_value', function ( $value, $builder ) {
         ),
     ) );
 
-    // Kosár-elem beállítása: sima link a kosár oldalra (nincs dropdown mini-cart).
+    // Elem-beállítások:
+    // - cart: sima link a kosár oldalra (nincs dropdown mini-cart).
+    // - text: a kosár melletti profil-ikon (a [ladym_account] shortcode rendereli).
     $section['items'] = array(
         array(
             'id'     => 'cart',
             'values' => array( 'has_cart_dropdown' => 'no' ),
+        ),
+        array(
+            'id'     => 'text',
+            'values' => array( 'header_text' => '[ladym_account]' ),
         ),
     );
 
@@ -373,3 +379,27 @@ add_filter( 'blocksy:header:default_value', function ( $value, $builder ) {
         'sections'        => array( $section ),
     );
 }, 10, 2 );
+
+/**
+ * Profil-ikon a fejlécben (a kosár mellett). A Blocksy `text` header-elem rendereli
+ * ezt a shortcode-ot. A link a WooCommerce "My Account" oldalra mutat: kijelentkezve
+ * a bejelentkezés/regisztráció űrlap, belépve a fiók-vezérlőpult jelenik meg ugyanott.
+ */
+add_shortcode( 'ladym_account', function () {
+    $url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'myaccount' ) : home_url( '/my-account/' );
+    if ( ! $url ) {
+        $url = home_url( '/my-account/' );
+    }
+    $label = is_user_logged_in() ? __( 'Fiókom', 'ladym' ) : __( 'Bejelentkezés / Regisztráció', 'ladym' );
+
+    return sprintf(
+        '<a class="ladym-account-link" href="%1$s" aria-label="%2$s" title="%2$s">'
+        . '<svg class="ladym-account-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">'
+        . '<circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.6 3.1-6.2 7-6.2s7 2.6 7 6.2"/>'
+        . '</svg>'
+        . '<span class="screen-reader-text">%2$s</span>'
+        . '</a>',
+        esc_url( $url ),
+        esc_attr( $label )
+    );
+} );

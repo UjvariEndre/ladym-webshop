@@ -1739,3 +1739,25 @@ hr,
 .ct-header [data-id="cart"] .ct-dynamic-count-cart[data-count="0"] {
   display: none;
 }
+
+/* Profil-ikon a fejlécben (a Blocksy "text" elem rendereli, a kosár mellett). */
+.ct-header [data-id="text"] .entry-content {
+  margin: 0;
+  line-height: 0;
+}
+.ladym-account-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-ink);
+  transition: color 220ms var(--ladym-ease);
+}
+.ladym-account-link:hover,
+.ladym-account-link:focus-visible {
+  color: var(--color-burgundy);
+}
+.ladym-account-link__icon {
+  width: 21px;
+  height: 21px;
+  display: block;
+}
