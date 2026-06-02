@@ -12,16 +12,20 @@ Text Domain: ladym
    LadyM Hungary – Brand tokenek (a landing page-ből)
    ========================================================= */
 :root {
-  --color-ivory: #fbfaf6;
+  /* Paletta (coolors 030303 / 41415b / beb9bf / 65273c / ff6394 – kissé hangolva). */
+  --color-ivory: #f4f2f6;        /* near-white mályva-árnyalat – fő háttér */
   --color-paper: #ffffff;
-  --color-cream-warm: #f4eee3;
-  --color-ink: #131830;
-  --color-ink-soft: #4a5673;
-  --color-burgundy: #8e1f2e;
-  --color-burgundy-deep: #6b1422;
-  --color-blush: #e8d4c8;
-  --color-mocha: #5a6585;
-  --color-line: #e5ded1;
+  --color-cream-warm: #ece8ee;   /* világos mályva felület */
+  --color-ink: #0a0a0f;          /* near-black – fő szöveg, sötét szekciók */
+  --color-ink-soft: #41415b;     /* slate-lila – másodlagos szöveg */
+  --color-burgundy: #65273c;     /* szilva – fő akcent (gomb/ár/link) */
+  --color-burgundy-deep: #4b1c2c;/* sötétebb szilva – hover */
+  --color-pink: #ff6394;         /* hot pink – élénk akcent */
+  --color-blush: #beb9bf;        /* mályva-szürke – felület/footer */
+  --color-mocha: #5b5b78;        /* világosabb slate-lila – eyebrow */
+  --color-line: #d9d5dd;         /* világos mályva-szürke – keret/elválasztó */
+  --color-slate-mist: #ebe9ef;   /* világos mályva-szürke – főoldali grid/háttér */
+  --color-mauve-mist: #ddd5e0;   /* mályva – "márka" szekció háttere */
 
   --ladym-ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -249,13 +253,16 @@ hr,
   background-size: cover;
   background-position: center 28%;
   overflow: hidden;
+  /* Lebegő, lekerekített kártya az ivory háttér fölött. */
+  margin: clamp(0.75rem, 2.5vw, 1.5rem);
+  border-radius: clamp(18px, 2.4vw, 30px);
 }
 .ladym-home-hero__overlay {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, rgba(19, 24, 48, 0.78) 0%, rgba(19, 24, 48, 0.45) 45%, rgba(19, 24, 48, 0.12) 100%),
-    linear-gradient(0deg, rgba(19, 24, 48, 0.7) 0%, rgba(19, 24, 48, 0) 55%);
+    linear-gradient(90deg, rgba(10, 10, 15, 0.8) 0%, rgba(10, 10, 15, 0.48) 45%, rgba(10, 10, 15, 0.14) 100%),
+    linear-gradient(0deg, rgba(10, 10, 15, 0.72) 0%, rgba(10, 10, 15, 0) 55%);
 }
 .ladym-home-hero__inner {
   position: relative;
@@ -333,17 +340,22 @@ hr,
 /* --- 2. Featured / lookbook ív-galéria --- */
 .ladym-featured {
   position: relative;
-  background-color: var(--color-ivory);
+  background-color: var(--color-slate-mist);
   padding: clamp(3.5rem, 8vw, 7rem) 1.25rem clamp(3rem, 7vw, 6rem);
   overflow: hidden;
+}
+/* A főoldal háttere is slate, hogy a lebegő hero/about kártyák egységes
+   hűvös háttér fölött ússzanak (Blocksy body-bg felülírása csak a home-on). */
+body.home {
+  background-color: var(--color-slate-mist);
 }
 /* halvány rács-textúra (a szélek felé elhalványítva) */
 .ladym-featured__grid {
   position: absolute;
   inset: 0;
   background-image:
-    repeating-linear-gradient(0deg, rgba(19, 24, 48, 0.05) 0 1px, transparent 1px 34px),
-    repeating-linear-gradient(90deg, rgba(19, 24, 48, 0.05) 0 1px, transparent 1px 34px);
+    repeating-linear-gradient(0deg, rgba(10, 10, 15, 0.05) 0 1px, transparent 1px 51px),
+    repeating-linear-gradient(90deg, rgba(10, 10, 15, 0.05) 0 1px, transparent 1px 51px);
   -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 38%, #000 50%, transparent 100%);
           mask-image: radial-gradient(ellipse 80% 70% at 50% 38%, #000 50%, transparent 100%);
   pointer-events: none;
@@ -421,7 +433,7 @@ hr,
   overflow: hidden;
   border-radius: 999px 999px 0 0;
   background-color: var(--color-cream-warm);
-  box-shadow: 0 22px 44px -26px rgba(19, 24, 48, 0.4);
+  box-shadow: 0 22px 44px -26px rgba(10, 10, 15, 0.4);
 }
 .ladym-arch__img {
   display: block;
@@ -441,7 +453,7 @@ hr,
 .ladym-arch--mocha { background-color: var(--color-mocha); }
 .ladym-arch--pop {
   background-color: var(--color-burgundy);
-  box-shadow: 0 22px 46px -22px rgba(142, 31, 46, 0.55);
+  box-shadow: 0 22px 46px -22px rgba(101, 39, 60, 0.55);
 }
 
 /* mobil: vízszintes filmstrip (nem törik szét, nincs body-overflow) */
@@ -494,9 +506,12 @@ hr,
 /* --- 3. About-sáv + ghost wordmark --- */
 .ladym-about {
   position: relative;
-  background-color: var(--color-cream-warm);
+  background-color: var(--color-mauve-mist);
   padding: clamp(3.5rem, 8vw, 6.5rem) 1.25rem clamp(5rem, 12vw, 9rem);
   overflow: hidden;
+  /* Lebegő, lekerekített kártya az ivory háttér fölött (mint a hero). */
+  margin: clamp(0.75rem, 2.5vw, 1.5rem);
+  border-radius: clamp(18px, 2.4vw, 30px);
 }
 .ladym-about__inner {
   position: relative;
@@ -552,10 +567,15 @@ hr,
   font-size: clamp(3.5rem, 17vw, 14rem);
   line-height: 0.8;
   letter-spacing: -0.02em;
-  color: rgba(19, 24, 48, 0.045);
+  color: rgba(10, 10, 15, 0.045);
   white-space: nowrap;
   pointer-events: none;
   z-index: 0;
+}
+
+/* --- Footer: meleg blush háttér --- */
+.ct-footer {
+  background-color: var(--color-blush) !important;
 }
 
 /* --- szikra-díszek --- */
@@ -563,8 +583,11 @@ hr,
   position: absolute;
   width: 26px;
   height: 26px;
-  background: url("assets/sparkle.svg") center / contain no-repeat;
-  opacity: 0.75;
+  /* maszkként használjuk a szikrát, hogy a szín tokennel (hot pink) álljon. */
+  -webkit-mask: url("assets/sparkle.svg") center / contain no-repeat;
+          mask: url("assets/sparkle.svg") center / contain no-repeat;
+  background-color: var(--color-pink);
+  opacity: 0.85;
   pointer-events: none;
   z-index: 1;
 }
@@ -833,7 +856,7 @@ hr,
      csak az oldalból vág, ha kell. Egyezik a shop kártyák logikájával. */
   aspect-ratio: 2 / 3;
   overflow: hidden;
-  box-shadow: 0 30px 80px -25px rgba(19, 24, 48, 0.18);
+  box-shadow: 0 30px 80px -25px rgba(10, 10, 15, 0.18);
 }
 .ladym-single__main-img {
   display: block;
@@ -1798,7 +1821,7 @@ hr,
   color: var(--color-ink) !important;
   border: 1px solid var(--color-line) !important;
   border-radius: 0 !important;
-  box-shadow: 0 24px 60px -20px rgba(19, 24, 48, 0.25) !important;
+  box-shadow: 0 24px 60px -20px rgba(10, 10, 15, 0.25) !important;
   font-size: 0.92rem !important;
   line-height: 1.55 !important;
   max-width: 28rem !important;
@@ -1939,4 +1962,17 @@ hr,
   width: 21px;
   height: 21px;
   display: block;
+}
+
+/* =========================================================
+   Nav-menü highlight – jól látható hot pink a hoveren / aktív elemen
+   (a fehér fejlécen a sötét szilva hover alig látszott).
+   ========================================================= */
+.ct-header [data-id="menu"] .ct-menu-link {
+  --theme-link-hover-color: var(--color-pink);
+}
+.ct-header [data-id="menu"] > ul > li > .ct-menu-link:hover,
+.ct-header [data-id="menu"] > ul > li.current-menu-item > .ct-menu-link,
+.ct-header [data-id="menu"] > ul > li.current_page_item > .ct-menu-link {
+  color: var(--color-pink);
 }

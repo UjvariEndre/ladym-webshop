@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" fill="#8e1f2e"/>
+  <rect width="64" height="64" fill="#65273c"/>
   <text
     x="32"
     y="48"
@@ -7,7 +7,7 @@
     font-size="46"
     font-weight="500"
     font-style="italic"
-    fill="#fbfaf6"
+    fill="#f4f2f6"
     text-anchor="middle"
   >M</text>
 </svg>

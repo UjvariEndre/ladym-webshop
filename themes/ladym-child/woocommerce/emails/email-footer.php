@@ -25,14 +25,14 @@ $impresszum_url    = home_url( '/impresszum/' );
 						<!-- BODY END -->
 
 						<!-- FOOTER -->
-						<table border="0" cellpadding="0" cellspacing="0" width="100%" id="template_footer" role="presentation" style="background-color:#fbfaf6;border-collapse:collapse;">
+						<table border="0" cellpadding="0" cellspacing="0" width="100%" id="template_footer" role="presentation" style="background-color:#f4f2f6;border-collapse:collapse;">
 							<tr>
 								<td style="padding:0 32px;">
-									<div style="height:1px;line-height:1px;background-color:#e5ded1;font-size:1px;">&nbsp;</div>
+									<div style="height:1px;line-height:1px;background-color:#d9d5dd;font-size:1px;">&nbsp;</div>
 								</td>
 							</tr>
 							<tr>
-								<td id="credit" style="padding:24px 32px 18px 32px;font-family:Inter,Arial,sans-serif;text-align:center;color:#4a5673;font-size:12px;line-height:1.6;background-color:#fbfaf6;">
+								<td id="credit" style="padding:24px 32px 18px 32px;font-family:Inter,Arial,sans-serif;text-align:center;color:#41415b;font-size:12px;line-height:1.6;background-color:#f4f2f6;">
 									<?php
 									echo wp_kses_post(
 										wpautop(
@@ -45,14 +45,14 @@ $impresszum_url    = home_url( '/impresszum/' );
 								</td>
 							</tr>
 							<tr>
-								<td style="padding:0 32px 28px 32px;font-family:Inter,Arial,sans-serif;text-align:center;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#5a6585;background-color:#fbfaf6;">
-									<a href="<?php echo esc_url( $aszf_url ); ?>" style="color:#5a6585;text-decoration:none;margin:0 6px;"><?php esc_html_e( 'ÁSZF', 'ladym' ); ?></a>
+								<td style="padding:0 32px 28px 32px;font-family:Inter,Arial,sans-serif;text-align:center;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#5b5b78;background-color:#f4f2f6;">
+									<a href="<?php echo esc_url( $aszf_url ); ?>" style="color:#5b5b78;text-decoration:none;margin:0 6px;"><?php esc_html_e( 'ÁSZF', 'ladym' ); ?></a>
 									·
-									<a href="<?php echo esc_url( $privacy_url ); ?>" style="color:#5a6585;text-decoration:none;margin:0 6px;"><?php esc_html_e( 'Adatvédelem', 'ladym' ); ?></a>
+									<a href="<?php echo esc_url( $privacy_url ); ?>" style="color:#5b5b78;text-decoration:none;margin:0 6px;"><?php esc_html_e( 'Adatvédelem', 'ladym' ); ?></a>
 									·
-									<a href="<?php echo esc_url( $elallasi_url ); ?>" style="color:#5a6585;text-decoration:none;margin:0 6px;"><?php esc_html_e( 'Elállási jog', 'ladym' ); ?></a>
+									<a href="<?php echo esc_url( $elallasi_url ); ?>" style="color:#5b5b78;text-decoration:none;margin:0 6px;"><?php esc_html_e( 'Elállási jog', 'ladym' ); ?></a>
 									·
-									<a href="<?php echo esc_url( $impresszum_url ); ?>" style="color:#5a6585;text-decoration:none;margin:0 6px;"><?php esc_html_e( 'Impresszum', 'ladym' ); ?></a>
+									<a href="<?php echo esc_url( $impresszum_url ); ?>" style="color:#5b5b78;text-decoration:none;margin:0 6px;"><?php esc_html_e( 'Impresszum', 'ladym' ); ?></a>
 								</td>
 							</tr>
 						</table>
