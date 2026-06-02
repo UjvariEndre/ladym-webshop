@@ -260,10 +260,13 @@ hr,
 /* Mobilon a kép felülre, a szöveg alá. */
 .ladym-hero__media { order: -1; }
 
-/* Nagy képernyő: bal szöveg / jobb kép, ~7/5 arány. */
+/* Nagy képernyő: bal szöveg / jobb kép, ~7/5 arány.
+   align-items: stretch → a szövegdoboz és a kép EGYFORMA magas lesz
+   (a sor magasságát a magasabb, 4/5 arányú kép adja). */
 @media (min-width: 1000px) {
   .ladym-hero__inner {
     grid-template-columns: 7fr 5fr;
+    align-items: stretch;
   }
   .ladym-hero__media { order: 0; }
 }
@@ -274,6 +277,10 @@ hr,
   border: 1px solid var(--color-line);
   box-shadow: 0 18px 40px -28px rgba(19, 24, 48, 0.45);
   padding: clamp(1.75rem, 4vw, 3rem);
+  /* A kép magasságára nyújtott dobozban a tartalom függőlegesen középen. */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .ladym-hero__eyebrow {
@@ -367,6 +374,8 @@ hr,
   overflow: hidden;
   border: 1px solid var(--color-line);
   background-color: var(--color-paper);
+  /* Ugyanaz az árnyék, mint a szövegdoboz alatt. */
+  box-shadow: 0 18px 40px -28px rgba(19, 24, 48, 0.45);
 }
 
 .ladym-hero__image {
