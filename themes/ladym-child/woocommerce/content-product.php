@@ -19,7 +19,16 @@ if ( ! is_a( $product, WC_Product::class ) || ! $product->is_visible() ) {
 $product_link = get_permalink( $product->get_id() );
 // A 'woocommerce_thumbnail' méret 1:1-re vágott (a fej levágódna). A 'woocommerce_single'
 // (600×900) vágatlan, eredeti arányt tartó kép — így a teljes darab látszik a kártyán.
-$image_html   = $product->get_image( 'woocommerce_single' );
+// A kis katalógusnál a lazy-load alig nyer, viszont egy paint-bugot okozott (az utolsó kép
+// csak hoverre jelent meg) → eager + lazy-load kizárás (skip-lazy / data-no-lazy).
+$image_html   = $product->get_image(
+	'woocommerce_single',
+	array(
+		'loading'      => 'eager',
+		'class'        => 'attachment-woocommerce_single size-woocommerce_single skip-lazy',
+		'data-no-lazy' => '1',
+	)
+);
 $name         = $product->get_name();
 $price_html   = $product->get_price_html();
 ?>
