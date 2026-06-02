@@ -1,9 +1,11 @@
 <?php
 /**
- * Front page – LadyM Hungary HERO (Fázis 3).
+ * Front page – LadyM Hungary, absztrakt editorial layout (Fázis 6).
  *
+ * Szekciók: (1) sötét fotós hero nagy serif címmel, (2) "Kiemelt darabok" ív-galéria
+ * kategória-tabokkal + dísz-réteg (rács + szikrák), (3) "A műhelyről" arch-sáv.
  * Csak magyar. Brand tokenek a style.css-ben (var(--color-*)), itt nincs hardcode hex.
- * A szülő Blocksy fejléce (logó) + lábléce a get_header()/get_footer() révén marad.
+ * A szülő Blocksy fejléce/lábléce a get_header()/get_footer() révén marad.
  */
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -16,75 +18,151 @@ if ( ! $shop_url ) {
 	$shop_url = home_url( '/shop/' );
 }
 
-$hero_product   = null;
-$hero_image_url = '';
-$hero_image_alt = __( 'Kézzel készített, egyedi LadyM darab', 'ladym' );
-$hero_link_url  = '';
-$hero_name      = __( 'One-of-a-kind', 'ladym' );
+/** Instagram-link a "Trending on Instagram" feliratnál (a tényleges handle filterrel állítható). */
+$ig_url = apply_filters( 'ladym_instagram_url', 'https://www.instagram.com/' );
 
+/** Lookbook képek: a legutóbbi termékek képei, dekoratívan (nem termék-linkek). */
+$lookbook = array();
 if ( function_exists( 'wc_get_products' ) ) {
-	$featured = wc_get_products(
+	$products = wc_get_products(
 		array(
-			'featured' => true,
-			'limit'    => 1,
-			'status'   => 'publish',
+			'limit'   => 6,
+			'status'  => 'publish',
+			'orderby' => 'date',
+			'order'   => 'DESC',
 		)
 	);
-	if ( ! empty( $featured ) ) {
-		$hero_product = $featured[0];
-		$image_id     = $hero_product->get_image_id();
-		if ( $image_id ) {
-			$hero_image_url = wp_get_attachment_image_url( $image_id, 'large' );
+	foreach ( $products as $p ) {
+		$img_id = $p->get_image_id();
+		if ( ! $img_id ) {
+			continue;
 		}
-		$hero_image_alt = $hero_product->get_name();
-		$hero_link_url  = get_permalink( $hero_product->get_id() );
-		$hero_name      = $hero_product->get_name();
+		$lookbook[] = array(
+			'id'  => $img_id,
+			'url' => wp_get_attachment_image_url( $img_id, 'woocommerce_single' ),
+			'alt' => $p->get_name(),
+		);
 	}
+}
+
+/** Hero háttérkép: ladym_hero_image filter (attachment id v. URL) → első lookbook kép → gradient fallback. */
+$hero_bg      = '';
+$hero_img_opt = apply_filters( 'ladym_hero_image', '' );
+if ( $hero_img_opt ) {
+	$hero_bg = is_numeric( $hero_img_opt ) ? wp_get_attachment_image_url( (int) $hero_img_opt, 'full' ) : esc_url_raw( $hero_img_opt );
+}
+if ( ! $hero_bg && ! empty( $lookbook ) ) {
+	// Nagyobb méret a széles heróhoz (a 600×900 woocommerce_single túl kicsi lenne).
+	$hero_bg = wp_get_attachment_image_url( $lookbook[0]['id'], '1536x1536' );
+	if ( ! $hero_bg ) {
+		$hero_bg = $lookbook[0]['url'];
+	}
+}
+
+/** Kategória-tabok: nem-üres termékkategóriák, az elsőre aktív állapot. */
+$cats = array();
+if ( taxonomy_exists( 'product_cat' ) ) {
+	$terms = get_terms(
+		array(
+			'taxonomy'   => 'product_cat',
+			'hide_empty' => true,
+			'number'     => 6,
+		)
+	);
+	if ( ! is_wp_error( $terms ) ) {
+		$cats = $terms;
+	}
+}
+
+/** Egy szikra-dísz (dekoratív, képernyőolvasónak rejtett). */
+function ladym_spark( $mod = '' ) {
+	return '<span class="ladym-spark ' . esc_attr( $mod ) . '" aria-hidden="true"></span>';
 }
 ?>
 
-<section class="hero-pattern ladym-hero">
-	<div class="ladym-hero__inner">
+<section class="ladym-home-hero"<?php echo $hero_bg ? ' style="background-image:url(' . esc_url( $hero_bg ) . ')"' : ''; ?>>
+	<div class="ladym-home-hero__overlay" aria-hidden="true"></div>
+	<div class="ladym-home-hero__inner ladym-fade-up">
+		<p class="ladym-home-hero__eyebrow"><?php esc_html_e( 'Past to Present Atelier · Nyúl, Magyarország', 'ladym' ); ?></p>
+		<h1 class="ladym-home-hero__title">
+			<?php esc_html_e( 'Fedezd fel az', 'ladym' ); ?>
+			<span class="ladym-home-hero__title-accent"><?php esc_html_e( 'egyedi darabokat.', 'ladym' ); ?></span>
+		</h1>
+		<p class="ladym-home-hero__lead"><?php esc_html_e( 'Kézzel készített, upcycled divat — vintage textíliákból újjászületve. Minden darab egyetlen példány.', 'ladym' ); ?></p>
+		<a class="ladym-btn ladym-btn--primary" href="<?php echo esc_url( $shop_url ); ?>"><?php esc_html_e( 'Vásárlás', 'ladym' ); ?></a>
+	</div>
+	<a class="ladym-home-hero__scroll" href="#ladym-featured" aria-label="<?php esc_attr_e( 'Görgess lejjebb', 'ladym' ); ?>">
+		<span class="ladym-home-hero__scroll-ring" aria-hidden="true">
+			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
+		</span>
+		<span class="ladym-home-hero__scroll-label"><?php esc_html_e( 'Görgess', 'ladym' ); ?></span>
+	</a>
+</section>
 
-		<div class="ladym-hero__text ladym-fade-up">
-			<p class="ladym-hero__eyebrow"><?php esc_html_e( 'Past to Present Atelier · Nyúl, Magyarország', 'ladym' ); ?></p>
+<section id="ladym-featured" class="ladym-featured">
+	<div class="ladym-featured__grid" aria-hidden="true"></div>
+	<?php echo ladym_spark( 'ladym-spark--a' ); ?>
+	<?php echo ladym_spark( 'ladym-spark--b' ); ?>
+	<?php echo ladym_spark( 'ladym-spark--c' ); ?>
 
-			<h1 class="ladym-hero__title">
-				<?php esc_html_e( 'Lady M', 'ladym' ); ?>
-				<span class="ladym-hero__title-accent"><?php esc_html_e( 'Hungary', 'ladym' ); ?></span>
-			</h1>
+	<div class="ladym-featured__inner">
+		<header class="ladym-featured__header ladym-fade-up">
+			<p class="ladym-featured__eyebrow"><?php esc_html_e( 'A műhelyből', 'ladym' ); ?></p>
+			<h2 class="ladym-featured__title"><?php esc_html_e( 'Kiemelt darabok', 'ladym' ); ?></h2>
+		</header>
 
-			<p class="ladym-hero__tagline"><?php esc_html_e( 'Ahol az elfeledett textíliák időtlen divattá válnak.', 'ladym' ); ?></p>
+		<?php if ( ! empty( $cats ) ) : ?>
+			<nav class="ladym-featured__tabs" aria-label="<?php esc_attr_e( 'Kategóriák', 'ladym' ); ?>">
+				<?php foreach ( $cats as $i => $cat ) : ?>
+					<a class="ladym-featured__tab<?php echo 0 === $i ? ' is-active' : ''; ?>" href="<?php echo esc_url( get_term_link( $cat ) ); ?>">
+						<?php echo esc_html( $cat->name ); ?>
+					</a>
+				<?php endforeach; ?>
+			</nav>
+		<?php endif; ?>
 
-			<p class="ladym-hero__intro"><?php esc_html_e( 'Egyedi, kézzel készített kabátok, mellények, szettek és kiegészítők — vintage takarókból és ágytakarókból újjászületve.', 'ladym' ); ?></p>
-
-			<div class="ladym-hero__cta">
-				<a class="ladym-btn ladym-btn--primary" href="<?php echo esc_url( $shop_url ); ?>"><?php esc_html_e( 'Vásárlás', 'ladym' ); ?></a>
-				<a class="ladym-btn ladym-btn--ghost" href="<?php echo esc_url( $shop_url ); ?>"><?php esc_html_e( 'Termékek', 'ladym' ); ?></a>
+		<?php if ( ! empty( $lookbook ) ) : ?>
+			<div class="ladym-arches">
+				<?php
+				$tones = array( 'cream', 'blush', 'pop', 'mocha', 'cream', 'blush' );
+				$hgts  = array( 'h2', 'h1', 'h3', 'h1', 'h2', 'h1' );
+				foreach ( $lookbook as $i => $shot ) :
+					$tone = $tones[ $i % count( $tones ) ];
+					$h    = $hgts[ $i % count( $hgts ) ];
+					?>
+					<figure class="ladym-arch ladym-arch--<?php echo esc_attr( $tone ); ?> ladym-arch--<?php echo esc_attr( $h ); ?>">
+						<img class="ladym-arch__img" src="<?php echo esc_url( $shot['url'] ); ?>" alt="<?php echo esc_attr( $shot['alt'] ); ?>" loading="lazy" decoding="async" />
+					</figure>
+				<?php endforeach; ?>
 			</div>
+		<?php endif; ?>
+
+		<div class="ladym-featured__foot ladym-fade-up">
+			<a class="ladym-featured__trending" href="<?php echo esc_url( $ig_url ); ?>" target="_blank" rel="noopener noreferrer">
+				<?php esc_html_e( 'Trending az Instagramon', 'ladym' ); ?>
+				<span aria-hidden="true">&rarr;</span>
+			</a>
+			<a class="ladym-btn ladym-btn--ghost" href="<?php echo esc_url( $shop_url ); ?>"><?php esc_html_e( 'Összes termék', 'ladym' ); ?></a>
 		</div>
+	</div>
+</section>
 
-		<figure class="ladym-hero__media ladym-fade-up">
-			<?php if ( $hero_image_url && $hero_link_url ) : ?>
-				<a class="ladym-hero__image-link" href="<?php echo esc_url( $hero_link_url ); ?>">
-					<img
-						class="ladym-hero__image ladym-hero__image--photo"
-						src="<?php echo esc_url( $hero_image_url ); ?>"
-						alt="<?php echo esc_attr( $hero_image_alt ); ?>"
-						loading="eager"
-						decoding="async"
-					/>
-				</a>
-			<?php else : ?>
-				<div class="ladym-hero__image" role="img" aria-label="<?php echo esc_attr( $hero_image_alt ); ?>"></div>
-			<?php endif; ?>
-
-			<figcaption class="ladym-hero__caption">
-				<span class="ladym-hero__caption-left"><?php esc_html_e( 'EGYEDI DARAB', 'ladym' ); ?></span>
-				<span class="ladym-hero__caption-right"><?php echo esc_html( $hero_name ); ?></span>
-			</figcaption>
-		</figure>
-
+<section class="ladym-about">
+	<?php echo ladym_spark( 'ladym-spark--d' ); ?>
+	<div class="ladym-about__inner">
+		<div class="ladym-about__text ladym-fade-up">
+			<p class="ladym-about__eyebrow"><?php esc_html_e( 'A márka', 'ladym' ); ?></p>
+			<h2 class="ladym-about__title"><?php esc_html_e( 'Elfeledett textíliák, időtlen divat', 'ladym' ); ?></h2>
+			<p class="ladym-about__lead"><?php esc_html_e( 'A LadyM Hungary egy nyúli műhelyből indult: régi takarókból, ágytakarókból és vintage anyagokból készítünk kézzel kabátokat, mellényeket és kiegészítőket. Minden darab egyedi — a múlt textíliái új életet kapnak.', 'ladym' ); ?></p>
+			<a class="ladym-btn ladym-btn--ghost" href="<?php echo esc_url( home_url( '/rolunk/' ) ); ?>"><?php esc_html_e( 'Rólunk', 'ladym' ); ?></a>
+		</div>
+		<?php if ( ! empty( $lookbook ) ) : ?>
+			<figure class="ladym-about__media">
+				<div class="ladym-arch ladym-arch--mocha ladym-arch--h3">
+					<img class="ladym-arch__img" src="<?php echo esc_url( $lookbook[ count( $lookbook ) - 1 ]['url'] ); ?>" alt="<?php echo esc_attr( $lookbook[ count( $lookbook ) - 1 ]['alt'] ); ?>" loading="lazy" decoding="async" />
+				</div>
+			</figure>
+		<?php endif; ?>
 	</div>
 </section>
 

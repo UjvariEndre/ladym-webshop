@@ -234,103 +234,346 @@ hr,
 }
 
 /* =========================================================
-   HERO – főoldal (Fázis 3 / 1. lépés)
+   FŐOLDAL – absztrakt editorial layout (Fázis 6)
    ========================================================= */
-.hero-pattern {
-  background-color: var(--color-cream-warm);
-  background-image: url("assets/folk-pattern.svg");
-  background-repeat: repeat;
-  background-size: 160px 160px;
-}
 
-.ladym-hero {
-  border-bottom: 1px solid var(--color-line);
-  padding: clamp(2.5rem, 6vw, 5.5rem) 1.25rem;
-}
-
-.ladym-hero__inner {
-  max-width: 1152px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: clamp(1.75rem, 4vw, 3rem);
-  align-items: center;
-}
-
-/* Mobilon a kép felülre, a szöveg alá. */
-.ladym-hero__media { order: -1; }
-
-/* Nagy képernyő: bal szöveg / jobb kép, ~7/5 arány.
-   align-items: stretch → a szövegdoboz és a kép EGYFORMA magas lesz
-   (a sor magasságát a magasabb, 4/5 arányú kép adja). */
-@media (min-width: 1000px) {
-  .ladym-hero__inner {
-    grid-template-columns: 7fr 5fr;
-    align-items: stretch;
-  }
-  .ladym-hero__media { order: 0; }
-}
-
-/* --- Bal oldali kártya --- */
-.ladym-hero__text {
-  background-color: var(--color-ivory);
-  border: 1px solid var(--color-line);
-  box-shadow: 0 18px 40px -28px rgba(19, 24, 48, 0.45);
-  padding: clamp(1.75rem, 4vw, 3rem);
-  /* A kép magasságára nyújtott dobozban a tartalom függőlegesen középen. */
+/* --- 1. Hero: sötét fotós overlay --- */
+.ladym-home-hero {
+  position: relative;
+  min-height: clamp(560px, 82svh, 820px);
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  align-items: flex-end;
+  padding: clamp(2rem, 6vw, 5rem) clamp(1.25rem, 5vw, 4rem) clamp(4rem, 8vw, 6.5rem);
+  background-color: var(--color-ink);
+  background-image: linear-gradient(135deg, var(--color-ink) 0%, var(--color-burgundy-deep) 100%);
+  background-size: cover;
+  background-position: center 28%;
+  overflow: hidden;
+}
+.ladym-home-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(19, 24, 48, 0.78) 0%, rgba(19, 24, 48, 0.45) 45%, rgba(19, 24, 48, 0.12) 100%),
+    linear-gradient(0deg, rgba(19, 24, 48, 0.7) 0%, rgba(19, 24, 48, 0) 55%);
+}
+.ladym-home-hero__inner {
+  position: relative;
+  max-width: 1290px;
+  width: 100%;
+  margin: 0 auto;
+}
+.ladym-home-hero__eyebrow {
+  margin: 0 0 1.1rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--color-blush);
+}
+.ladym-home-hero__title {
+  margin: 0 0 1.25rem;
+  max-width: 16ch;
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+  font-size: clamp(2.6rem, 7vw, 5rem);
+  color: var(--color-ivory);
+}
+.ladym-home-hero__title-accent {
+  display: block;
+  font-style: italic;
+  font-weight: 500;
+  color: var(--color-blush);
+}
+.ladym-home-hero__lead {
+  margin: 0 0 2rem;
+  max-width: 46ch;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: rgba(251, 250, 246, 0.85);
 }
 
-.ladym-hero__eyebrow {
-  margin: 0 0 1.25rem;
+/* Görgess-jelzés */
+.ladym-home-hero__scroll {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(1rem, 3vw, 1.75rem);
+  transform: translateX(-50%);
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-ivory);
+  text-decoration: none;
+}
+.ladym-home-hero__scroll-ring {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(251, 250, 246, 0.5);
+  border-radius: 50%;
+}
+.ladym-home-hero__scroll-ring svg { width: 18px; height: 18px; }
+.ladym-home-hero__scroll-label {
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .ladym-home-hero__scroll-ring { animation: ladymBob 2.4s var(--ladym-ease) infinite; }
+  @keyframes ladymBob {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(6px); }
+  }
+}
+
+/* --- 2. Featured / lookbook ív-galéria --- */
+.ladym-featured {
+  position: relative;
+  background-color: var(--color-ivory);
+  padding: clamp(3.5rem, 8vw, 7rem) 1.25rem clamp(3rem, 7vw, 6rem);
+  overflow: hidden;
+}
+/* halvány rács-textúra (a szélek felé elhalványítva) */
+.ladym-featured__grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(19, 24, 48, 0.05) 0 1px, transparent 1px 34px),
+    repeating-linear-gradient(90deg, rgba(19, 24, 48, 0.05) 0 1px, transparent 1px 34px);
+  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 38%, #000 50%, transparent 100%);
+          mask-image: radial-gradient(ellipse 80% 70% at 50% 38%, #000 50%, transparent 100%);
+  pointer-events: none;
+}
+.ladym-featured__inner {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  z-index: 2;
+}
+.ladym-featured__header { text-align: center; }
+.ladym-featured__eyebrow {
+  margin: 0 0 0.6rem;
   font-size: 0.72rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--color-mocha);
 }
-
-.ladym-hero__title {
-  margin: 0 0 1rem;
+.ladym-featured__title {
+  margin: 0;
   font-family: "Playfair Display", Georgia, serif;
   font-weight: 600;
-  line-height: 1.02;
-  letter-spacing: -0.01em;
-  font-size: clamp(2.75rem, 7vw, 4.5rem);
+  font-size: clamp(2rem, 4.6vw, 3rem);
   color: var(--color-ink);
 }
 
-.ladym-hero__title-accent {
-  display: block;
-  font-style: italic;
-  font-weight: 500;
-  color: var(--color-burgundy);
+/* kategória-tabok */
+.ladym-featured__tabs {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: clamp(1rem, 3vw, 2.25rem);
+  margin: 1.5rem 0 clamp(2rem, 5vw, 3.5rem);
 }
-
-.ladym-hero__tagline {
-  margin: 0 0 1.25rem;
-  font-family: "Playfair Display", Georgia, serif;
-  font-style: italic;
-  font-size: clamp(1.2rem, 2.4vw, 1.5rem);
-  line-height: 1.35;
+.ladym-featured__tab {
+  position: relative;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   color: var(--color-ink-soft);
+  text-decoration: none;
+  padding-bottom: 0.35rem;
+  transition: color 220ms var(--ladym-ease);
+}
+.ladym-featured__tab::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1.5px;
+  background-color: var(--color-burgundy);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 260ms var(--ladym-ease);
+}
+.ladym-featured__tab:hover,
+.ladym-featured__tab.is-active { color: var(--color-ink); }
+.ladym-featured__tab.is-active::after,
+.ladym-featured__tab:hover::after { transform: scaleX(1); }
+
+/* ívek sora */
+.ladym-arches {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: clamp(0.6rem, 1.6vw, 1.25rem);
+  flex-wrap: wrap;
+}
+.ladym-arch {
+  position: relative;
+  margin: 0;
+  flex: 0 0 auto;
+  width: clamp(130px, 17vw, 200px);
+  overflow: hidden;
+  border-radius: 999px 999px 0 0;
+  background-color: var(--color-cream-warm);
+  box-shadow: 0 22px 44px -26px rgba(19, 24, 48, 0.4);
+}
+.ladym-arch__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 700ms var(--ladym-ease);
+}
+.ladym-arch:hover .ladym-arch__img { transform: scale(1.05); }
+/* magasságok – váltakozó (a középső a legnagyobb) */
+.ladym-arch--h1 { height: clamp(220px, 30vw, 320px); }
+.ladym-arch--h2 { height: clamp(260px, 34vw, 380px); }
+.ladym-arch--h3 { height: clamp(300px, 40vw, 440px); }
+/* tónusok (a kép alatt látszik betöltéskor / finom keretként) */
+.ladym-arch--cream { background-color: var(--color-cream-warm); }
+.ladym-arch--blush { background-color: var(--color-blush); }
+.ladym-arch--mocha { background-color: var(--color-mocha); }
+.ladym-arch--pop {
+  background-color: var(--color-burgundy);
+  box-shadow: 0 22px 46px -22px rgba(142, 31, 46, 0.55);
 }
 
-.ladym-hero__intro {
-  margin: 0 0 2rem;
-  max-width: 46ch;
+/* mobil: vízszintes filmstrip (nem törik szét, nincs body-overflow) */
+@media (max-width: 700px) {
+  .ladym-arches {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 0.75rem;
+    -webkit-overflow-scrolling: touch;
+  }
+  .ladym-arch {
+    scroll-snap-align: center;
+    width: 58vw;
+    max-width: 240px;
+  }
+  .ladym-arch--h1,
+  .ladym-arch--h2,
+  .ladym-arch--h3 {
+    height: 78vw;
+    max-height: 360px;
+  }
+}
+
+/* featured lábrész */
+.ladym-featured__foot {
+  margin-top: clamp(2rem, 5vw, 3.25rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+.ladym-featured__trending {
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-burgundy);
+  text-decoration: none;
+  display: inline-flex;
+  gap: 0.5rem;
+  align-items: center;
+  transition: gap 220ms var(--ladym-ease), color 220ms var(--ladym-ease);
+}
+.ladym-featured__trending:hover {
+  gap: 0.85rem;
+  color: var(--color-burgundy-deep);
+}
+
+/* --- 3. About-sáv + ghost wordmark --- */
+.ladym-about {
+  position: relative;
+  background-color: var(--color-cream-warm);
+  padding: clamp(3.5rem, 8vw, 6.5rem) 1.25rem clamp(5rem, 12vw, 9rem);
+  overflow: hidden;
+}
+.ladym-about__inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(2rem, 5vw, 3.5rem);
+  align-items: center;
+}
+@media (min-width: 900px) {
+  .ladym-about__inner { grid-template-columns: 1.2fr 0.8fr; }
+}
+.ladym-about__eyebrow {
+  margin: 0 0 0.7rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-mocha);
+}
+.ladym-about__title {
+  margin: 0 0 1.1rem;
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 600;
+  font-size: clamp(1.8rem, 3.6vw, 2.6rem);
+  line-height: 1.1;
+  color: var(--color-ink);
+}
+.ladym-about__lead {
+  margin: 0 0 1.75rem;
+  max-width: 52ch;
   font-size: 1.02rem;
   line-height: 1.75;
   color: var(--color-ink-soft);
 }
-
-/* --- CTA gombok (editorial, lekerekítés nélkül) --- */
-.ladym-hero__cta {
+.ladym-about__media {
+  margin: 0;
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.85rem;
+  justify-content: center;
 }
+.ladym-about__media .ladym-arch { width: clamp(220px, 60vw, 300px); }
+
+/* nagy, halvány "LADY M" ghost-wordmark az about-sáv alján */
+.ladym-about::after {
+  content: "LADY M";
+  position: absolute;
+  left: 50%;
+  bottom: clamp(-2.5rem, -3vw, -1.25rem);
+  transform: translateX(-50%);
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 700;
+  font-size: clamp(3.5rem, 17vw, 14rem);
+  line-height: 0.8;
+  letter-spacing: -0.02em;
+  color: rgba(19, 24, 48, 0.045);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* --- szikra-díszek --- */
+.ladym-spark {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  background: url("assets/sparkle.svg") center / contain no-repeat;
+  opacity: 0.75;
+  pointer-events: none;
+  z-index: 1;
+}
+.ladym-spark--a { top: 12%; left: 7%; width: 30px; height: 30px; }
+.ladym-spark--b { top: 24%; right: 9%; width: 20px; height: 20px; opacity: 0.6; }
+.ladym-spark--c { bottom: 20%; left: 13%; width: 22px; height: 22px; opacity: 0.55; }
+.ladym-spark--d { top: 16%; right: 12%; width: 26px; height: 26px; opacity: 0.7; }
+
+/* --- Gombok (editorial, lekerekítés nélkül) – a hero + featured + about CTA-k használják --- */
 
 .ladym-btn {
   display: inline-block;
@@ -365,70 +608,6 @@ hr,
 .ladym-btn--ghost:hover {
   background-color: var(--color-ink);
   color: var(--color-ivory);
-}
-
-/* --- Jobb oldali kiemelt kép + feliratsáv --- */
-.ladym-hero__media {
-  position: relative;
-  margin: 0;
-  overflow: hidden;
-  border: 1px solid var(--color-line);
-  background-color: var(--color-paper);
-  /* Ugyanaz az árnyék, mint a szövegdoboz alatt. */
-  box-shadow: 0 18px 40px -28px rgba(19, 24, 48, 0.45);
-}
-
-.ladym-hero__image {
-  aspect-ratio: 4 / 5;
-  background-color: var(--color-blush);
-  background-image: linear-gradient(140deg, var(--color-blush) 0%, var(--color-cream-warm) 55%, var(--color-line) 100%);
-}
-
-/* Ha tényleges fotó van (img tag a placeholder div helyett). */
-.ladym-hero__image-link {
-  display: block;
-  overflow: hidden;
-  line-height: 0;
-}
-.ladym-hero__image--photo {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 4 / 5;
-  object-fit: cover;
-  background-image: none;
-  background-color: var(--color-cream-warm);
-  transition: transform 600ms var(--ladym-ease);
-}
-.ladym-hero__image-link:hover .ladym-hero__image--photo {
-  transform: scale(1.03);
-}
-
-.ladym-hero__caption {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  padding: 0.85rem 1.15rem;
-  background-color: rgba(19, 24, 48, 0.85); /* --color-ink @ 85% fallback */
-  background-color: color-mix(in srgb, var(--color-ink) 85%, transparent);
-  color: var(--color-ivory);
-}
-
-.ladym-hero__caption-left {
-  font-size: 0.72rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-}
-.ladym-hero__caption-right {
-  font-family: "Playfair Display", Georgia, serif;
-  font-style: italic;
-  font-size: 0.95rem;
-  color: var(--color-blush);
 }
 
 /* =========================================================
