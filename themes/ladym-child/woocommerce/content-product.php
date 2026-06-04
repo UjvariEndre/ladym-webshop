@@ -6,6 +6,7 @@
  * Forrás-template verzió, amire ráoldódik: 9.4.0.
  *
  * @package LadyM
+ * @version 9.4.0
  */
 
 defined( 'ABSPATH' ) || exit;

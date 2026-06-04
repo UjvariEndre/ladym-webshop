@@ -9,6 +9,7 @@
  * line #d9d5dd, mocha #5b5b78.
  *
  * @package LadyM
+ * @version 10.7.0
  */
 
 defined( 'ABSPATH' ) || exit;

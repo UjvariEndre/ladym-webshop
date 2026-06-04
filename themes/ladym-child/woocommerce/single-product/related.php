@@ -2,6 +2,7 @@
 /**
  * Related products – LadyM (Fázis 3 / 3. lépés).
  * Forrás-template, amire ráoldódik: 10.3.0.
+ * @version 10.3.0
  */
 
 defined( 'ABSPATH' ) || exit;

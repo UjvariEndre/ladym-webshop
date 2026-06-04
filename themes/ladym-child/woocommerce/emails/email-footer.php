@@ -6,6 +6,7 @@
  * Brand-tokenek hex-be inline-olva, lásd az email-header.php-t.
  *
  * @package LadyM
+ * @version 10.4.0
  */
 
 defined( 'ABSPATH' ) || exit;

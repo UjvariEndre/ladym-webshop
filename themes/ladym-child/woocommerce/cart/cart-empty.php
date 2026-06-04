@@ -2,6 +2,7 @@
 /**
  * Üres kosár – LadyM (Fázis 3 / 4. lépés).
  * Forrás-template, amire ráoldódik: 7.0.1.
+ * @version 7.0.1
  */
 
 defined( 'ABSPATH' ) || exit;

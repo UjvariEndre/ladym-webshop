@@ -6,6 +6,7 @@
  * Saját 2 oszlopos layout: bal galéria, jobb info-summary.
  *
  * @package LadyM
+ * @version 3.6.0
  */
 
 defined( 'ABSPATH' ) || exit;

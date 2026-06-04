@@ -4,6 +4,7 @@
  * Forrás-template, amire ráoldódik: 8.1.0.
  *
  * @var WC_Order|false $order
+ * @version 8.1.0
  */
 
 defined( 'ABSPATH' ) || exit;
