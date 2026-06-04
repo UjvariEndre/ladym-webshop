@@ -116,7 +116,7 @@ add_action( 'woocommerce_before_shop_loop', function () {
     <header class="ladym-shop-header">
         <p class="ladym-shop-header__eyebrow"><?php esc_html_e( 'Kollekció', 'ladym' ); ?></p>
         <h1 class="ladym-shop-header__title"><?php esc_html_e( 'Aktuális darabok', 'ladym' ); ?></h1>
-        <p class="ladym-shop-header__lead"><?php esc_html_e( 'Minden ruha és kiegészítő egyetlen példányban készül — vintage textíliákból, kézzel, a nyúli műhelyünkben.', 'ladym' ); ?></p>
+        <p class="ladym-shop-header__lead"><?php esc_html_e( 'Minden ruha és kiegészítő egyetlen példányban készül, gondosan válogatott vintage textíliák újraértelmezésével.', 'ladym' ); ?></p>
     </header>
     <?php
 }, 5 );
