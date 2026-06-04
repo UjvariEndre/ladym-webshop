@@ -107,8 +107,26 @@ add_action( 'admin_init', 'ladym_tighten_shop_manager_caps' );
 
 function ladym_tighten_shop_manager_caps() {
     $role = get_role( 'shop_manager' );
-    if ( $role && $role->has_cap( 'edit_theme_options' ) ) {
-        $role->remove_cap( 'edit_theme_options' );
+    if ( ! $role ) {
+        return;
+    }
+
+    // Elveendő jogok: a Shop manager a BOLTOT viszi – a megjelenést és az
+    // oldalakat (struktúra/tartalom) a fejlesztő kezeli. A termék-, rendelés-
+    // és média-jogok érintetlenek maradnak.
+    $remove = array(
+        'edit_theme_options',                                   // Megjelenés / Testreszabó
+        'edit_pages', 'edit_others_pages', 'edit_published_pages', 'edit_private_pages',
+        'publish_pages',
+        'delete_pages', 'delete_others_pages', 'delete_published_pages', 'delete_private_pages',
+        'read_private_pages',
+    );
+
+    // Önjavító: csak akkor írunk a DB-be, ha tényleg jelen van a jog.
+    foreach ( $remove as $cap ) {
+        if ( $role->has_cap( $cap ) ) {
+            $role->remove_cap( $cap );
+        }
     }
 }
 
