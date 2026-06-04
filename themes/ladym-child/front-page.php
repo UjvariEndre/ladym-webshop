@@ -83,12 +83,12 @@ function ladym_spark( $mod = '' ) {
 <section class="ladym-home-hero"<?php echo $hero_bg ? ' style="background-image:url(' . esc_url( $hero_bg ) . ')"' : ''; ?>>
 	<div class="ladym-home-hero__overlay" aria-hidden="true"></div>
 	<div class="ladym-home-hero__inner ladym-fade-up">
-		<p class="ladym-home-hero__eyebrow"><?php esc_html_e( 'Past to Present Atelier · Nyúl, Magyarország', 'ladym' ); ?></p>
+		<p class="ladym-home-hero__eyebrow"><?php esc_html_e( 'A múltból újragondolva · Nyúl, Magyarország', 'ladym' ); ?></p>
 		<h1 class="ladym-home-hero__title">
 			<?php esc_html_e( 'Fedezd fel az', 'ladym' ); ?>
 			<span class="ladym-home-hero__title-accent"><?php esc_html_e( 'egyedi darabokat.', 'ladym' ); ?></span>
 		</h1>
-		<p class="ladym-home-hero__lead"><?php esc_html_e( 'Kézzel készített, upcycled divat — vintage textíliákból újjászületve. Minden darab egyetlen példány.', 'ladym' ); ?></p>
+		<p class="ladym-home-hero__lead"><?php esc_html_e( 'Kézzel készített, újragondolt divat — vintage textíliákból. Minden darab egyedi.', 'ladym' ); ?></p>
 		<a class="ladym-btn ladym-btn--primary" href="<?php echo esc_url( $shop_url ); ?>"><?php esc_html_e( 'Vásárlás', 'ladym' ); ?></a>
 	</div>
 	<a class="ladym-home-hero__scroll" href="#ladym-featured" aria-label="<?php esc_attr_e( 'Görgess lejjebb', 'ladym' ); ?>">
@@ -158,7 +158,7 @@ function ladym_spark( $mod = '' ) {
 
 		<div class="ladym-featured__foot ladym-fade-up">
 			<a class="ladym-featured__trending" href="<?php echo esc_url( $ig_url ); ?>" target="_blank" rel="noopener noreferrer">
-				<?php esc_html_e( 'Trending az Instagramon', 'ladym' ); ?>
+				<?php esc_html_e( 'Felkapott az Instagramon', 'ladym' ); ?>
 				<span aria-hidden="true">&rarr;</span>
 			</a>
 			<a class="ladym-btn ladym-btn--ghost" href="<?php echo esc_url( $shop_url ); ?>"><?php esc_html_e( 'Összes termék', 'ladym' ); ?></a>
@@ -172,7 +172,9 @@ function ladym_spark( $mod = '' ) {
 		<div class="ladym-about__text ladym-fade-up">
 			<p class="ladym-about__eyebrow"><?php esc_html_e( 'A márka', 'ladym' ); ?></p>
 			<h2 class="ladym-about__title"><?php esc_html_e( 'Elfeledett textíliák, időtlen divat', 'ladym' ); ?></h2>
-			<p class="ladym-about__lead"><?php esc_html_e( 'A LadyM Hungary egy nyúli műhelyből indult: régi takarókból, ágytakarókból és vintage anyagokból készítünk kézzel kabátokat, mellényeket és kiegészítőket. Minden darab egyedi — a múlt textíliái új életet kapnak.', 'ladym' ); ?></p>
+			<p class="ladym-about__lead"><?php esc_html_e( 'A Lady M Hungary egy kézzel készült, újragondolt divatmárka, amely régi takarók, ágytakarók és vintage textilek új életre keltéséből születik. A gondosan válogatott anyagokból kabátok, mellények és kiegészítők készülnek, ahol minden darab egyedi, és a múlt textíliái új formában élnek tovább.', 'ladym' ); ?></p>
+
+			<p class="ladym-about__lead"><?php esc_html_e( 'A tervezési folyamat a vintage anyagok karakterére épül, a kivitelezés pedig tapasztalt kézműves szakember közreműködésével valósul meg. Így minden darab egyszerre őrzi az eredeti textilek történetét és kap modern, hordható formát.', 'ladym' ); ?></p>
 			<a class="ladym-btn ladym-btn--ghost" href="<?php echo esc_url( home_url( '/rolunk/' ) ); ?>"><?php esc_html_e( 'Rólunk', 'ladym' ); ?></a>
 		</div>
 		<?php if ( ! empty( $lookbook ) ) : ?>

@@ -48,7 +48,7 @@ $img              = get_option( 'woocommerce_email_header_image' );
 										<?php echo esc_html( $store_name ); ?>
 									</div>
 									<div style="font-family:Inter,Arial,sans-serif;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:#5b5b78;margin-top:6px;">
-										<?php esc_html_e( 'Past to Present Atelier', 'ladym' ); ?>
+										<?php esc_html_e( 'A múltból újragondolva', 'ladym' ); ?>
 									</div>
 								</td>
 							</tr>
