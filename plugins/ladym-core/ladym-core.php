@@ -91,3 +91,119 @@ function ladym_resolve_callback_file( $function ) {
         return '';
     }
 }
+
+/**
+ * Szerepkör-jogosultságok finomítása (least privilege).
+ *
+ * A "Shop manager" (pl. Tünde) a boltot viszi, a dizájnt a fejlesztő kezeli –
+ * ezért elvesszük az `edit_theme_options` jogot, hogy ne férjen a Megjelenés /
+ * Testreszabó / Blocksy téma-beállításokhoz.
+ *
+ * Önjavító: csak akkor ír a DB-be, ha a jog tényleg jelen van (memóriabeli
+ * has_cap ellenőrzés), így ha egy WooCommerce-frissítés újra létrehozná a
+ * szerepkört a joggal, a következő admin-betöltéskor magától eltávolítja.
+ */
+add_action( 'admin_init', 'ladym_tighten_shop_manager_caps' );
+
+function ladym_tighten_shop_manager_caps() {
+    $role = get_role( 'shop_manager' );
+    if ( $role && $role->has_cap( 'edit_theme_options' ) ) {
+        $role->remove_cap( 'edit_theme_options' );
+    }
+}
+
+/**
+ * Shop manager admin-élmény egyszerűsítése (CSAK bolti staffnak, az adminnak nem).
+ * A boltoshoz nem kötődő menük elrejtése + fókuszált, LadyM-brandelt vezérlőpult.
+ */
+
+/** Igaz, ha a jelenlegi felhasználó bolti staff (shop_manager), de nem admin. */
+function ladym_is_shop_staff() {
+    return is_user_logged_in()
+        && current_user_can( 'edit_products' )
+        && ! current_user_can( 'manage_options' );
+}
+
+// 1) Felesleges felső menük elrejtése (nincs blog ezen az oldalon).
+add_action( 'admin_menu', function () {
+    if ( ! ladym_is_shop_staff() ) {
+        return;
+    }
+    remove_menu_page( 'edit.php' );           // Bejegyzések
+    remove_menu_page( 'edit-comments.php' );  // Hozzászólások
+}, 999 );
+
+// 2) Vezérlőpult: zajos alap-widgetek le, LadyM gyors-művelet widget fel.
+add_action( 'wp_dashboard_setup', function () {
+    if ( ! ladym_is_shop_staff() ) {
+        return;
+    }
+    remove_meta_box( 'dashboard_primary', 'dashboard', 'side' );      // WordPress hírek
+    remove_meta_box( 'dashboard_quick_press', 'dashboard', 'side' );  // Gyors vázlat
+    remove_meta_box( 'dashboard_activity', 'dashboard', 'normal' );   // Tevékenység
+    remove_meta_box( 'dashboard_right_now', 'dashboard', 'normal' );  // Pillanatkép
+    remove_meta_box( 'dashboard_site_health', 'dashboard', 'normal' );
+
+    wp_add_dashboard_widget( 'ladym_quick_actions', __( 'LadyM — gyors műveletek', 'ladym-core' ), 'ladym_dashboard_quick_actions' );
+} );
+
+// A LadyM widgetet az összes többi (WooCommerce is) regisztrálása UTÁN
+// a legtetejére mozgatjuk (normal/high oszlop eleje).
+add_action( 'wp_dashboard_setup', function () {
+    if ( ! ladym_is_shop_staff() ) {
+        return;
+    }
+    global $wp_meta_boxes;
+    foreach ( array( 'high', 'core', 'default', 'low' ) as $ctx ) {
+        if ( isset( $wp_meta_boxes['dashboard']['normal'][ $ctx ]['ladym_quick_actions'] ) ) {
+            $box = $wp_meta_boxes['dashboard']['normal'][ $ctx ]['ladym_quick_actions'];
+            unset( $wp_meta_boxes['dashboard']['normal'][ $ctx ]['ladym_quick_actions'] );
+            $high = $wp_meta_boxes['dashboard']['normal']['high'] ?? array();
+            $wp_meta_boxes['dashboard']['normal']['high'] = array( 'ladym_quick_actions' => $box ) + $high;
+            break;
+        }
+    }
+}, 9999 );
+
+/** A rendelések admin URL-je (HPOS-kompatibilis). */
+function ladym_orders_admin_url() {
+    if ( 'yes' === get_option( 'woocommerce_custom_orders_table_enabled' ) ) {
+        return admin_url( 'admin.php?page=wc-orders' );
+    }
+    return admin_url( 'edit.php?post_type=shop_order' );
+}
+
+/** A LadyM gyors-művelet vezérlőpult-widget tartalma. */
+function ladym_dashboard_quick_actions() {
+    $user = wp_get_current_user();
+    $name = $user->display_name ? $user->display_name : $user->user_login;
+
+    $actions = array(
+        array( 'label' => __( 'Új termék', 'ladym-core' ), 'url' => admin_url( 'post-new.php?post_type=product' ), 'primary' => true ),
+        array( 'label' => __( 'Termékek', 'ladym-core' ),  'url' => admin_url( 'edit.php?post_type=product' ) ),
+        array( 'label' => __( 'Rendelések', 'ladym-core' ), 'url' => ladym_orders_admin_url() ),
+        array( 'label' => __( 'Médiatár', 'ladym-core' ),  'url' => admin_url( 'upload.php' ) ),
+    );
+
+    echo '<p style="margin:0 0 1em;font-size:14px;line-height:1.5;">';
+    printf(
+        /* translators: %s: a felhasználó neve */
+        esc_html__( 'Üdv, %s! Innen indíthatod a leggyakoribb műveleteket.', 'ladym-core' ),
+        '<strong>' . esc_html( $name ) . '</strong>'
+    );
+    echo '</p>';
+
+    echo '<div style="display:flex;flex-wrap:wrap;gap:8px;">';
+    foreach ( $actions as $a ) {
+        $style = ! empty( $a['primary'] )
+            ? 'background:#65273c;color:#fff;border:1px solid #65273c;'
+            : 'background:#fff;color:#65273c;border:1px solid #65273c;';
+        printf(
+            '<a href="%s" style="display:inline-block;padding:8px 14px;border-radius:4px;text-decoration:none;font-weight:600;%s">%s</a>',
+            esc_url( $a['url'] ),
+            esc_attr( $style ),
+            esc_html( $a['label'] )
+        );
+    }
+    echo '</div>';
+}
