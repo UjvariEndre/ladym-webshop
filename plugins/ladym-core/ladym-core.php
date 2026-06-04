@@ -207,3 +207,30 @@ function ladym_dashboard_quick_actions() {
     }
     echo '</div>';
 }
+
+/**
+ * E-mail alapú fiók: a „Felhasználónév vagy e-mail cím" feliratokat csak
+ * „E-mail cím"-re cseréljük – a regisztráció amúgy is e-mail alapú (nincs
+ * felhasználónév). Két WooCommerce string érintett:
+ *   - 'Username or email address'  → bejelentkezés (form-login.php)
+ *   - 'Username or email'          → elfelejtett jelszó (form-lost-password.php)
+ * Literál stringet adunk vissza, hogy ne hívjuk újra a gettext szűrőt (rekurzió).
+ */
+add_filter( 'gettext', 'ladym_login_label_email_only', 20, 3 );
+
+function ladym_login_label_email_only( $translated, $text, $domain ) {
+    if ( 'woocommerce' === $domain
+        && ( 'Username or email address' === $text || 'Username or email' === $text )
+    ) {
+        return 'E-mail cím';
+    }
+    return $translated;
+}
+
+/**
+ * Elfelejtett jelszó intro-üzenet: e-mail alapú, felhasználónév nélkül.
+ * (Dedikált WooCommerce szűrő – nem a template-et írjuk felül.)
+ */
+add_filter( 'woocommerce_lost_password_message', function () {
+    return 'Elfelejtetted a jelszavad? Add meg az e-mail címed, és küldünk egy linket, amivel új jelszót állíthatsz be.';
+} );
