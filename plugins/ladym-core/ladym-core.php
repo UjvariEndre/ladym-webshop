@@ -9,7 +9,10 @@
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
- 
+
+// Cloudflare R2 média-offload (könnyű, AWS SDK nélkül).
+require_once __DIR__ . '/r2-offload.php';
+
 // Egyedi funkciók ide kerülnek (pl. WooCommerce hookok, shortcode-ok).
 
 /**

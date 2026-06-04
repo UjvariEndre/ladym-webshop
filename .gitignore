@@ -13,3 +13,10 @@ Thumbs.db
 .idea/
  
 # A WordPress core és az uploads a ~/.wp-env/ alatt él, NEM a projektben – nincs mit ignorálni.
+
+# Titkok / hitelesítő adatok – SOHA ne kerüljenek a repóba (pl. R2 S3 API kulcsok)
+.wp-env.override.json
+.env
+.env.*
+*.credentials
+.r2-credentials*
