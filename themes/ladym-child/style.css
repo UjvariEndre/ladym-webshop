@@ -553,7 +553,12 @@ body.home {
   display: flex;
   justify-content: center;
 }
-.ladym-about__media .ladym-arch { width: clamp(220px, 60vw, 300px); }
+.ladym-about__media .ladym-arch {
+  width: clamp(220px, 60vw, 300px);
+  /* a "Márka" szekció egyetlen képe ne boltíves legyen, hanem
+     egyenletesen lekerekített, a lebegő kártyához igazítva */
+  border-radius: clamp(18px, 2.4vw, 30px);
+}
 
 /* nagy, halvány "LADY M" ghost-wordmark az about-sáv alján */
 .ladym-about::after {
@@ -573,9 +578,19 @@ body.home {
   z-index: 0;
 }
 
-/* --- Footer: meleg blush háttér --- */
+/* --- Footer: sötét háttér, világos szöveg, pink link-highlight --- */
 .ct-footer {
-  background-color: var(--color-blush) !important;
+  background-color: var(--color-ink) !important;
+  color: var(--color-ivory);
+  /* Blocksy szöveg/link színváltozók felülírása a sötét footerhez. */
+  --theme-text-color: var(--color-ivory);
+  --theme-link-initial-color: var(--color-ivory);
+  --theme-link-hover-color: var(--color-pink);
+  --theme-headings-color: var(--color-ivory);
+}
+.ct-footer a:hover,
+.ct-footer a:focus-visible {
+  color: var(--color-pink);
 }
 
 /* --- szikra-díszek --- */
@@ -1917,12 +1932,15 @@ body.home {
 
 /* "Sütibeállítások" megnyitó pirula a sarkon */
 .cmplz-manage-consent.manage-consent-1 {
-  background-color: var(--color-ink) !important;
+  background-color: var(--color-burgundy) !important;
   color: var(--color-ivory) !important;
   border-radius: 0 !important;
   text-transform: uppercase !important;
   letter-spacing: 0.08em !important;
   font-size: 0.7rem !important;
+}
+.cmplz-manage-consent.manage-consent-1:hover {
+  background-color: var(--color-burgundy-deep) !important;
 }
 
 /* =========================================================
@@ -1965,14 +1983,79 @@ body.home {
 }
 
 /* =========================================================
-   Nav-menü highlight – jól látható hot pink a hoveren / aktív elemen
-   (a fehér fejlécen a sötét szilva hover alig látszott).
+   Nav-menü highlight – "underline-grow" a hoveren / aktív elemen
+   (ugyanaz a finom bordó aláhúzás, mint a "kiemelt darabok" tabokon).
    ========================================================= */
-.ct-header [data-id="menu"] .ct-menu-link {
-  --theme-link-hover-color: var(--color-pink);
+.ct-header [data-id="menu"] > ul > li > .ct-menu-link {
+  --theme-link-hover-color: var(--color-ink);
+  position: relative;
 }
-.ct-header [data-id="menu"] > ul > li > .ct-menu-link:hover,
-.ct-header [data-id="menu"] > ul > li.current-menu-item > .ct-menu-link,
-.ct-header [data-id="menu"] > ul > li.current_page_item > .ct-menu-link {
-  color: var(--color-pink);
+.ct-header [data-id="menu"] > ul > li > .ct-menu-link::after {
+  content: "";
+  position: absolute;
+  /* a link tele a fejléc-magassággal (display:flex, height:100%), ezért nem
+     a box aljához, hanem a középre igazított szöveg ALÁ pozícionálunk */
+  left: calc(var(--menu-items-spacing, 25px) / 2);
+  right: calc(var(--menu-items-spacing, 25px) / 2);
+  top: calc(50% + 0.8em);
+  height: 1.5px;
+  background-color: var(--color-burgundy);
+  /* !important: a Blocksy saját menü-indikátora ugyanezt a ::after-t
+     opacity:0 + transform-mal vezérli, ezért felül kell írni mindkettőt,
+     különben a vonal láthatatlan marad és nincs grow-animáció */
+  opacity: 1 !important;
+  transform: scaleX(0) !important;
+  transform-origin: left;
+  transition: transform 260ms var(--ladym-ease);
+}
+.ct-header [data-id="menu"] > ul > li > .ct-menu-link:hover::after,
+.ct-header [data-id="menu"] > ul > li.current-menu-item > .ct-menu-link::after,
+.ct-header [data-id="menu"] > ul > li.current_page_item > .ct-menu-link::after {
+  transform: scaleX(1) !important;
+}
+
+/* =========================================================
+   My Account – az input mezők fehér háttérrel
+   ========================================================= */
+.woocommerce-account {
+  --theme-form-field-background-color: var(--color-paper);
+}
+.woocommerce-account .woocommerce-Input.input-text,
+.woocommerce-account input[type="text"],
+.woocommerce-account input[type="email"],
+.woocommerce-account input[type="password"],
+.woocommerce-account input[type="tel"],
+.woocommerce-account select,
+.woocommerce-account textarea {
+  background-color: var(--color-paper);
+}
+
+/* =========================================================
+   Élő kereső (Blocksy) – nagyobb találati kép + szöveg
+   ========================================================= */
+.ct-search-results .ct-search-item {
+  gap: 1rem;
+  padding-block: 0.5rem;
+}
+.ct-search-results .ct-search-item .ct-media-container,
+.ct-search-results .ct-search-item .ct-media-container img {
+  width: clamp(80px, 8vw, 110px);
+  height: clamp(80px, 8vw, 110px);
+}
+.ct-search-results .ct-search-item .ct-media-container {
+  /* a Blocksy flex: 0 0 20% + max-width: 20% korlátozza a szélességet,
+     ezért fix méretre kell engedni a bélyegképet */
+  flex: 0 0 auto;
+  max-width: none;
+}
+.ct-search-results .ct-search-item .ct-media-container img {
+  object-fit: cover;
+}
+.ct-search-results .ct-search-item > span:not(.ct-media-container) {
+  font-size: clamp(1.15rem, 1.7vw, 1.35rem);
+  line-height: 1.45;
+  color: var(--color-paper);
+}
+.ct-search-results .ct-search-more {
+  color: var(--color-paper);
 }
