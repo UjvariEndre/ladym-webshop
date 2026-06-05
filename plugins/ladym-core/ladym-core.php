@@ -13,6 +13,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 // Cloudflare R2 média-offload (könnyű, AWS SDK nélkül).
 require_once __DIR__ . '/r2-offload.php';
 
+// Online elállási nyilatkozat (45/2014, 2026.06.19-től kötelező).
+require_once __DIR__ . '/elallas.php';
+
 // Egyedi funkciók ide kerülnek (pl. WooCommerce hookok, shortcode-ok).
 
 /**

@@ -349,6 +349,30 @@ add_filter( 'gettext', function ( $translated, $text, $domain ) {
 }, 20, 3 );
 
 /**
+ * Lábléc copyright + jogi linkek (a Blocksy alap „WordPress Theme by…" helyett).
+ * A jogi oldalaknak – köztük a kötelező online elállási űrlapnak – jól láthatóan,
+ * minden oldalon elérhetőnek kell lenniük. A Blocksy a copyright tartalmat ezen a
+ * szűrőn engedi át, így nem kell a footer-buildert állítgatni.
+ */
+add_filter( 'blocksy:footer:copyright:value', function () {
+    $links = array(
+        '/aszf/'         => __( 'ÁSZF', 'ladym' ),
+        '/adatvedelem/'  => __( 'Adatvédelmi tájékoztató', 'ladym' ),
+        '/elallasi-jog/' => __( 'Elállási jog', 'ladym' ),
+        '/elallas/'      => __( 'Elállás a szerződéstől', 'ladym' ),
+        '/impresszum/'   => __( 'Impresszum', 'ladym' ),
+    );
+    $items = array();
+    foreach ( $links as $url => $label ) {
+        $items[] = '<a href="' . esc_url( home_url( $url ) ) . '">' . esc_html( $label ) . '</a>';
+    }
+    return '<span class="ladym-footer-copy">&copy; ' . esc_html( date_i18n( 'Y' ) ) . ' Lady M Hungary — '
+        . esc_html__( 'Kézzel készített, újragondolt divat', 'ladym' ) . '</span>'
+        . '<nav class="ladym-footer-legal" aria-label="' . esc_attr__( 'Jogi információk', 'ladym' ) . '">'
+        . implode( ' · ', $items ) . '</nav>';
+} );
+
+/**
  * Szállítás (Fázis 5 / a. lépés).
  *
  * A `vp_pont` shipping method (Hungarian Pickup Points plugin) az ingyenes verzióban
