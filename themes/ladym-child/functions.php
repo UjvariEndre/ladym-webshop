@@ -309,10 +309,12 @@ add_filter( 'woocommerce_get_availability_text', function ( $availability, $prod
     return $availability;
 }, 10, 2 );
 
-// A mentett kártyák funkció ki van kapcsolva (Stripe saved_cards=no) – egyedi-darabos
-// boltnál ritka az ismételt vásárlás. Így a My Account "Fizetési módok" fülét is levesszük.
+// My Account menü tisztítása a fizikai, egyedi-darabos bolthoz:
+//  - "Fizetési módok": a mentett kártyák ki vannak kapcsolva (Stripe saved_cards=no).
+//  - "Letöltések": nincs letölthető (digitális) termék, a fül mindig üres lenne.
 add_filter( 'woocommerce_account_menu_items', function ( $items ) {
     unset( $items['payment-methods'] );
+    unset( $items['downloads'] );
     return $items;
 } );
 
