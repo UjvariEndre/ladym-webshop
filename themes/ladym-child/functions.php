@@ -16,12 +16,14 @@ add_action( 'wp_enqueue_scripts', function () {
         null
     );
 
-    // A child theme brand-rétege (style.css).
+    // A child theme brand-rétege (style.css). A verzió a fájl módosítási ideje,
+    // így minden CSS-változás azonnal frissül – nincs beragadt böngésző-cache.
+    $css_path = get_stylesheet_directory() . '/style.css';
     wp_enqueue_style(
         'ladym-child',
         get_stylesheet_uri(),
         array( 'ladym-fonts' ),
-        wp_get_theme()->get( 'Version' )
+        file_exists( $css_path ) ? filemtime( $css_path ) : wp_get_theme()->get( 'Version' )
     );
 }, 20 );
 

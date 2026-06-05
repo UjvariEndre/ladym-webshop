@@ -2103,3 +2103,59 @@ body.home {
     flex-wrap: wrap;
   }
 }
+
+/* --- Mobil hamburger menü: az aktív oldal kiemelése világos rózsaszínnel. A Blocksy
+   az aktív linket a `--theme-link-hover-color` (#4b1c2c sötét bordó) változóval színezi,
+   ami a fekete panelen nem látszik — ezért MAGÁT A VÁLTOZÓT írjuk felül + direkt color. --- */
+#offcanvas .current-menu-item,
+#offcanvas .current_page_item,
+#offcanvas .current-menu-ancestor {
+  --theme-link-hover-color: #e8b8cb;
+  --theme-link-initial-color: #e8b8cb;
+}
+#offcanvas li.current-menu-item > .ct-menu-link,
+#offcanvas li.current_page_item > .ct-menu-link,
+#offcanvas li.current-menu-item > a,
+#offcanvas li.current_page_item > a {
+  color: #e8b8cb !important;
+}
+
+/* --- Pénztár (mobil) finomítások --- */
+@media (max-width: 768px) {
+  /* GYÖKÉR-OK: a fizetési szekciónak (#payment) a Blocksy -26px negatív margót ad
+     mindkét oldalon, ezért a fehér box ~5px-rel kilóg a szülő keretből (a "border
+     nagyobb mint a bg" tünet), és emiatt csúszik ki az ÁSZF-pipa is. Nullázzuk. */
+  .woocommerce-checkout #payment,
+  .woocommerce-checkout .woocommerce-checkout-payment {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  /* ÁSZF-elfogadó: a pipa NE lógjon ki a fehér keretből. A Blocksy/WC a checkbox-ot
+     negatív margóval / abszolút pozícióval helyezi a label elé — ezt felülírjuk,
+     és flexbe rakjuk a pipát + szöveget (a kereten belül, egymás mellett). */
+  .woocommerce-checkout .woocommerce-form__label-for-checkbox {
+    display: flex !important;
+    align-items: flex-start;
+    gap: 0.5em;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-transform: none;
+    font-size: 0.85rem;
+    line-height: 1.45;
+  }
+  .woocommerce-checkout .woocommerce-form__input-checkbox,
+  .woocommerce-checkout .woocommerce-terms-and-conditions-wrapper input.input-checkbox {
+    position: static !important;
+    float: none !important;
+    left: auto !important;
+    margin: 0.15em 0 0 0 !important;
+    flex: 0 0 auto;
+  }
+  /* "Megrendelés véglegesítése" gomb: visszafogottabb méret mobilon */
+  #place_order {
+    min-height: 0;
+    padding: 0.85em 1.4em;
+    font-size: 0.92rem;
+    line-height: 1.3;
+  }
+}
