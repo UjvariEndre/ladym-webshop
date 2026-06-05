@@ -765,6 +765,30 @@ body.home {
   transform: scale(1.04);
 }
 
+/* ── "Elkelt" állapot – az egyedi darab gazdára talált ────────────────── */
+.ladym-card__sold,
+.ladym-single__sold-tag {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  padding: 0.5em 1.1em;
+  background-color: var(--color-ink);
+  color: var(--color-ivory);
+  font-size: 0.66rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+/* Elkelt darab a katalógusban: a fotó tompul, jelezve, hogy már nem kapható. */
+.ladym-card.outofstock .ladym-card__media img {
+  opacity: 0.6;
+  filter: grayscale(0.3);
+}
+.ladym-card.outofstock .ladym-card__link:hover .ladym-card__media img {
+  transform: none;
+}
+
 .ladym-card__body {
   padding-top: 1rem;
 }
@@ -866,6 +890,7 @@ body.home {
 }
 .ladym-single__main {
   margin: 0;
+  position: relative;
   background-color: var(--color-cream-warm);
   /* 2:3 – a fotók aránya, így a cover nem a tetejéből/aljából (fej!), hanem
      csak az oldalból vág, ha kell. Egyezik a shop kártyák logikájával. */
@@ -937,6 +962,10 @@ body.home {
   letter-spacing: 0.18em;
   text-transform: uppercase;
   font-weight: 600;
+}
+/* Elkelt darab: a bordó "egyedi darab" helyett semleges, lezárt ink-badge. */
+.ladym-single__badge--sold {
+  background-color: var(--color-ink);
 }
 
 .ladym-single__title {

@@ -36,6 +36,9 @@ $price_html   = $product->get_price_html();
 <li <?php wc_product_class( 'ladym-card', $product ); ?>>
 	<a class="ladym-card__link" href="<?php echo esc_url( $product_link ); ?>" aria-label="<?php echo esc_attr( $name ); ?>">
 		<div class="ladym-card__media">
+			<?php if ( ! $product->is_in_stock() ) : ?>
+				<span class="ladym-card__sold"><?php esc_html_e( 'Elkelt', 'ladym' ); ?></span>
+			<?php endif; ?>
 			<?php echo $image_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped — WC kimenet. ?>
 		</div>
 		<div class="ladym-card__body">

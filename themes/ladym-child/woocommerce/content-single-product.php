@@ -79,6 +79,9 @@ $first_cat_obj = $first_cat_id ? get_term( $first_cat_id, 'product_cat' ) : null
 		<div class="ladym-single__gallery">
 			<?php if ( $main_image_url ) : ?>
 				<figure class="ladym-single__main">
+						<?php if ( ! $product->is_in_stock() ) : ?>
+							<span class="ladym-single__sold-tag"><?php esc_html_e( 'Elkelt', 'ladym' ); ?></span>
+						<?php endif; ?>
 					<img
 						id="ladym-single-main-img"
 						class="ladym-single__main-img"
@@ -138,7 +141,9 @@ $first_cat_obj = $first_cat_id ? get_term( $first_cat_id, 'product_cat' ) : null
 
 		<div class="ladym-single__summary">
 
-			<?php if ( $is_one_of_one ) : ?>
+			<?php if ( ! $product->is_in_stock() ) : ?>
+				<p class="ladym-single__badge ladym-single__badge--sold"><?php esc_html_e( 'Elkelt — gazdára talált', 'ladym' ); ?></p>
+			<?php elseif ( $is_one_of_one ) : ?>
 				<p class="ladym-single__badge"><?php esc_html_e( '1 / 1 — EGYEDI DARAB', 'ladym' ); ?></p>
 			<?php endif; ?>
 

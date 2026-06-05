@@ -300,6 +300,15 @@ add_filter( 'gettext', function ( $translated, $original, $domain ) {
     return isset( $map[ $original ] ) ? $map[ $original ] : $translated;
 }, 20, 3 );
 
+// Egyedi darabok: a WC alap "Elfogyott" készlet-felirat helyett "Elkelt" (brand-hang).
+// Fordítás-független (közvetlenül az availability szöveget cseréli), kiegészíti a vizuális badge-et.
+add_filter( 'woocommerce_get_availability_text', function ( $availability, $product ) {
+    if ( ! $product->is_in_stock() ) {
+        return __( 'Elkelt', 'ladym' );
+    }
+    return $availability;
+}, 10, 2 );
+
 /**
  * Szállítás (Fázis 5 / a. lépés).
  *
