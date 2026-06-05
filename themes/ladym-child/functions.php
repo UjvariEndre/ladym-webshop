@@ -318,6 +318,36 @@ add_filter( 'woocommerce_account_menu_items', function ( $items ) {
     return $items;
 } );
 
+// A Stripe UPE alap "Credit / Debit Card" kártya-felirata magyarul (pénztár + emailek + blokkok).
+// A gateway címe (settings 'title') már "Bankkártya", de a UPE method neve külön stringből jön.
+add_filter( 'gettext', function ( $translated, $text, $domain ) {
+    if ( 'woocommerce-gateway-stripe' === $domain && 'Credit / Debit Card' === $text ) {
+        return __( 'Bankkártya', 'ladym' );
+    }
+    return $translated;
+}, 20, 3 );
+
+// A Blocksy saját WooCommerce template-override-jai (pl. cart/cart.php) a 'blocksy' text domaint
+// használják a woo-szavakhoz (Product, Quantity, …), amit a Blocksy hu fordítása NEM fed → angolul
+// maradtak. Ezeket a telepített 'woocommerce' hu_HU fordításra irányítjuk (nincs duplikált szöveg).
+add_filter( 'gettext', function ( $translated, $text, $domain ) {
+    if ( 'blocksy' !== $domain ) {
+        return $translated;
+    }
+    static $woo = array(
+        'Product', 'Price', 'Quantity', 'Subtotal', 'Update cart',
+        'Available on backorder', 'Remove item', 'Remove product',
+        'Coupon code', 'Apply coupon',
+    );
+    if ( in_array( $text, $woo, true ) ) {
+        $hu = __( $text, 'woocommerce' );
+        if ( $hu !== $text ) {
+            return $hu;
+        }
+    }
+    return $translated;
+}, 20, 3 );
+
 /**
  * Szállítás (Fázis 5 / a. lépés).
  *
