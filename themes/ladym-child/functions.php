@@ -372,6 +372,11 @@ add_filter( 'blocksy:footer:copyright:value', function () {
         . implode( ' · ', $items ) . '</nav>';
 } );
 
+// A szállítási csomag neve a kosár/pénztár összesítőben magyarul (alapból "Shipment"/"Shipping").
+add_filter( 'woocommerce_shipping_package_name', function () {
+    return __( 'Szállítás', 'ladym' );
+} );
+
 /**
  * Szállítás (Fázis 5 / a. lépés).
  *

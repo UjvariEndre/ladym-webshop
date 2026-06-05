@@ -2088,3 +2088,18 @@ body.home {
 .ct-search-results .ct-search-more {
   color: var(--color-paper);
 }
+
+/* --- Kosár (mobil): az ár ne törjön szét – a "76 000 Ft" ezres-szóköze ne legyen
+   töréspont. A Blocksy mobil-kosárban a mennyiség + ár egy sorba kerül, ott csúszott. --- */
+.woocommerce-cart-form .woocommerce-Price-amount,
+.woocommerce-cart .cart_totals .woocommerce-Price-amount,
+.shop_table .woocommerce-Price-amount {
+  white-space: nowrap;
+}
+@media (max-width: 768px) {
+  /* a mennyiség-választó és az ár ne préselődjön egymásra: essenek külön sorba, jobbra zárva */
+  .woocommerce-cart-form .product-name .ct-cart-actions,
+  .woocommerce-cart-form td.product-name > .quantity {
+    flex-wrap: wrap;
+  }
+}
