@@ -45,6 +45,15 @@ $img              = get_option( 'woocommerce_email_header_image' );
 											<img src="<?php echo esc_url( $img ); ?>" alt="<?php echo esc_attr( $store_name ); ?>" width="80" style="display:inline-block;width:80px;height:auto;border:0;outline:none;text-decoration:none;" />
 										<?php endif; ?>
 									<?php endif; ?>
+									<?php if ( ! $img ) : ?>
+										<!-- "M" monogram – a wordmark (assets/ladym-logo-wordmark.svg) monogramjával egyező,
+										     email-biztos HTML+CSS-ben (bordó négyzet, fehér Playfair M). Külső kép/SVG helyett, mert a kliensek strippelik. -->
+										<table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" style="margin:0 auto;border-collapse:collapse;">
+											<tr>
+												<td width="64" height="64" align="center" valign="middle" bgcolor="#65273c" style="width:64px;height:64px;background-color:#65273c;text-align:center;vertical-align:middle;font-family:'Playfair Display',Georgia,'Times New Roman',serif;font-weight:600;font-size:40px;line-height:64px;color:#f4f2f6;">M</td>
+											</tr>
+										</table>
+									<?php endif; ?>
 									<div style="font-family:'Playfair Display',Georgia,'Times New Roman',serif;font-weight:600;font-size:22px;letter-spacing:0.04em;color:#0a0a0f;margin-top:14px;">
 										<?php echo esc_html( $store_name ); ?>
 									</div>
