@@ -1,5 +1,20 @@
 # LadyM Hungary – Webshop ROADMAP
 
+> ## 📍 Hol tartunk – 2026-06-04
+>
+> A bolt **tartalmilag és technikailag jórészt kész, pre-launch** állapotban (coming-soon + noindex).
+>
+> **Kész:** HU tartalom-véglegesítés (termékleírások, slugok, oldal-/menünevek, „upcycled→újragondolt"),
+> fiók-oldal magyarul + **email-only login**, **Cloudflare R2 média-offload** (custom-light a `ladym-core`-ban,
+> `media.ladymhungary.com`, 26 kép migrálva, új feltöltés auto-offload), **SEO-alap** (Rank Math: Product/Org/Breadcrumb
+> schema, OG, sitemap), **felhasználók** (Tünde *shop_manager* + egyszerűsített/brandelt admin, `dev` Administrator,
+> a default `admin` lezárva), admin-zaj takarítás.
+>
+> **Fő hiányok élesedéshez:** ⚠️ **online bankkártyás fizetés** (jelenleg CSAK átutalás + utánvét),
+> **Rackhost-deploy**, a **noindex visszakapcsolása** (`blog_public=1`) launchkor. Részletek a Fázis 4-ben.
+>
+> *(Részletes, naprakész státusz a memóriában: `cloudflare-r2-media`, `seo-rankmath`, `account-profile-setup`.)*
+
 ## Fázis 1 – Téma + alapkonfiguráció ✅ (kész)
 
 - WooCommerce magyar bolt: HUF, HU, `12 990 Ft` formátum (right_space, szóköz ezres, vessző tizedes, 0 tizedesjegy), kg/cm.
@@ -69,6 +84,37 @@ egyelőre **B** is elég lehet; ha nő az EN konverzió → **A**.
 **Hátralévő lépések (terv):** termékkiemelő/„Új érkezések" szekció, About/atelier sztori-blokk, Instagram-feed,
 hírlevél/CTA-sáv, lábléc-tartalom. A 4/5 placeholder cseréje valódi termékfotóra (Fázis 4 / fotózás).
 
-## Fázis 4 – Éles üzem (terv)
+## Közben elkészült modulok (nem külön fázisban) ✅
 
-- Rackhost WP Midi + Cloudflare, képoptimalizálás (WebP/AVIF), gyorsítótár, SEO/hreflang ellenőrzés élesben.
+- **Tartalom-véglegesítés (HU):** 4 termék rövid+hosszú leírása (HU; angolból fordítva), magyar slugok
+  (`/termek/...`, `/termek-kategoria/...`), oldal-/menü-nevek (Termékek/Kosár/Pénztár/Fiókom), redundáns
+  címkék törlése, „Bordó mellény" átnevezés. CSV (`_import/...`) szinkronban.
+- **Fiók (My Account):** natív WC, magyarul, **email-only bejelentkezés** (gettext + `generate_username`),
+  fejléc profil-ikon + `[ladym_account]`. (Google-login még hátra – Nextend.)
+- **Felhasználók/szerepkörök:** `dev` (Administrator, fejlesztő), **Tünde** (*shop_manager*, boltos) –
+  egyszerűsített + LadyM-brandelt admin (rejtett Bejegyzések/Hozzászólások/Megjelenés, gyors-művelet widget),
+  a default `admin` lezárva (subscriber + erős jelszó). Lásd memória `account-profile-setup`.
+- **Cloudflare R2 média-offload:** custom-light a `ladym-core`-ban (`r2-offload.php`, saját SigV4, nincs AWS SDK).
+  Bucket `ladym-media` (EU) + `media.ladymhungary.com`. Konfig wp-config konstansokkal. Lásd `cloudflare-r2-media`.
+- **SEO (Rank Math):** Product/Organization/Breadcrumb/WebSite schema, OG + Twitter card, sitemap, HU title/meta
+  sablonok, KG (Lady M Hungary). **noindex launchig.** Lásd `seo-rankmath`.
+- **Admin-takarítás:** Rank Math oszlopok le, plugin nag-notice-ok elnémítva, WC elavult-sablon figyelmeztetés
+  rendezve (Blocksy 2.1.44 + `@version` fejlécek), WP 7.0 (hu_HU csomag).
+
+## Fázis 4 – Élesítés (Rackhost) 🔜 (előkészítve, deploy hátra)
+
+**Funkcionális hiányok (élesedés előtt eldöntendő):**
+- ⚠️ **Fizetés:** jelenleg CSAK **átutalás (BACS)** + **utánvét (COD)**. Online bankkártyához HU-gateway kell
+  (SimplePay / Barion / Stripe) – **döntés + beállítás hátra**.
+- **Kétnyelvűség:** jelenleg CSAK HU (lásd Fázis 2). Ha kell EN a launchra → Fázis 2.5.
+
+**Élesítési lépések (sorrendben):**
+1. **Rackhost WP Midi deploy:** DB + fájlok áttelepítése, SSL, Cloudflare a fő domain elé.
+2. **R2 prod-konfig:** a 6 `LADYM_R2_*` konstans a Rackhost `wp-config.php`-jába (lásd `.r2-credentials`).
+3. **`cfat_` tokenek rotálása** (a chatbe kerültek) → derivált S3-kulcsok + konstansok frissítése.
+4. **SEO kapcsolók:** `blog_public=1` (noindex le!), Coming Soon kikapcsolás, sitemap beküldése Google Search Console-ba.
+5. **Teljes vásárlási teszt** élesben (kosár → pénztár → fizetés → rendelés → emailek).
+6. **Cloudflare cache-szabályok:** `/kosar/ /penztar/ /fiokom/` NE cache-elődjön.
+
+**Opcionális / később:** WebP-from-R2, lokális képmásolatok törlése (Rackhost-tárhely), IG/TikTok `sameAs` +
+raszter logó + OG-kép (assetek), Core Web Vitals mérés.
