@@ -19,7 +19,7 @@ if ( ! $shop_url ) {
 }
 
 /** Instagram-link a "Trending on Instagram" feliratnál (a tényleges handle filterrel állítható). */
-$ig_url = apply_filters( 'ladym_instagram_url', 'https://www.instagram.com/' );
+$ig_url = apply_filters( 'ladym_instagram_url', 'https://www.instagram.com/ladymfashionstyle/' );
 
 /** Lookbook képek: a legutóbbi termékek képei, dekoratívan (nem termék-linkek). */
 $lookbook = array();
