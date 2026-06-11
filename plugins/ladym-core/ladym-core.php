@@ -22,6 +22,9 @@ require_once __DIR__ . '/szabd-magadra.php';
 // "Kapcsolat" oldal elérhetőségei (shortcode: [ladym_kapcsolat]).
 require_once __DIR__ . '/kapcsolat.php';
 
+// "Rólunk" oldal márka-története (shortcode: [ladym_rolunk]).
+require_once __DIR__ . '/rolunk.php';
+
 // Egyedi funkciók ide kerülnek (pl. WooCommerce hookok, shortcode-ok).
 
 /**

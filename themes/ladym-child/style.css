@@ -2537,3 +2537,51 @@ body.home {
 .ladym-contact__link:focus-visible {
   color: var(--color-burgundy);
 }
+
+/* =========================================================
+   Rólunk oldal – márka-történet ([ladym_rolunk])
+   ========================================================= */
+.ladym-about-page {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 1rem 0 2.5rem;
+}
+.ladym-about-page__eyebrow {
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.7rem;
+  color: var(--color-mocha);
+  margin: 0 0 1rem;
+}
+.ladym-about-page__lead {
+  text-align: center;
+  font-size: clamp(1.15rem, 2.4vw, 1.4rem);
+  line-height: 1.7;
+  color: var(--color-ink);
+  margin: 0 auto 2.8rem;
+  max-width: 36rem;
+}
+.ladym-about-page__section {
+  margin: 0 0 2rem;
+}
+.ladym-about-page__heading {
+  font-family: var(--font-serif, "Playfair Display", serif);
+  font-weight: 500;
+  font-size: clamp(1.4rem, 3vw, 1.9rem);
+  color: var(--color-ink);
+  margin: 0 0 0.6rem;
+  line-height: 1.2;
+}
+.ladym-about-page__section p {
+  color: var(--color-ink-soft);
+  line-height: 1.8;
+  margin: 0;
+}
+.ladym-about-page__cta {
+  display: flex;
+  gap: 0.8rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 2.8rem;
+}
