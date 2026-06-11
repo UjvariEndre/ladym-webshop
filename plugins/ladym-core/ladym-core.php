@@ -19,6 +19,9 @@ require_once __DIR__ . '/elallas.php';
 // "Szabd magadra" konfigurátor (textil + méret + fazon → kosár).
 require_once __DIR__ . '/szabd-magadra.php';
 
+// "Kapcsolat" oldal elérhetőségei (shortcode: [ladym_kapcsolat]).
+require_once __DIR__ . '/kapcsolat.php';
+
 // Egyedi funkciók ide kerülnek (pl. WooCommerce hookok, shortcode-ok).
 
 /**
