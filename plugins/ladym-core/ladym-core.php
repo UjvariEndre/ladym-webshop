@@ -16,6 +16,9 @@ require_once __DIR__ . '/r2-offload.php';
 // Online elállási nyilatkozat (45/2014, 2026.06.19-től kötelező).
 require_once __DIR__ . '/elallas.php';
 
+// "Szabd magadra" konfigurátor (textil + méret + fazon → kosár).
+require_once __DIR__ . '/szabd-magadra.php';
+
 // Egyedi funkciók ide kerülnek (pl. WooCommerce hookok, shortcode-ok).
 
 /**

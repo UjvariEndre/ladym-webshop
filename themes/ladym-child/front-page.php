@@ -166,6 +166,16 @@ function ladym_spark( $mod = '' ) {
 	</div>
 </section>
 
+<section class="ladym-szabd-band">
+	<div class="ladym-szabd-band__inner ladym-fade-up">
+		<p class="ladym-szabd-band__lead">
+			<span class="ladym-szabd-band__eyebrow"><?php esc_html_e( 'Egyedi rendelés', 'ladym' ); ?></span>
+			<?php esc_html_e( 'Szabd magadra — válaszd ki a textilt, a méreted és a fazont, és elkészítjük neked, egyedileg.', 'ladym' ); ?>
+		</p>
+		<a class="ladym-btn ladym-btn--primary" href="<?php echo esc_url( home_url( '/szabd-magadra/' ) ); ?>"><?php esc_html_e( 'Szabd magadra →', 'ladym' ); ?></a>
+	</div>
+</section>
+
 <section class="ladym-about">
 	<?php echo ladym_spark( 'ladym-spark--d' ); ?>
 	<div class="ladym-about__inner">

@@ -2159,3 +2159,328 @@ body.home {
     line-height: 1.3;
   }
 }
+
+/* =========================================================
+   "Szabd magadra" konfigurátor (Fázis 1) + főoldali sáv
+   ========================================================= */
+
+/* --- Termékoldal alja: egyedi-rendelés CTA (világos háttéren, bordó gomb) --- */
+.ladym-custom-cta {
+  clear: both;
+  text-align: center;
+  max-width: 640px;
+  margin: clamp(2.5rem, 6vw, 4rem) auto 0;
+  padding-top: clamp(2rem, 5vw, 3rem);
+  border-top: 1px solid var(--color-line);
+}
+.ladym-custom-cta__eyebrow {
+  font-family: var(--font-sans, Inter, sans-serif);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.68rem;
+  color: var(--color-mocha);
+  margin: 0 0 0.5rem;
+}
+.ladym-custom-cta__text {
+  color: var(--color-ink-soft);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0 auto 1.3rem;
+  max-width: 34rem;
+}
+
+/* --- Főoldali sáv (a "Kiemelt darabok" és "A márka" között) ---
+   Bordó→ink átlós gradient (a hero stílusában) + halvány folk-pattern textúra,
+   világos szöveg, sötét (ink) gomb. */
+.ladym-szabd-band {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: clamp(2.8rem, 6vw, 4.2rem) 1.5rem;
+  text-align: center;
+  background-color: var(--color-burgundy);
+  background-image: linear-gradient(135deg, var(--color-burgundy) 0%, var(--color-ink) 100%);
+  color: var(--color-ivory);
+}
+/* Halvány, világos folk-minta a gradient fölött (mask + token-szín, mint a sparkle). */
+.ladym-szabd-band::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-color: var(--color-blush);
+  -webkit-mask: url("assets/folk-pattern.svg") 0 0 / 168px repeat;
+          mask: url("assets/folk-pattern.svg") 0 0 / 168px repeat;
+  opacity: 0.4;
+  pointer-events: none;
+}
+/* A sávban a gomb sötét legyen (a bordó háttéren ne olvadjon el a bordó primary gomb). */
+.ladym-szabd-band .ladym-btn--primary {
+  background-color: var(--color-ink);
+  border-color: var(--color-ink);
+  color: var(--color-ivory);
+}
+.ladym-szabd-band .ladym-btn--primary:hover {
+  background-color: var(--color-ink-soft);
+  border-color: var(--color-ink-soft);
+  color: var(--color-ivory);
+}
+.ladym-szabd-band__inner {
+  max-width: 620px;
+  margin: 0 auto;
+}
+.ladym-szabd-band__eyebrow {
+  display: block;
+  font-family: var(--font-sans, Inter, sans-serif);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.68rem;
+  color: var(--color-blush);
+  margin-bottom: 0.5rem;
+}
+.ladym-szabd-band__lead {
+  color: var(--color-ivory);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0 auto 1.3rem;
+  max-width: 34rem;
+}
+
+/* --- A konfigurátor oldal --- */
+.ladym-sm {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 1rem 0 3rem;
+}
+.ladym-sm__notice,
+.ladym-sm__layout {
+  /* a notice egyszerű szöveg, a layout a rács */
+}
+.ladym-sm__notice {
+  text-align: center;
+  color: var(--color-ink-soft);
+  padding: 3rem 1rem;
+}
+.ladym-sm__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: start;
+}
+
+/* Előnézet */
+.ladym-sm__preview {
+  position: sticky;
+  top: 2rem;
+}
+.ladym-sm__preview-figure {
+  position: relative;
+  margin: 0;
+  aspect-ratio: 3 / 4;
+  background-color: var(--color-cream-warm);
+  border: 1px solid var(--color-line);
+  overflow: hidden;
+}
+.ladym-sm__preview-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.ladym-sm__preview-empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  color: var(--color-mocha);
+  font-size: 0.95rem;
+}
+.ladym-sm__preview-cap {
+  margin-top: 0.9rem;
+  text-align: center;
+  font-family: var(--font-serif, "Playfair Display", serif);
+  font-size: 1.1rem;
+  color: var(--color-ink);
+  min-height: 1.4em;
+}
+
+/* Panel / lépések */
+.ladym-sm__panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+}
+.ladym-sm__step {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+.ladym-sm__legend {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-sans, Inter, sans-serif);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.78rem;
+  color: var(--color-ink);
+  margin-bottom: 0.9rem;
+  padding: 0;
+}
+.ladym-sm__num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.6em;
+  height: 1.6em;
+  border-radius: 50%;
+  background-color: var(--color-burgundy);
+  color: var(--color-ivory);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* Textil swatch-ok */
+.ladym-sm__swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: 0.8rem;
+}
+.ladym-sm__swatch {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0;
+  background: none;
+  border: 1px solid var(--color-line);
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 250ms var(--ladym-ease), box-shadow 250ms var(--ladym-ease);
+}
+.ladym-sm__swatch-img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background-color: var(--color-cream-warm);
+  background-size: cover;
+  background-position: center;
+}
+.ladym-sm__swatch-name {
+  font-size: 0.8rem;
+  color: var(--color-ink-soft);
+  padding: 0 0.3rem 0.6rem;
+}
+.ladym-sm__swatch:hover {
+  border-color: var(--color-mocha);
+}
+.ladym-sm__swatch.is-selected {
+  border-color: var(--color-burgundy);
+  box-shadow: inset 0 0 0 2px var(--color-burgundy);
+}
+.ladym-sm__swatch.is-selected .ladym-sm__swatch-name {
+  color: var(--color-burgundy);
+  font-weight: 600;
+}
+
+/* Méret + fazon gombok (közös pill-stílus) */
+.ladym-sm__sizes,
+.ladym-sm__fazons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+.ladym-sm__size,
+.ladym-sm__fazon {
+  cursor: pointer;
+  background: var(--color-paper);
+  border: 1px solid var(--color-line);
+  color: var(--color-ink);
+  font-family: var(--font-sans, Inter, sans-serif);
+  transition: border-color 250ms var(--ladym-ease), color 250ms var(--ladym-ease), background-color 250ms var(--ladym-ease);
+}
+.ladym-sm__size {
+  min-width: 3rem;
+  padding: 0.7em 0.9em;
+  text-align: center;
+  letter-spacing: 0.04em;
+  font-size: 0.85rem;
+}
+.ladym-sm__fazon {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  padding: 0.8em 1.1em;
+  min-width: 8rem;
+}
+.ladym-sm__fazon-label {
+  font-size: 0.95rem;
+  letter-spacing: 0.03em;
+}
+.ladym-sm__fazon-price {
+  font-size: 0.85rem;
+  color: var(--color-burgundy);
+  font-weight: 600;
+}
+.ladym-sm__fazon-price del { color: var(--color-mocha); font-weight: 400; }
+.ladym-sm__size:hover,
+.ladym-sm__fazon:hover {
+  border-color: var(--color-mocha);
+}
+.ladym-sm__size.is-selected,
+.ladym-sm__fazon.is-selected {
+  border-color: var(--color-burgundy);
+  background-color: var(--color-burgundy);
+  color: var(--color-ivory);
+}
+.ladym-sm__fazon.is-selected .ladym-sm__fazon-price {
+  color: var(--color-ivory);
+}
+.ladym-sm__fazon.is-selected .ladym-sm__fazon-price del { color: rgba(255,255,255,0.65); }
+
+/* Összegzés + rendelés */
+.ladym-sm__summary {
+  font-size: 0.95rem;
+  color: var(--color-ink-soft);
+  min-height: 1.3em;
+  padding-top: 0.4rem;
+  border-top: 1px solid var(--color-line);
+}
+.ladym-sm__order {
+  align-self: flex-start;
+  cursor: pointer;
+}
+.ladym-sm__order:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.ladym-sm__order.is-loading {
+  opacity: 0.7;
+  cursor: wait;
+}
+.ladym-sm__msg {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--color-ink-soft);
+  min-height: 1.2em;
+}
+.ladym-sm__msg.is-error {
+  color: var(--color-burgundy);
+}
+
+/* Mobil: egy oszlop, az előnézet felülre, nem ragad */
+@media (max-width: 860px) {
+  .ladym-sm__layout {
+    grid-template-columns: 1fr;
+  }
+  .ladym-sm__preview {
+    position: static;
+  }
+  .ladym-sm__preview-figure {
+    max-width: 360px;
+    margin: 0 auto;
+  }
+}
