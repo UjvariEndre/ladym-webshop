@@ -267,3 +267,26 @@ function ladym_login_label_email_only( $translated, $text, $domain ) {
 add_filter( 'woocommerce_lost_password_message', function () {
     return 'Elfelejtetted a jelszavad? Add meg az e-mail címed, és küldünk egy linket, amivel új jelszót állíthatsz be.';
 } );
+
+/**
+ * Jogi oldalak kivétele a WooCommerce „Hamarosan" (store-only coming soon)
+ * takarás alól. Launch előtt a bolt (kosár/pénztár/shop) szándékosan rejtve
+ * marad, de a jogi oldalaknak nyilvánosan olvashatónak kell lenniük.
+ *
+ * Az ÁSZF (#59) a WooCommerce „ÁSZF/Terms" oldala, ezért a WooCommerce
+ * store-page-ként kezeli és a coming-soon függöny mögé rejti – emiatt „tűnt el".
+ * A többi jogi oldal (Elállás, Adatvédelem, Impresszum) sima oldal, az nem
+ * érintett, de a biztonság kedvéért itt is felsoroljuk.
+ *
+ * A `woocommerce_coming_soon_exclude` szűrőt a WooCommerce a `template_include`
+ * fázisban hívja, EGYETLEN argumentummal (`$excluded`) – a fő query ekkor már
+ * felépült, így az `is_page()` megbízhatóan használható. `true` = ne takarja.
+ * (Fontos: csak 1 paramétert várjunk, különben ArgumentCountError → fatal.)
+ */
+add_filter( 'woocommerce_coming_soon_exclude', function ( $excluded ) {
+    $legal_slugs = array( 'aszf', 'elallas', 'adatvedelem', 'impresszum' );
+    if ( is_page( $legal_slugs ) ) {
+        return true;
+    }
+    return $excluded;
+} );
