@@ -269,7 +269,13 @@ function ladym_sm_render() {
 		}
 		$previews = array();
 		foreach ( array_keys( $labels ) as $fslug ) {
-			$previews[ $fslug ] = ladym_sm_asset_url( 'textil' . $idx . '-' . $fslug );
+			// Elsőként az adminból feltöltött előnézet-kép; hiányában a theme-SVG placeholder.
+			$att_id = (int) $t->get_meta( '_ladym_preview_' . $fslug );
+			$url    = $att_id ? wp_get_attachment_image_url( $att_id, 'large' ) : '';
+			if ( ! $url ) {
+				$url = ladym_sm_asset_url( 'textil' . $idx . '-' . $fslug );
+			}
+			$previews[ $fslug ] = $url;
 		}
 		$js_textiles[] = array(
 			'id'       => $t->get_id(),

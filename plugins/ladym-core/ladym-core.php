@@ -19,6 +19,11 @@ require_once __DIR__ . '/elallas.php';
 // "Szabd magadra" konfigurátor (textil + méret + fazon → kosár).
 require_once __DIR__ . '/szabd-magadra.php';
 
+// "Szabd magadra" admin: textil-előnézetek feltöltése + automatikus konfiguráció.
+if ( is_admin() ) {
+	require_once __DIR__ . '/szabd-magadra-admin.php';
+}
+
 // "Kapcsolat" oldal elérhetőségei (shortcode: [ladym_kapcsolat]).
 require_once __DIR__ . '/kapcsolat.php';
 

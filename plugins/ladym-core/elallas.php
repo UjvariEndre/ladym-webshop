@@ -195,7 +195,8 @@ function ladym_elallas_render_declaration_form( $order, $email, $error = '' ) {
 			</label>
 		</p>
 
-		<button type="submit" class="ladym-elallas__btn"><?php esc_html_e( 'Elállási nyilatkozat beküldése', 'ladym-core' ); ?></button>
+		<?php // A 45/2014 (EU 2023/2673, 11a. cikk) szerinti megerősítő funkció: a felirat egyértelműen „megerősítés". ?>
+		<button type="submit" class="ladym-elallas__btn"><?php esc_html_e( 'Elállás megerősítése', 'ladym-core' ); ?></button>
 	</form>
 	<?php
 }
@@ -256,11 +257,12 @@ function ladym_elallas_handle_submit() {
 	}
 
 	$data = array(
-		'order'    => $order,
-		'email'    => $email,
-		'selected' => $selected,
-		'reason'   => $reason,
-		'bank'     => $bank,
+		'order'        => $order,
+		'email'        => $email,
+		'selected'     => $selected,
+		'reason'       => $reason,
+		'bank'         => $bank,
+		'submitted_at' => current_time( 'mysql' ), // a beküldés időpontja (11a. cikk: tartalom + dátum/idő)
 	);
 
 	ladym_elallas_store( $data );
@@ -336,7 +338,7 @@ function ladym_elallas_store( $data ) {
 		update_post_meta( $post_id, '_ladym_reason', $data['reason'] );
 		update_post_meta( $post_id, '_ladym_bank', $data['bank'] );
 		update_post_meta( $post_id, '_ladym_ip', isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '' );
-		update_post_meta( $post_id, '_ladym_date', current_time( 'mysql' ) );
+		update_post_meta( $post_id, '_ladym_date', $data['submitted_at'] ?? current_time( 'mysql' ) );
 	}
 
 	$note = sprintf(
@@ -360,6 +362,9 @@ function ladym_elallas_send_emails( $data ) {
 	$rows  = '<p>' . esc_html__( 'Köszönjük! Megerősítjük, hogy az alábbi elállási nyilatkozatod beérkezett:', 'ladym-core' ) . '</p>';
 	$rows .= '<p><strong>' . esc_html__( 'Rendelés:', 'ladym-core' ) . '</strong> #' . esc_html( $order->get_order_number() ) . '<br>';
 	$rows .= '<strong>' . esc_html__( 'Érintett tételek:', 'ladym-core' ) . '</strong> ' . esc_html( implode( ', ', $data['selected'] ) ) . '</p>';
+	if ( ! empty( $data['submitted_at'] ) ) {
+		$rows .= '<p><strong>' . esc_html__( 'A nyilatkozat beküldésének időpontja:', 'ladym-core' ) . '</strong> ' . esc_html( mysql2date( 'Y. m. d. H:i', $data['submitted_at'] ) ) . '</p>';
+	}
 	if ( $data['bank'] ) {
 		$rows .= '<p><strong>' . esc_html__( 'Visszautaláshoz megadott bankszámla:', 'ladym-core' ) . '</strong> ' . esc_html( $data['bank'] ) . '</p>';
 	}
@@ -381,7 +386,8 @@ function ladym_elallas_send_emails( $data ) {
 	$admin_body  = '<p>' . esc_html__( 'Új elállási nyilatkozat érkezett:', 'ladym-core' ) . '</p>';
 	$admin_body .= '<p><strong>Rendelés:</strong> #' . esc_html( $order->get_order_number() ) . '<br>';
 	$admin_body .= '<strong>Vásárló:</strong> ' . esc_html( $order->get_formatted_billing_full_name() ) . ' (' . esc_html( $data['email'] ) . ')<br>';
-	$admin_body .= '<strong>Tételek:</strong> ' . esc_html( implode( ', ', $data['selected'] ) ) . '</p>';
+	$admin_body .= '<strong>Tételek:</strong> ' . esc_html( implode( ', ', $data['selected'] ) ) . '<br>';
+	$admin_body .= '<strong>Beküldve:</strong> ' . esc_html( mysql2date( 'Y. m. d. H:i', $data['submitted_at'] ?? current_time( 'mysql' ) ) ) . '</p>';
 	if ( $data['reason'] ) {
 		$admin_body .= '<p><strong>Indok:</strong> ' . esc_html( $data['reason'] ) . '</p>';
 	}
