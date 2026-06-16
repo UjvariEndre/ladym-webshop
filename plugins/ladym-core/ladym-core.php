@@ -20,8 +20,10 @@ require_once __DIR__ . '/elallas.php';
 require_once __DIR__ . '/szabd-magadra.php';
 
 // "Szabd magadra" admin: textil-előnézetek feltöltése + automatikus konfiguráció.
+// + új termékek alapértelmezett készlet-beállításai (egyedi darabok).
 if ( is_admin() ) {
 	require_once __DIR__ . '/szabd-magadra-admin.php';
+	require_once __DIR__ . '/product-defaults.php';
 }
 
 // "Kapcsolat" oldal elérhetőségei (shortcode: [ladym_kapcsolat]).
