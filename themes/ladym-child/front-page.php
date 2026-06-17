@@ -192,13 +192,15 @@ function ladym_spark( $mod = '' ) {
 			<p class="ladym-about__lead"><?php esc_html_e( 'A tervezési folyamat a vintage anyagok karakterére épül, a kivitelezés pedig tapasztalt kézműves szakember közreműködésével valósul meg. Így minden darab egyszerre őrzi az eredeti textilek történetét és kap modern, hordható formát.', 'ladym' ); ?></p>
 			<a class="ladym-btn ladym-btn--ghost" href="<?php echo esc_url( home_url( '/rolunk/' ) ); ?>"><?php esc_html_e( 'Rólunk', 'ladym' ); ?></a>
 		</div>
-		<?php if ( ! empty( $lookbook ) ) : ?>
-			<figure class="ladym-about__media">
-				<div class="ladym-arch ladym-arch--mocha ladym-arch--h3">
-					<img class="ladym-arch__img" src="<?php echo esc_url( $lookbook[ count( $lookbook ) - 1 ]['url'] ); ?>" alt="<?php echo esc_attr( $lookbook[ count( $lookbook ) - 1 ]['alt'] ); ?>" loading="lazy" decoding="async" />
-				</div>
-			</figure>
-		<?php endif; ?>
+		<?php
+		// A márka-kép FIX: mindig a theme assets/wool-wanderer.jpg (nem a termék-loopból).
+		$about_img = get_stylesheet_directory_uri() . '/assets/wool-wanderer.jpg';
+		?>
+		<figure class="ladym-about__media">
+			<div class="ladym-arch ladym-arch--mocha ladym-arch--h3">
+				<img class="ladym-arch__img" src="<?php echo esc_url( $about_img ); ?>" alt="<?php esc_attr_e( 'Lady M Hungary — kézzel készült, újragondolt divat', 'ladym' ); ?>" loading="lazy" decoding="async" />
+			</div>
+		</figure>
 	</div>
 </section>
 
