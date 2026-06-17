@@ -574,6 +574,12 @@ body.home {
      egyenletesen lekerekített, a lebegő kártyához igazítva */
   border-radius: clamp(18px, 2.4vw, 30px);
 }
+/* Csak telefon-nézetben: a márka-kép enyhén jobbra tolva (a középről). */
+@media (max-width: 700px) {
+  .ladym-about__media .ladym-arch {
+    transform: translateX(32%);
+  }
+}
 
 /* nagy, halvány "LADY M" ghost-wordmark az about-sáv alján */
 .ladym-about::after {
