@@ -109,7 +109,7 @@ function ladym_spark( $mod = '' ) {
 			<?php esc_html_e( 'Fedezd fel az', 'ladym' ); ?>
 			<span class="ladym-home-hero__title-accent"><?php esc_html_e( 'egyedi darabokat.', 'ladym' ); ?></span>
 		</h1>
-		<p class="ladym-home-hero__lead"><?php esc_html_e( 'Kézzel készített, újragondolt divat — vintage textíliákból. Minden darab egyedi.', 'ladym' ); ?></p>
+		<p class="ladym-home-hero__lead"><?php esc_html_e( 'Megfizethető luxus. Egyedi történetek. Időtlen stílus.', 'ladym' ); ?></p>
 		<a class="ladym-btn ladym-btn--primary" href="<?php echo esc_url( $shop_url ); ?>"><?php esc_html_e( 'Vásárlás', 'ladym' ); ?></a>
 	</div>
 	<a class="ladym-home-hero__scroll" href="#ladym-featured" aria-label="<?php esc_attr_e( 'Görgess lejjebb', 'ladym' ); ?>">
@@ -208,10 +208,9 @@ function ladym_spark( $mod = '' ) {
 	<div class="ladym-about__inner">
 		<div class="ladym-about__text ladym-fade-up">
 			<p class="ladym-about__eyebrow"><?php esc_html_e( 'A márka', 'ladym' ); ?></p>
-			<h2 class="ladym-about__title"><?php esc_html_e( 'Elfeledett textíliák, időtlen divat', 'ladym' ); ?></h2>
-			<p class="ladym-about__lead"><?php esc_html_e( 'A Lady M Hungary egy kézzel készült, újragondolt divatmárka, amely régi takarók, ágytakarók és vintage textilek új életre keltéséből születik. A gondosan válogatott anyagokból kabátok, mellények és kiegészítők készülnek, ahol minden darab egyedi, és a múlt textíliái új formában élnek tovább.', 'ladym' ); ?></p>
+			<h2 class="ladym-about__title"><?php esc_html_e( 'Megfizethető luxus. Egyedi történetek. Időtlen stílus.', 'ladym' ); ?></h2>
+			<p class="ladym-about__lead"><?php esc_html_e( 'A Lady M Hungary olyan kézzel készített divatmárka, ahol a különleges textilek és a kézműves alkotás találkoznak. Minden darabunk egyedi, megismételhetetlen és kizárólag kis számban készül — azoknak, akik nem szeretnének beleolvadni a tömegbe.', 'ladym' ); ?></p>
 
-			<p class="ladym-about__lead"><?php esc_html_e( 'A tervezési folyamat a vintage anyagok karakterére épül, a kivitelezés pedig tapasztalt kézműves szakember közreműködésével valósul meg. Így minden darab egyszerre őrzi az eredeti textilek történetét és kap modern, hordható formát.', 'ladym' ); ?></p>
 			<a class="ladym-btn ladym-btn--ghost" href="<?php echo esc_url( home_url( '/rolunk/' ) ); ?>"><?php esc_html_e( 'Rólunk', 'ladym' ); ?></a>
 		</div>
 		<?php

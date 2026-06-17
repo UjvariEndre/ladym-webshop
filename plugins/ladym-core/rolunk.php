@@ -19,29 +19,46 @@ function ladym_rolunk_render() {
 
 	$sections = array(
 		array(
-			'title' => __( 'Az anyag, aminek története van', 'ladym-core' ),
-			'text'  => __( 'Minden darabunk egy gondosan válogatott vintage textilből születik. Ezek az anyagok évtizedeket éltek már meg — mintájuk, tapintásuk, kopásuk mind egy korábbi élet nyoma. Mi nem elrejtjük ezt a múltat, hanem továbbvisszük: a régi takarók, ágytakarók és textíliák új formában, hordható divatként élnek tovább.', 'ladym-core' ),
+			'title' => __( 'A múlt értékei új formában', 'ladym-core' ),
+			'text'  => __( 'Hiszünk abban, hogy az igazi érték nem múlik el az idővel. Gondosan válogatott, karakteres textilekből készítünk kabátokat, mellényeket és kiegészítőket, amelyek magukban hordozzák a múlt szépségét, miközben tökéletesen illeszkednek a modern gardróbba.<br><br>Minden alkotás egy apró darabja a történelemnek — viselhető formában. Olyan részlet, amely megőrzi a hagyományokat, mégis friss, stílusos és aktuális.', 'ladym-core' ),
 		),
 		array(
-			'title' => __( 'Kézzel, Magyarországon', 'ladym-core' ),
-			'text'  => __( 'A tervezés a vintage anyagok karakterére épül, a kivitelezés pedig egy tapasztalt kézműves szakember munkája, a magyarországi Nyúlon. Nincs futószalag és nincs tömeggyártás — minden öltés mögött valódi figyelem és kézi munka áll.', 'ladym-core' ),
+			'title' => __( 'Kézműves minőség Magyarországról', 'ladym-core' ),
+			'text'  => __( 'A Lady M Hungary darabjai Magyarországon, nagy odafigyeléssel készülnek. A tervezés során a textilek különleges mintavilága és karaktere inspirál bennünket, a kivitelezés pedig tapasztalt kézműves munka eredménye.<br><br>Nem tömeggyártásban gondolkodunk. Minden darab mögött idő, szakértelem és gondos kézi munka áll.', 'ladym-core' ),
 		),
 		array(
-			'title' => __( 'Egyedi, fenntartható, időtlen', 'ladym-core' ),
-			'text'  => __( 'Mivel minden alapanyag más, két teljesen egyforma darab soha nem készül. Az újrahasznosítás révén a meglévő textileket keltjük új életre, csökkentve a divat ökológiai lábnyomát — miközben időtlen, karakteres ruhák születnek, amelyek kilógnak a gyorsdivat sodrából.', 'ladym-core' ),
+			'title' => __( 'Több mint divat', 'ladym-core' ),
+			'text'  => __( 'A gyorsan változó trendek világában mi az egyéniséget választjuk. Darabjaink azoknak szólnak, akik értékelik a különlegességet, a minőséget és a stílust, amely túlmutat egyetlen szezonon.<br><br>Egy Lady M kabát vagy mellény nem csupán ruhadarab. Egy karakteres statement, amely egy hétköznapi összeállítást is különlegessé tesz. Merész minták, egyedi részletek és megismételhetetlen textúrák, amelyek segítenek megmutatni azt, aki valóban vagy.', 'ladym-core' ),
 		),
+		array(
+			'title' => __( 'Nem egy újabb fast fashion darab', 'ladym-core' ),
+			'text'  => __( 'Miközben a divatipar egyre inkább az egyformaság felé halad, mi a személyes stílusban hiszünk. Olyan ruhákat készítünk, amelyeknek lelke van, amelyek értéket őriznek, és amelyek éveken át a gardrób kedvenc darabjai maradhatnak.', 'ladym-core' ),
+		),
+		array(
+			'title' => __( 'Lady M Hungary — ahol a múlt szépsége találkozik a modern eleganciával.', 'ladym-core' ),
+			'text'  => __( 'Miközben a divatipar egyre nagyobb terhet ró a környezetre, mi hiszünk az értékek megőrzésében. Olyan kivételes minőségű, időtálló textileket választunk, amelyek megérdemelnek egy új fejezetet. Azáltal, hogy ezekből egyedi ruhadarabokat alkotunk, egyszerre őrizzük meg a múlt kézműves örökségét és támogatjuk a fenntarthatóbb divatkultúra kialakulását.', 'ladym-core' ),
+		),
+	);
+
+	// A szövegek fejlesztő által szerkesztettek (nem user-input): pár biztonságos inline
+	// címkét engedünk, hogy a <br> tényleg sortörést adjon (a wp_kses minden mást escapel).
+	$allowed_inline = array(
+		'br'     => array(),
+		'strong' => array(),
+		'em'     => array(),
+		'a'      => array( 'href' => array(), 'target' => array(), 'rel' => array() ),
 	);
 
 	ob_start();
 	?>
 	<div class="ladym-about-page">
 		<p class="ladym-about-page__eyebrow"><?php esc_html_e( 'A márka', 'ladym-core' ); ?></p>
-		<p class="ladym-about-page__lead"><?php esc_html_e( 'A Lady M Hungary kézzel készült, újragondolt divatmárka. Régi takarók, ágytakarók és vintage textilek kelnek új életre nálunk — kabátként, mellényként, kiegészítőként, amelyből csak egyetlen darab létezik a világon.', 'ladym-core' ); ?></p>
+		<p class="ladym-about-page__lead"><?php echo wp_kses( __( "A Lady M Hungary olyan kézzel készített divatmárka, ahol a különleges textilek és a kézműves alkotás találkoznak.<br><br>Minden darabunk egyedi, megismételhetetlen és kizárólag kis számban készül — azoknak, akik nem szeretnének beleolvadni a tömegbe.", 'ladym-core' ), $allowed_inline ); ?></p>
 
 		<?php foreach ( $sections as $s ) : ?>
 			<section class="ladym-about-page__section">
 				<h2 class="ladym-about-page__heading"><?php echo esc_html( $s['title'] ); ?></h2>
-				<p><?php echo esc_html( $s['text'] ); ?></p>
+				<p><?php echo wp_kses( $s['text'], $allowed_inline ); ?></p>
 			</section>
 		<?php endforeach; ?>
 
