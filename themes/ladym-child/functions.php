@@ -451,6 +451,13 @@ add_filter( 'blocksy:header:default_value', function ( $value, $builder ) {
             'id'     => 'text',
             'values' => array( 'header_text' => '[ladym_account]' ),
         ),
+        // A mobil offcanvas menü konkrétan a "Mobil menü"-t rendereli (slug: mobil-menu),
+        // relevancia-sorrendben — nem a menu_mobile location-fallback ABC-sorrendű
+        // oldal-listáját. A menüt a DB tárolja (Megjelenés → Menük), itt csak kötjük.
+        array(
+            'id'     => 'mobile-menu',
+            'values' => array( 'menu' => 'mobil-menu' ),
+        ),
     );
 
     return array(
@@ -458,6 +465,24 @@ add_filter( 'blocksy:header:default_value', function ( $value, $builder ) {
         'sections'        => array( $section ),
     );
 }, 10, 2 );
+
+/**
+ * A főoldalra mutató menüpont (mobil menü „Vissza a főoldalra") felirata a főoldalon
+ * „Főoldal"-ra vált — ott már nincs hova „visszamenni". Bármely home-ra mutató menü-
+ * itemre hat; a desktop „Főoldal" elem felirata nem változik (eleve az).
+ */
+add_filter( 'wp_nav_menu_objects', function ( $items ) {
+    if ( ! is_front_page() ) {
+        return $items;
+    }
+    $home = untrailingslashit( home_url() );
+    foreach ( $items as $item ) {
+        if ( isset( $item->url ) && untrailingslashit( $item->url ) === $home ) {
+            $item->title = __( 'Főoldal', 'ladym' );
+        }
+    }
+    return $items;
+}, 20 );
 
 /**
  * Profil-ikon a fejlécben (a kosár mellett). A Blocksy `text` header-elem rendereli
