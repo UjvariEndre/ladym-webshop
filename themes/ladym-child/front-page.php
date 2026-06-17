@@ -50,18 +50,12 @@ if ( function_exists( 'wc_get_products' ) ) {
 	}
 }
 
-/** Hero háttérkép: ladym_hero_image filter (attachment id v. URL) → első lookbook kép → gradient fallback. */
-$hero_bg      = '';
+/** Hero háttérkép: FIX (nem a termék-loopból) — theme assets/cover_without_text_upscaled.png.
+ * A ladym_hero_image filter továbbra is felülírhatja (attachment id v. URL), de alapból a fix kép. */
+$hero_bg      = get_stylesheet_directory_uri() . '/assets/cover_without_text_upscaled.png';
 $hero_img_opt = apply_filters( 'ladym_hero_image', '' );
 if ( $hero_img_opt ) {
 	$hero_bg = is_numeric( $hero_img_opt ) ? wp_get_attachment_image_url( (int) $hero_img_opt, 'full' ) : esc_url_raw( $hero_img_opt );
-}
-if ( ! $hero_bg && ! empty( $lookbook ) ) {
-	// Nagyobb méret a széles heróhoz (a 600×900 woocommerce_single túl kicsi lenne).
-	$hero_bg = wp_get_attachment_image_url( $lookbook[0]['id'], '1536x1536' );
-	if ( ! $hero_bg ) {
-		$hero_bg = $lookbook[0]['url'];
-	}
 }
 
 /** Kategória-tabok: nem-üres termékkategóriák, az elsőre aktív állapot. */
