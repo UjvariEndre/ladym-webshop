@@ -669,6 +669,20 @@ body.home {
   color: var(--color-ivory);
 }
 
+/* Ikonos gombváltozat: [(ikon) szöveg] — az ikon a szöveg betűméretéhez igazodik,
+   és a gomb színét (currentColor) örökli, így primary/ghost + hover is jó. */
+.ladym-btn--icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6em;
+}
+.ladym-btn--icon svg {
+  width: 1.05em;
+  height: 1.05em;
+  flex: 0 0 auto;
+}
+
 /* =========================================================
    Shop – fashion-editorial elrendezés (Fázis 3 / 2. lépés)
    ========================================================= */

@@ -423,7 +423,10 @@ function ladym_sm_render_cta() {
 	<section class="ladym-custom-cta">
 		<p class="ladym-custom-cta__eyebrow"><?php esc_html_e( 'Egyedi rendelés', 'ladym-core' ); ?></p>
 		<p class="ladym-custom-cta__text"><?php esc_html_e( 'Szeretnél valami teljesen egyedit? Nálunk a saját darabodat is megtervezheted — válaszd ki a textilt, a méreted és a fazont, és elkészítjük neked.', 'ladym-core' ); ?></p>
-		<a class="ladym-btn ladym-btn--primary" href="<?php echo esc_url( home_url( '/szabd-magadra/' ) ); ?>"><?php esc_html_e( 'Szabd magadra →', 'ladym-core' ); ?></a>
+		<a class="ladym-btn ladym-btn--primary ladym-btn--icon" href="<?php echo esc_url( home_url( '/szabd-magadra/' ) ); ?>">
+			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
+			<span><?php esc_html_e( 'Szabd magadra', 'ladym-core' ); ?></span>
+		</a>
 	</section>
 	<?php
 }

@@ -110,7 +110,10 @@ function ladym_spark( $mod = '' ) {
 			<span class="ladym-home-hero__title-accent"><?php esc_html_e( 'egyedi darabokat.', 'ladym' ); ?></span>
 		</h1>
 		<p class="ladym-home-hero__lead"><?php esc_html_e( 'Megfizethető luxus. Egyedi történetek. Időtlen stílus.', 'ladym' ); ?></p>
-		<a class="ladym-btn ladym-btn--primary" href="<?php echo esc_url( $shop_url ); ?>"><?php esc_html_e( 'Vásárlás', 'ladym' ); ?></a>
+		<a class="ladym-btn ladym-btn--primary ladym-btn--icon" href="<?php echo esc_url( $shop_url ); ?>">
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+				<span><?php esc_html_e( 'Vásárlás', 'ladym' ); ?></span>
+			</a>
 	</div>
 	<a class="ladym-home-hero__scroll" href="#ladym-featured" aria-label="<?php esc_attr_e( 'Görgess lejjebb', 'ladym' ); ?>">
 		<span class="ladym-home-hero__scroll-ring" aria-hidden="true">
@@ -178,7 +181,10 @@ function ladym_spark( $mod = '' ) {
 		<?php endif; ?>
 
 		<div class="ladym-featured__foot ladym-fade-up">
-			<a class="ladym-btn ladym-btn--primary" href="<?php echo esc_url( $shop_url ); ?>"><?php esc_html_e( 'Összes termék', 'ladym' ); ?></a>
+			<a class="ladym-btn ladym-btn--primary ladym-btn--icon" href="<?php echo esc_url( $shop_url ); ?>">
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+				<span><?php esc_html_e( 'Összes termék', 'ladym' ); ?></span>
+			</a>
 			<div class="ladym-featured__social">
 				<a class="ladym-social" href="<?php echo esc_url( $ig_url ); ?>" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
 					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
@@ -199,7 +205,10 @@ function ladym_spark( $mod = '' ) {
 			<span class="ladym-szabd-band__eyebrow"><?php esc_html_e( 'Egyedi rendelés', 'ladym' ); ?></span>
 			<?php esc_html_e( 'Szabd magadra — válaszd ki a textilt, a méreted és a fazont, és elkészítjük neked, egyedileg.', 'ladym' ); ?>
 		</p>
-		<a class="ladym-btn ladym-btn--primary" href="<?php echo esc_url( home_url( '/szabd-magadra/' ) ); ?>"><?php esc_html_e( 'Szabd magadra →', 'ladym' ); ?></a>
+		<a class="ladym-btn ladym-btn--primary ladym-btn--icon" href="<?php echo esc_url( home_url( '/szabd-magadra/' ) ); ?>">
+			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
+			<span><?php esc_html_e( 'Szabd magadra', 'ladym' ); ?></span>
+		</a>
 	</div>
 </section>
 
@@ -211,7 +220,10 @@ function ladym_spark( $mod = '' ) {
 			<h2 class="ladym-about__title"><?php esc_html_e( 'Megfizethető luxus. Egyedi történetek. Időtlen stílus.', 'ladym' ); ?></h2>
 			<p class="ladym-about__lead"><?php esc_html_e( 'A Lady M Hungary olyan kézzel készített divatmárka, ahol a különleges textilek és a kézműves alkotás találkoznak. Minden darabunk egyedi, megismételhetetlen és kizárólag kis számban készül — azoknak, akik nem szeretnének beleolvadni a tömegbe.', 'ladym' ); ?></p>
 
-			<a class="ladym-btn ladym-btn--ghost" href="<?php echo esc_url( home_url( '/rolunk/' ) ); ?>"><?php esc_html_e( 'Rólunk', 'ladym' ); ?></a>
+			<a class="ladym-btn ladym-btn--ghost ladym-btn--icon" href="<?php echo esc_url( home_url( '/rolunk/' ) ); ?>">
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+				<span><?php esc_html_e( 'Rólunk', 'ladym' ); ?></span>
+			</a>
 		</div>
 		<?php
 		// A márka-kép FIX: mindig a theme assets/wool-wanderer.jpg (nem a termék-loopból).
