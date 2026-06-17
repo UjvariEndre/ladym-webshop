@@ -471,18 +471,44 @@ add_filter( 'blocksy:header:default_value', function ( $value, $builder ) {
  * „Főoldal"-ra vált — ott már nincs hova „visszamenni". Bármely home-ra mutató menü-
  * itemre hat; a desktop „Főoldal" elem felirata nem változik (eleve az).
  */
-add_filter( 'wp_nav_menu_objects', function ( $items ) {
-    if ( ! is_front_page() ) {
-        return $items;
-    }
-    $home = untrailingslashit( home_url() );
+add_filter( 'wp_nav_menu_objects', function ( $items, $args ) {
+    // Ikonok CSAK a mobil offcanvas menüre (slug: mobil-menu / location: menu_mobile).
+    $menu      = isset( $args->menu ) ? $args->menu : null;
+    $slug      = is_object( $menu ) ? ( isset( $menu->slug ) ? $menu->slug : '' ) : (string) $menu;
+    $is_mobile = ( 'mobil-menu' === $slug )
+        || ( isset( $args->theme_location ) && 'menu_mobile' === $args->theme_location );
+
+    $home     = untrailingslashit( home_url() );
+    $on_front = is_front_page();
+
     foreach ( $items as $item ) {
-        if ( isset( $item->url ) && untrailingslashit( $item->url ) === $home ) {
+        $is_home = isset( $item->url ) && untrailingslashit( $item->url ) === $home;
+
+        // A főoldal-link felirata a főoldalon „Főoldal" (máshol „Vissza a főoldalra").
+        if ( $is_home && $on_front ) {
             $item->title = __( 'Főoldal', 'ladym' );
         }
+
+        if ( ! $is_mobile ) {
+            continue;
+        }
+
+        // Ikon-kulcs: oldalnál a slug, a főoldal-linknél 'home'. A CSS a
+        // .ladym-mi--<kulcs> osztályra teszi a megfelelő SVG ikont (mask-kal).
+        $key = '';
+        if ( $is_home ) {
+            $key = 'home';
+        } elseif ( isset( $item->object ) && 'page' === $item->object && ! empty( $item->object_id ) ) {
+            $key = get_post_field( 'post_name', $item->object_id );
+        }
+        if ( $key ) {
+            $item->classes[] = 'ladym-mi';
+            $item->classes[] = 'ladym-mi--' . sanitize_html_class( $key );
+        }
     }
+
     return $items;
-}, 20 );
+}, 20, 2 );
 
 /**
  * Profil-ikon a fejlécben (a kosár mellett). A Blocksy `text` header-elem rendereli
