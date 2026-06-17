@@ -24,9 +24,11 @@ $ig_url = apply_filters( 'ladym_instagram_url', 'https://www.instagram.com/ladym
 /** Lookbook képek: a legutóbbi termékek képei, dekoratívan (nem termék-linkek). */
 $lookbook = array();
 if ( function_exists( 'wc_get_products' ) ) {
+	// Mindig a 5 legfrissebb, képpel rendelkező terméket mutatjuk. Néhánnyal többet
+	// kérünk le, hogy a kép nélküli termékek kihagyása után is meglegyen az 5.
 	$products = wc_get_products(
 		array(
-			'limit'   => 6,
+			'limit'   => 12,
 			'status'  => 'publish',
 			'orderby' => 'date',
 			'order'   => 'DESC',
@@ -42,6 +44,9 @@ if ( function_exists( 'wc_get_products' ) ) {
 			'url' => wp_get_attachment_image_url( $img_id, 'woocommerce_single' ),
 			'alt' => $p->get_name(),
 		);
+		if ( count( $lookbook ) >= 5 ) {
+			break;
+		}
 	}
 }
 

@@ -72,7 +72,7 @@ function ladym_sm_render_textile_metabox( $post ) {
 	wp_nonce_field( 'ladym_sm_textile_save', 'ladym_sm_textile_nonce' );
 
 	echo '<p class="description" style="margin-top:0">';
-	esc_html_e( 'Ez a panel a „Szabd magadra” konfigurátorhoz tartozik. Tedd a terméket a Textil kategóriába, töltsd fel a swatchot Kiemelt képként, és add meg a 3 előnézetet alább.', 'ladym-core' );
+	esc_html_e( 'Ez a panel a „Szabd magadra” konfigurátorhoz tartozik. Tedd a terméket a Textil kategóriába, töltsd fel a mintát Kiemelt képként, és add meg a 3 előnézetet alább.', 'ladym-core' );
 	echo '</p>';
 
 	// --- Élő checklist (csak Textil-kategóriás, már mentett terméknél informatív) ---
@@ -83,7 +83,7 @@ function ladym_sm_render_textile_metabox( $post ) {
 
 		echo '<ul style="margin:0 0 10px;font-size:12px;line-height:1.7">';
 		ladym_sm_checklist_row( $is_textile, __( 'Textil kategóriában van', 'ladym-core' ) );
-		ladym_sm_checklist_row( $swatch_ok, __( 'Swatch = Kiemelt kép feltöltve', 'ladym-core' ) );
+		ladym_sm_checklist_row( $swatch_ok, __( 'Minta = Kiemelt kép feltöltve', 'ladym-core' ) );
 		ladym_sm_checklist_row( $vis_ok, __( 'Rejtett katalógus-láthatóság', 'ladym-core' ) );
 		ladym_sm_checklist_row( $stock_ok, __( 'Készletkezelés bekapcsolva', 'ladym-core' ) );
 		echo '</ul>';
