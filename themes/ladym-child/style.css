@@ -463,7 +463,8 @@ body.home {
     justify-content: flex-start;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
-    padding-bottom: 0.75rem;
+    /* Extra alsó hely, hogy a vízszintes scroll-konténer ne vágja le a képek árnyékát. */
+    padding-bottom: 3rem;
     -webkit-overflow-scrolling: touch;
   }
   .ladym-arch {
@@ -487,20 +488,34 @@ body.home {
   align-items: center;
   gap: 1.25rem;
 }
-.ladym-featured__trending {
-  font-size: 0.8rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--color-burgundy);
-  text-decoration: none;
-  display: inline-flex;
-  gap: 0.5rem;
-  align-items: center;
-  transition: gap 220ms var(--ladym-ease), color 220ms var(--ladym-ease);
+/* Közösségi gombok az „Összes termék" CTA alatt — szándékosan visszafogottak. */
+.ladym-featured__social {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
 }
-.ladym-featured__trending:hover {
-  gap: 0.85rem;
-  color: var(--color-burgundy-deep);
+.ladym-social {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.42rem 0.85rem;
+  border: 1px solid var(--color-line);
+  border-radius: 999px;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-ink-soft);
+  text-decoration: none;
+  transition: color 220ms var(--ladym-ease), border-color 220ms var(--ladym-ease);
+}
+.ladym-social svg {
+  width: 1rem;
+  height: 1rem;
+}
+.ladym-social:hover {
+  color: var(--color-burgundy);
+  border-color: var(--color-burgundy);
 }
 
 /* --- 3. About-sáv + ghost wordmark --- */

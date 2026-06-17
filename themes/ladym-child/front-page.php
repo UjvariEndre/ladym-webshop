@@ -18,8 +18,9 @@ if ( ! $shop_url ) {
 	$shop_url = home_url( '/shop/' );
 }
 
-/** Instagram-link a "Trending on Instagram" feliratnál (a tényleges handle filterrel állítható). */
+/** Közösségi linkek (a tényleges profilok filterrel állíthatók; ld. ladym-core/kapcsolat.php). */
 $ig_url = apply_filters( 'ladym_instagram_url', 'https://www.instagram.com/ladymfashionstyle/' );
+$fb_url = apply_filters( 'ladym_facebook_url', 'https://www.facebook.com/ladymfashionstyle' );
 
 /** Lookbook képek: a legutóbbi termékek képei, dekoratívan (nem termék-linkek). */
 $lookbook = array();
@@ -58,18 +59,39 @@ if ( $hero_img_opt ) {
 	$hero_bg = is_numeric( $hero_img_opt ) ? wp_get_attachment_image_url( (int) $hero_img_opt, 'full' ) : esc_url_raw( $hero_img_opt );
 }
 
-/** Kategória-tabok: nem-üres termékkategóriák, az elsőre aktív állapot. */
+/**
+ * Kategória-tabok: csak azok a kategóriák, amelyekben van LÁTHATÓ (katalógus) termék.
+ * A `hide_empty` a nyers term-count alapján szűr, ami beleszámolja a rejtett segéd-
+ * termékeket is (Szabd magadra / textil) — ezért egy ténylegesen 0 db-os kategória
+ * (pl. „Besorolatlan") is megjelenhetne. Ezt termékenként ellenőrizzük: a frontend
+ * wc_get_products a rejtett termékeket kihagyja (ld. ladym-core exclude szűrő),
+ * így ha üres az eredmény, a kategória tényleg üres → kihagyjuk. Max. 6 tab.
+ */
 $cats = array();
-if ( taxonomy_exists( 'product_cat' ) ) {
+if ( taxonomy_exists( 'product_cat' ) && function_exists( 'wc_get_products' ) ) {
 	$terms = get_terms(
 		array(
 			'taxonomy'   => 'product_cat',
 			'hide_empty' => true,
-			'number'     => 6,
 		)
 	);
 	if ( ! is_wp_error( $terms ) ) {
-		$cats = $terms;
+		foreach ( $terms as $term ) {
+			$has_visible = wc_get_products(
+				array(
+					'category' => array( $term->slug ),
+					'status'   => 'publish',
+					'limit'    => 1,
+					'return'   => 'ids',
+				)
+			);
+			if ( ! empty( $has_visible ) ) {
+				$cats[] = $term;
+			}
+			if ( count( $cats ) >= 6 ) {
+				break;
+			}
+		}
 	}
 }
 
@@ -112,8 +134,8 @@ function ladym_spark( $mod = '' ) {
 
 		<?php if ( ! empty( $cats ) ) : ?>
 			<nav class="ladym-featured__tabs" aria-label="<?php esc_attr_e( 'Kategóriák', 'ladym' ); ?>">
-				<?php foreach ( $cats as $i => $cat ) : ?>
-					<a class="ladym-featured__tab<?php echo 0 === $i ? ' is-active' : ''; ?>" href="<?php echo esc_url( get_term_link( $cat ) ); ?>">
+				<?php foreach ( $cats as $cat ) : ?>
+					<a class="ladym-featured__tab" href="<?php echo esc_url( get_term_link( $cat ) ); ?>">
 						<?php echo esc_html( $cat->name ); ?>
 					</a>
 				<?php endforeach; ?>
@@ -156,11 +178,17 @@ function ladym_spark( $mod = '' ) {
 		<?php endif; ?>
 
 		<div class="ladym-featured__foot ladym-fade-up">
-			<a class="ladym-featured__trending" href="<?php echo esc_url( $ig_url ); ?>" target="_blank" rel="noopener noreferrer">
-				<?php esc_html_e( 'Felkapott az Instagramon', 'ladym' ); ?>
-				<span aria-hidden="true">&rarr;</span>
-			</a>
-			<a class="ladym-btn ladym-btn--ghost" href="<?php echo esc_url( $shop_url ); ?>"><?php esc_html_e( 'Összes termék', 'ladym' ); ?></a>
+			<a class="ladym-btn ladym-btn--primary" href="<?php echo esc_url( $shop_url ); ?>"><?php esc_html_e( 'Összes termék', 'ladym' ); ?></a>
+			<div class="ladym-featured__social">
+				<a class="ladym-social" href="<?php echo esc_url( $ig_url ); ?>" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+					<span>Instagram</span>
+				</a>
+				<a class="ladym-social" href="<?php echo esc_url( $fb_url ); ?>" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+					<span>Facebook</span>
+				</a>
+			</div>
 		</div>
 	</div>
 </section>
