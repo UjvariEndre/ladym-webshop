@@ -574,12 +574,6 @@ body.home {
      egyenletesen lekerekített, a lebegő kártyához igazítva */
   border-radius: clamp(18px, 2.4vw, 30px);
 }
-/* Csak telefon-nézetben: a márka-kép enyhén jobbra tolva (a középről). */
-@media (max-width: 700px) {
-  .ladym-about__media .ladym-arch {
-    transform: translateX(32%);
-  }
-}
 
 /* nagy, halvány "LADY M" ghost-wordmark az about-sáv alján */
 .ladym-about::after {
@@ -2626,6 +2620,16 @@ body.home {
   justify-content: center;
   flex-wrap: wrap;
   margin-top: 2.8rem;
+}
+/* Záró márka-kép a Rólunk oldal alján – teljes konténer-szélesség, reszponzív. */
+.ladym-about-page__media {
+  margin: clamp(2.2rem, 5vw, 3.5rem) 0 0;
+}
+.ladym-about-page__media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: clamp(18px, 2.4vw, 30px);
 }
 
 /* --- Mobil menü ikonok (offcanvas) --------------------------------- */

@@ -226,8 +226,8 @@ function ladym_spark( $mod = '' ) {
 			</a>
 		</div>
 		<?php
-		// A márka-kép FIX: mindig a theme assets/wool-wanderer.jpg (nem a termék-loopból).
-		$about_img = get_stylesheet_directory_uri() . '/assets/wool-wanderer.jpg';
+		// A márka-kép FIX: mindig a theme assets/rolunk/rolunk_fooldal.png (nem a termék-loopból).
+		$about_img = get_stylesheet_directory_uri() . '/assets/rolunk/rolunk_fooldal.png';
 		?>
 		<figure class="ladym-about__media">
 			<div class="ladym-arch ladym-arch--mocha ladym-arch--h3">

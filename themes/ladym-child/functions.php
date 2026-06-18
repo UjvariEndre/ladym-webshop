@@ -287,6 +287,33 @@ JS;
     wp_add_inline_script( 'wc-checkout', $js );
 }, 99 );
 
+// Banki átutalás: a rendelésszámot KÖZLEMÉNYként, jól láthatóan kiírjuk (a vevő
+// tudja, mit írjon az utalás közlemény mezőjébe). E-mailben + köszönő oldalon.
+function ladym_bacs_reference( $order, $sent_to_admin = false, $plain_text = false ) {
+    if ( $sent_to_admin || ! is_a( $order, 'WC_Order' ) ) {
+        return;
+    }
+    if ( 'bacs' !== $order->get_payment_method() || ! $order->has_status( 'on-hold' ) ) {
+        return;
+    }
+    $num = $order->get_order_number();
+    if ( $plain_text ) {
+        echo "\n" . sprintf( __( 'KÖZLEMÉNY az utaláshoz: #%s', 'ladym' ), $num ) . "\n";
+    } else {
+        printf(
+            '<p style="margin:.6em 0;padding:.7em .9em;background:#f4eee3;border-left:4px solid #8e1f2e;font-size:1.05em">%s</p>',
+            sprintf( '<strong>' . esc_html__( 'Közlemény az utaláshoz: #%s', 'ladym' ) . '</strong>', esc_html( $num ) )
+        );
+    }
+}
+add_action( 'woocommerce_email_before_order_table', 'ladym_bacs_reference', 15, 3 );
+add_action( 'woocommerce_thankyou_bacs', function ( $order_id ) {
+    $order = wc_get_order( $order_id );
+    if ( $order ) {
+        ladym_bacs_reference( $order );
+    }
+}, 15 );
+
 // "Your personal data will be used..." privacy szöveg – magyar verzió (link a /adatvedelem/-re, Fázis 7-ben jön az oldal).
 add_filter( 'woocommerce_get_privacy_policy_text', function ( $text, $type ) {
     return sprintf(

@@ -72,6 +72,10 @@ function ladym_rolunk_render() {
 				<span><?php esc_html_e( 'Szabd magadra', 'ladym-core' ); ?></span>
 			</a>
 		</div>
+
+		<figure class="ladym-about-page__media">
+			<img src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/rolunk/rolunk.png' ); ?>" alt="<?php esc_attr_e( 'Lady M Hungary — kézzel készült, újragondolt divat', 'ladym-core' ); ?>" loading="lazy" decoding="async" />
+		</figure>
 	</div>
 	<?php
 	return ob_get_clean();
