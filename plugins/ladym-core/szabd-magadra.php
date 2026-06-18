@@ -86,9 +86,9 @@ function ladym_sm_hide_textile_category( $terms, $taxonomies, $args, $term_query
  */
 function ladym_sm_fazon_labels() {
 	return array(
-		'melleny' => __( 'Mellény', 'ladym-core' ),
-		'kabat'   => __( 'Kabát', 'ladym-core' ),
-		'szett'   => __( 'Szett', 'ladym-core' ),
+		'taska'    => __( 'Táska', 'ladym-core' ),
+		'melleny'  => __( 'Mellény', 'ladym-core' ),
+		'kardigan' => __( 'Kardigán', 'ladym-core' ),
 	);
 }
 

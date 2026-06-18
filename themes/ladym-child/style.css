@@ -2079,6 +2079,15 @@ body.home {
   transform: scaleX(1) !important;
 }
 
+/* Desktop legördülő (almenü, pl. "Egyedi") – a highlight a mobil hamburger
+   menü világos rózsaszínje (#e8b8cb), nem a sötét bordó. */
+.ct-header [data-id="menu"] .sub-menu .ct-menu-link { --theme-link-hover-color: #e8b8cb; }
+.ct-header [data-id="menu"] .sub-menu .ct-menu-link:hover,
+.ct-header [data-id="menu"] .sub-menu .current-menu-item > .ct-menu-link,
+.ct-header [data-id="menu"] .sub-menu .current_page_item > .ct-menu-link {
+  color: #e8b8cb !important;
+}
+
 /* =========================================================
    My Account – az input mezők fehér háttérrel
    ========================================================= */
@@ -2312,7 +2321,7 @@ body.home {
 .ladym-sm__preview-figure {
   position: relative;
   margin: 0;
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 9 / 16;
   background-color: var(--color-cream-warm);
   border: 1px solid var(--color-line);
   overflow: hidden;
@@ -2320,7 +2329,7 @@ body.home {
 .ladym-sm__preview-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain; /* a teljes magasság látszódjon, ne vágja le */
   display: block;
 }
 .ladym-sm__preview-empty {
@@ -2472,10 +2481,14 @@ body.home {
   background-color: var(--color-burgundy);
   color: var(--color-ivory);
 }
-.ladym-sm__fazon.is-selected .ladym-sm__fazon-price {
-  color: var(--color-ivory);
+/* Aktív fazon ára FEHÉR (a bordó háttéren a fekete nehezen olvasható). A WooCommerce
+   ár-HTML (.woocommerce-Price-amount/bdi) saját színét felül kell írni → * + !important. */
+.ladym-sm__fazon.is-selected .ladym-sm__fazon-price,
+.ladym-sm__fazon.is-selected .ladym-sm__fazon-price * {
+  color: var(--color-ivory) !important;
 }
-.ladym-sm__fazon.is-selected .ladym-sm__fazon-price del { color: rgba(255,255,255,0.65); }
+.ladym-sm__fazon.is-selected .ladym-sm__fazon-price del,
+.ladym-sm__fazon.is-selected .ladym-sm__fazon-price del * { color: rgba(255, 255, 255, 0.65) !important; }
 
 /* Összegzés + rendelés */
 .ladym-sm__summary {
@@ -2680,6 +2693,7 @@ body.home {
 }
 .ladym-mi--termekek { --ladym-mi: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='%23000'%20stroke-width='1.7'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M6%202%203%206v14a2%202%200%200%200%202%202h14a2%202%200%200%200%202-2V6l-3-4z'/%3E%3Cpath%20d='M3%206h18'/%3E%3Cpath%20d='M16%2010a4%204%200%200%201-8%200'/%3E%3C/svg%3E"); }
 .ladym-mi--szabd-magadra { --ladym-mi: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='%23000'%20stroke-width='1.7'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Ccircle%20cx='6'%20cy='6'%20r='3'/%3E%3Ccircle%20cx='6'%20cy='18'%20r='3'/%3E%3Cline%20x1='20'%20y1='4'%20x2='8.12'%20y2='15.88'/%3E%3Cline%20x1='14.47'%20y1='14.48'%20x2='20'%20y2='20'/%3E%3Cline%20x1='8.12'%20y1='8.12'%20x2='12'%20y2='12'/%3E%3C/svg%3E"); }
+.ladym-mi--orokolt-kincsek { --ladym-mi: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='%23000'%20stroke-width='1.7'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpolyline%20points='20%2012%2020%2022%204%2022%204%2012'/%3E%3Crect%20x='2'%20y='7'%20width='20'%20height='5'/%3E%3Cline%20x1='12'%20y1='22'%20x2='12'%20y2='7'/%3E%3Cpath%20d='M12%207H7.5a2.5%202.5%200%200%201%200-5C11%202%2012%207%2012%207z'/%3E%3Cpath%20d='M12%207h4.5a2.5%202.5%200%200%200%200-5C13%202%2012%207%2012%207z'/%3E%3C/svg%3E"); }
 .ladym-mi--kosar { --ladym-mi: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='%23000'%20stroke-width='1.7'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Ccircle%20cx='9'%20cy='21'%20r='1'/%3E%3Ccircle%20cx='20'%20cy='21'%20r='1'/%3E%3Cpath%20d='M1%201h4l2.68%2013.39a2%202%200%200%200%202%201.61h9.72a2%202%200%200%200%202-1.61L23%206H6'/%3E%3C/svg%3E"); }
 .ladym-mi--penztar { --ladym-mi: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='%23000'%20stroke-width='1.7'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Crect%20x='1'%20y='4'%20width='22'%20height='16'%20rx='2'%20ry='2'/%3E%3Cline%20x1='1'%20y1='10'%20x2='23'%20y2='10'/%3E%3C/svg%3E"); }
 .ladym-mi--adatvedelem { --ladym-mi: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='%23000'%20stroke-width='1.7'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M12%2022s8-4%208-10V5l-8-3-8%203v7c0%206%208%2010%208%2010z'/%3E%3C/svg%3E"); }
@@ -2707,3 +2721,94 @@ body.home {
     font-weight: 500;
     margin: .4em 0 .8em;
 }
+
+/* === Örökölt kincsek – egyedi ajánlatkérő (vezetett, lépcsős) === */
+.ladym-ok {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 1rem 0 2.5rem;
+}
+.ladym-ok__hero { text-align: center; margin-bottom: clamp(1.8rem, 4vw, 2.8rem); }
+.ladym-ok__eyebrow { text-transform: uppercase; letter-spacing: .2em; font-size: .7rem; color: var(--color-mocha); margin: 0 0 .8rem; }
+.ladym-ok__title {
+  font-family: var(--font-serif, "Playfair Display", serif);
+  font-weight: 500; font-size: clamp(1.8rem, 5vw, 2.7rem);
+  color: var(--color-ink); line-height: 1.15; margin: 0 0 1rem;
+}
+.ladym-ok__lead {
+  font-size: clamp(1.02rem, 2.2vw, 1.18rem); line-height: 1.7;
+  color: var(--color-ink-soft); margin: 0 auto; max-width: 38rem;
+}
+.ladym-ok__progress {
+  height: 4px; border-radius: 4px; background: var(--color-line);
+  overflow: hidden; margin-bottom: clamp(1.5rem, 4vw, 2.4rem);
+}
+.ladym-ok__progress-bar {
+  display: block; height: 100%; width: 25%; background: var(--color-burgundy);
+  transition: width .35s cubic-bezier(.16, 1, .3, 1);
+}
+.ladym-ok__step { border: 0; padding: 0; margin: 0; min-inline-size: 0; }
+.ladym-ok__q {
+  font-family: var(--font-serif, "Playfair Display", serif);
+  font-size: clamp(1.3rem, 3vw, 1.7rem); color: var(--color-ink);
+  text-align: center; margin: 0 0 1.4rem; padding: 0; width: 100%;
+}
+.ladym-ok__cards {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: .8rem;
+}
+.ladym-ok__card {
+  position: relative; display: flex; flex-direction: column; align-items: center;
+  gap: .6rem; padding: 1.4rem 1rem; border: 1px solid var(--color-line);
+  border-radius: 16px; cursor: pointer; text-align: center; background: var(--color-paper);
+  transition: border-color .2s, background .2s, transform .2s, box-shadow .2s;
+}
+.ladym-ok__card:hover { border-color: var(--color-blush); transform: translateY(-2px); }
+.ladym-ok__card input { position: absolute; opacity: 0; pointer-events: none; }
+.ladym-ok__card-ic { width: 34px; height: 34px; color: var(--color-burgundy); }
+.ladym-ok__card-ic svg { width: 100%; height: 100%; }
+.ladym-ok__card-l { font-size: .98rem; color: var(--color-ink); }
+.ladym-ok__card:has(input:checked) {
+  border-color: var(--color-burgundy); background: var(--color-cream-warm);
+  box-shadow: 0 0 0 1px var(--color-burgundy) inset;
+}
+.ladym-ok__file { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; }
+.ladym-ok__drop {
+  display: flex; flex-direction: column; align-items: center; gap: .6rem;
+  padding: 2rem 1rem; border: 1.5px dashed var(--color-line); border-radius: 16px;
+  cursor: pointer; color: var(--color-ink-soft); text-align: center;
+  transition: border-color .2s, background .2s;
+}
+.ladym-ok__drop:hover, .ladym-ok__drop.is-over { border-color: var(--color-burgundy); background: var(--color-cream-warm); }
+.ladym-ok__drop-ic { width: 30px; height: 30px; color: var(--color-burgundy); }
+.ladym-ok__drop-ic svg { width: 100%; height: 100%; }
+.ladym-ok__thumbs { list-style: none; display: flex; flex-wrap: wrap; gap: .6rem; padding: 0; margin: 1rem 0 0; }
+.ladym-ok__thumb { position: relative; width: 84px; height: 84px; border-radius: 12px; overflow: hidden; }
+.ladym-ok__thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ladym-ok__thumb-x {
+  position: absolute; top: 3px; right: 3px; width: 22px; height: 22px; border-radius: 50%;
+  border: 0; background: rgba(19, 24, 48, .65); color: #fff; cursor: pointer; line-height: 1; font-size: 16px;
+}
+.ladym-ok__field { display: block; margin: 1.2rem 0 0; }
+.ladym-ok__field > span { display: block; font-size: .9rem; color: var(--color-ink-soft); margin-bottom: .4rem; }
+.ladym-ok__field input, .ladym-ok__field textarea {
+  width: 100%; padding: .75rem .9rem; border: 1px solid var(--color-line);
+  border-radius: 10px; font: inherit; color: var(--color-ink); background: var(--color-paper); box-sizing: border-box;
+}
+.ladym-ok__field input:focus, .ladym-ok__field textarea:focus { outline: none; border-color: var(--color-burgundy); }
+.ladym-ok__error { color: var(--color-burgundy); font-size: .92rem; text-align: center; margin: 1rem 0 0; }
+.ladym-ok__nav { display: flex; justify-content: space-between; gap: .8rem; margin-top: clamp(1.6rem, 4vw, 2.4rem); }
+.ladym-ok__nav .ladym-ok__next, .ladym-ok__nav .ladym-ok__submit { margin-left: auto; }
+/* a .ladym-btn{display:inline-block} felülírná a [hidden]-t → a rejtett gombok (pl.
+   Tovább az utolsó lépésen) tényleg tűnjenek el */
+.ladym-ok [hidden] { display: none !important; }
+.ladym-ok__done { text-align: center; padding: clamp(2rem, 6vw, 3.5rem) 1rem; }
+.ladym-ok__done-ic {
+  display: inline-flex; align-items: center; justify-content: center; width: 64px; height: 64px;
+  border-radius: 50%; background: var(--color-cream-warm); color: var(--color-burgundy); margin-bottom: 1.2rem;
+}
+.ladym-ok__done-ic svg { width: 32px; height: 32px; }
+.ladym-ok__done-t {
+  font-family: var(--font-serif, "Playfair Display", serif);
+  font-size: clamp(1.6rem, 4vw, 2.2rem); color: var(--color-ink); margin: 0 0 .6rem;
+}
+.ladym-ok__done-p { color: var(--color-ink-soft); font-size: 1.1rem; margin: 0; }

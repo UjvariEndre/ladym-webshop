@@ -35,6 +35,9 @@ require_once __DIR__ . '/rolunk.php';
 // Ingyenes automatikus Számlázz.hu számlázás (a free plugin csak kézit tud).
 require_once __DIR__ . '/szamlazz-auto.php';
 
+// "Örökölt kincsek" – egyedi megrendelés/ajánlatkérő (shortcode: [ladym_orokolt_kincsek]).
+require_once __DIR__ . '/orokolt-kincsek.php';
+
 // Egyedi funkciók ide kerülnek (pl. WooCommerce hookok, shortcode-ok).
 
 /**
