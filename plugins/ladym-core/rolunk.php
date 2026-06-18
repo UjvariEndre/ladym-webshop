@@ -62,6 +62,15 @@ function ladym_rolunk_render() {
 			</section>
 		<?php endforeach; ?>
 
+		<div class="ladym-about-page__gallery">
+			<figure>
+				<img src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/rolunk/rolunk.png' ); ?>" alt="<?php esc_attr_e( 'Lady M Hungary — kézzel készült, újragondolt divat', 'ladym-core' ); ?>" loading="lazy" decoding="async" />
+			</figure>
+			<figure>
+				<img src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/rolunk/rolunk2.png' ); ?>" alt="<?php esc_attr_e( 'Lady M Hungary — kézműves részletek', 'ladym-core' ); ?>" loading="lazy" decoding="async" />
+			</figure>
+		</div>
+
 		<div class="ladym-about-page__cta">
 			<a class="ladym-btn ladym-btn--primary ladym-btn--icon" href="<?php echo esc_url( $shop_url ); ?>">
 				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
@@ -72,10 +81,6 @@ function ladym_rolunk_render() {
 				<span><?php esc_html_e( 'Szabd magadra', 'ladym-core' ); ?></span>
 			</a>
 		</div>
-
-		<figure class="ladym-about-page__media">
-			<img src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/rolunk/rolunk.png' ); ?>" alt="<?php esc_attr_e( 'Lady M Hungary — kézzel készült, újragondolt divat', 'ladym-core' ); ?>" loading="lazy" decoding="async" />
-		</figure>
 	</div>
 	<?php
 	return ob_get_clean();

@@ -2621,15 +2621,44 @@ body.home {
   flex-wrap: wrap;
   margin-top: 2.8rem;
 }
-/* Záró márka-kép a Rólunk oldal alján – teljes konténer-szélesség, reszponzív. */
-.ladym-about-page__media {
-  margin: clamp(2.2rem, 5vw, 3.5rem) 0 0;
+/* Záró márka-galéria a Rólunk oldalon: két ELTÉRŐ orientációjú kép átlósan, sarkuknál
+   átfedve, ellentétesen döntve – absztrakt editorial-kollázs. A rolunk.png (álló)
+   magassága a referencia (=1), a rolunk2.png (fekvő) ennek pontosan 2/3-a (minden
+   képernyőn). Magasság-alapú méretezés → nem torzul, mobilon sem lóg ki. */
+.ladym-about-page__gallery {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  margin: clamp(2.6rem, 6vw, 4.4rem) 0 clamp(1.6rem, 3.5vw, 2.6rem);
+  padding: clamp(0.5rem, 2vw, 1.5rem) 0;
 }
-.ladym-about-page__media img {
+.ladym-about-page__gallery figure {
+  margin: 0;
+}
+.ladym-about-page__gallery img {
   display: block;
-  width: 100%;
-  height: auto;
-  border-radius: clamp(18px, 2.4vw, 30px);
+  width: auto;
+  border-radius: clamp(12px, 1.6vw, 18px);
+}
+/* rolunk.png – álló, NAGYOBB (magasság = 1), balra döntve */
+.ladym-about-page__gallery figure:first-child {
+  transform: rotate(-3deg);
+  z-index: 1;
+}
+.ladym-about-page__gallery figure:first-child img {
+  height: clamp(180px, 40vw, 360px);
+  box-shadow: 0 24px 48px -26px rgba(19, 24, 48, 0.42);
+}
+/* rolunk2.png – fekvő, magassága a felső 2/3-a, jobbra döntve, ráül a sarokra */
+.ladym-about-page__gallery figure:nth-child(2) {
+  margin-left: clamp(-60px, -6vw, -34px);
+  margin-top: clamp(80px, 16vw, 150px);
+  transform: rotate(3.5deg);
+  z-index: 2;
+}
+.ladym-about-page__gallery figure:nth-child(2) img {
+  height: clamp(120px, 26.67vw, 240px);
+  box-shadow: 0 28px 55px -22px rgba(19, 24, 48, 0.5);
 }
 
 /* --- Mobil menü ikonok (offcanvas) --------------------------------- */
