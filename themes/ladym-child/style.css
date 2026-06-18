@@ -2490,6 +2490,25 @@ body.home {
 .ladym-sm__fazon.is-selected .ladym-sm__fazon-price del,
 .ladym-sm__fazon.is-selected .ladym-sm__fazon-price del * { color: rgba(255, 255, 255, 0.65) !important; }
 
+/* Méret-lépés elrejtése (táska) – a .ladym-sm__step display-jét felül kell írni */
+#ladym-sm-size-step[hidden] { display: none !important; }
+/* Mérettáblázat (lenyíló <details>) */
+.ladym-sm__chart { margin-top: 1rem; }
+.ladym-sm__chart-toggle {
+  display: inline-flex; align-items: center; gap: 0.4rem; cursor: pointer;
+  font-size: 0.85rem; color: var(--color-burgundy); list-style: none;
+  text-decoration: underline; text-underline-offset: 3px;
+}
+.ladym-sm__chart-toggle::-webkit-details-marker { display: none; }
+.ladym-sm__chart-toggle svg { flex: 0 0 auto; }
+.ladym-sm__chart-body { margin-top: 0.8rem; overflow-x: auto; }
+.ladym-sm__chart-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; color: var(--color-ink); }
+.ladym-sm__chart-table th,
+.ladym-sm__chart-table td { border: 1px solid var(--color-line); padding: 0.5em 0.6em; text-align: center; white-space: nowrap; }
+.ladym-sm__chart-table thead th { background: var(--color-cream-warm); font-weight: 600; font-size: 0.8rem; }
+.ladym-sm__chart-table tbody th { font-weight: 700; background: var(--color-paper); }
+.ladym-sm__chart-note { margin: 0.7rem 0 0; font-size: 0.8rem; color: var(--color-ink-soft); line-height: 1.5; }
+
 /* Összegzés + rendelés */
 .ladym-sm__summary {
   font-size: 0.95rem;

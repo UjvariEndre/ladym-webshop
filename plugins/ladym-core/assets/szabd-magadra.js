@@ -19,6 +19,10 @@
 	var $summary      = $( '#ladym-sm-summary' );
 	var $order        = $( '#ladym-sm-order' );
 	var $msg          = $( '#ladym-sm-msg' );
+	var $sizeStep     = $( '#ladym-sm-size-step' );
+	var noSizeFazons  = LadymSM.noSizeFazons || [];
+
+	function isNoSize( slug ) { return noSizeFazons.indexOf( slug ) !== -1; }
 
 	function textileById( id ) {
 		for ( var i = 0; i < LadymSM.textiles.length; i++ ) {
@@ -81,7 +85,7 @@
 	function refresh() {
 		updatePreview();
 		updateSummary();
-		var ready = state.textileId && state.size && state.fazon;
+		var ready = state.textileId && state.fazon && ( isNoSize( state.fazon ) || state.size );
 		$order.prop( 'disabled', ! ready );
 	}
 
@@ -108,12 +112,20 @@
 		state.fazon = String( $( this ).data( 'fazon' ) );
 		state.variation = $( this ).data( 'variation' );
 		selectInGroup( $( this ), '.ladym-sm__fazon' );
+		// Méret nélküli fazon (pl. táska): méret-lépés elrejtése + választás törlése.
+		if ( isNoSize( state.fazon ) ) {
+			state.size = null;
+			$root.find( '.ladym-sm__size' ).removeClass( 'is-selected' ).attr( 'aria-checked', 'false' );
+			$sizeStep.attr( 'hidden', true );
+		} else {
+			$sizeStep.removeAttr( 'hidden' );
+		}
 		refresh();
 	} );
 
 	$( '#ladym-sm-form' ).on( 'submit', function ( e ) {
 		e.preventDefault();
-		if ( ! ( state.textileId && state.size && state.fazon ) ) {
+		if ( ! ( state.textileId && state.fazon && ( isNoSize( state.fazon ) || state.size ) ) ) {
 			return;
 		}
 		$order.prop( 'disabled', true ).addClass( 'is-loading' );

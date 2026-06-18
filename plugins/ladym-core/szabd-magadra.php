@@ -24,8 +24,64 @@ const LADYM_SM_PRODUCT_SKU = 'LADYM-SZABD-MAGADRA';
 const LADYM_SM_TAXONOMY = 'pa_fazon';
 /** A textil-kategória slugja. */
 const LADYM_SM_TEXTILE_CAT = 'textil';
-/** A választható méretek (placeholder a valódi mérettáblázatig). */
+/** A választható méretek. */
 const LADYM_SM_SIZES = array( 'XS', 'S', 'M', 'L', 'XL' );
+
+/** Méret nélküli fazonok (pl. táska) – ezeknél a méret-lépés elrejtődik, nem kötelező. */
+const LADYM_SM_NO_SIZE_FAZONS = array( 'taska' );
+
+/**
+ * Mérettáblázat (standard EU/HU női méretek, induló sablon – Tündi a saját
+ * darabjaihoz igazíthatja). Soronként: méret, EU, mellbőség, derékbőség, csípőbőség.
+ */
+function ladym_sm_size_chart() {
+	return array(
+		array( 'XS', '34', '78–82', '60–64', '84–88' ),
+		array( 'S',  '36', '82–86', '64–68', '88–92' ),
+		array( 'M',  '38', '86–90', '68–72', '92–96' ),
+		array( 'L',  '40', '90–94', '72–76', '96–100' ),
+		array( 'XL', '42', '94–98', '76–80', '100–104' ),
+	);
+}
+
+/** A mérettáblázat HTML-je (lenyíló <details>). */
+function ladym_sm_size_chart_html() {
+	ob_start();
+	?>
+	<details class="ladym-sm__chart">
+		<summary class="ladym-sm__chart-toggle">
+			<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h18M3 12h18M3 17h18"/><path d="M7 4v3M12 4v3M17 4v3"/></svg>
+			<?php esc_html_e( 'Mérettáblázat', 'ladym-core' ); ?>
+		</summary>
+		<div class="ladym-sm__chart-body">
+			<table class="ladym-sm__chart-table">
+				<thead>
+					<tr>
+						<th><?php esc_html_e( 'Méret', 'ladym-core' ); ?></th>
+						<th><?php esc_html_e( 'EU', 'ladym-core' ); ?></th>
+						<th><?php esc_html_e( 'Mellbőség', 'ladym-core' ); ?></th>
+						<th><?php esc_html_e( 'Derékbőség', 'ladym-core' ); ?></th>
+						<th><?php esc_html_e( 'Csípőbőség', 'ladym-core' ); ?></th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach ( ladym_sm_size_chart() as $row ) : ?>
+						<tr>
+							<th scope="row"><?php echo esc_html( $row[0] ); ?></th>
+							<td><?php echo esc_html( $row[1] ); ?></td>
+							<td><?php echo esc_html( $row[2] ); ?> cm</td>
+							<td><?php echo esc_html( $row[3] ); ?> cm</td>
+							<td><?php echo esc_html( $row[4] ); ?> cm</td>
+						</tr>
+					<?php endforeach; ?>
+				</tbody>
+			</table>
+			<p class="ladym-sm__chart-note"><?php esc_html_e( 'A bőség a megadott ponton mért teljes körméret. Bizonytalanságnál válaszd a nagyobb méretet, vagy írj nekünk – egyedi méretre is készítünk!', 'ladym-core' ); ?></p>
+		</div>
+	</details>
+	<?php
+	return ob_get_clean();
+}
 
 /* =========================================================================
  *  A konfigurátor + textil "segéd-termékek" katalógus-láthatósága HIDDEN, de néhány
@@ -309,6 +365,7 @@ function ladym_sm_render() {
 			'cartUrl'  => wc_get_cart_url(),
 			'textiles' => $js_textiles,
 			'fazons'   => $js_fazons,
+			'noSizeFazons' => array_values( LADYM_SM_NO_SIZE_FAZONS ),
 			'i18n'     => array(
 				'choosePrompt' => __( 'Válassz textilt és fazont az előnézethez.', 'ladym-core' ),
 				'soldOut'      => __( 'Ez a textil sajnos elfogyott.', 'ladym-core' ),
@@ -351,7 +408,7 @@ function ladym_sm_render() {
 					</div>
 				</fieldset>
 
-				<fieldset class="ladym-sm__step">
+				<fieldset class="ladym-sm__step" id="ladym-sm-size-step">
 					<legend class="ladym-sm__legend"><span class="ladym-sm__num">2</span><?php esc_html_e( 'Méret', 'ladym-core' ); ?></legend>
 					<div class="ladym-sm__sizes" role="radiogroup" aria-label="<?php esc_attr_e( 'Méret', 'ladym-core' ); ?>">
 						<?php foreach ( LADYM_SM_SIZES as $size ) : ?>
@@ -360,6 +417,7 @@ function ladym_sm_render() {
 							</button>
 						<?php endforeach; ?>
 					</div>
+					<?php echo ladym_sm_size_chart_html(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				</fieldset>
 
 				<fieldset class="ladym-sm__step">
@@ -443,9 +501,13 @@ function ladym_sm_ajax_add() {
 	$size       = isset( $_POST['size'] ) ? strtoupper( sanitize_text_field( wp_unslash( $_POST['size'] ) ) ) : '';
 	$fazon      = isset( $_POST['fazon'] ) ? sanitize_title( wp_unslash( $_POST['fazon'] ) ) : '';
 
-	// Méret-ellenőrzés.
-	if ( ! in_array( $size, LADYM_SM_SIZES, true ) ) {
+	// Méret-ellenőrzés (a méret nélküli fazonoknál – pl. táska – nincs méret).
+	$needs_size = ! in_array( $fazon, LADYM_SM_NO_SIZE_FAZONS, true );
+	if ( $needs_size && ! in_array( $size, LADYM_SM_SIZES, true ) ) {
 		wp_send_json_error( array( 'message' => __( 'Érvénytelen méret.', 'ladym-core' ) ) );
+	}
+	if ( ! $needs_size ) {
+		$size = '';
 	}
 
 	// Fazon → variáció.
@@ -510,10 +572,12 @@ function ladym_sm_cart_item_data( $data, $cart_item ) {
 		'key'   => __( 'Textil', 'ladym-core' ),
 		'value' => esc_html( $m['textile_name'] ),
 	);
-	$data[] = array(
-		'key'   => __( 'Méret', 'ladym-core' ),
-		'value' => esc_html( $m['size'] ),
-	);
+	if ( '' !== $m['size'] ) {
+		$data[] = array(
+			'key'   => __( 'Méret', 'ladym-core' ),
+			'value' => esc_html( $m['size'] ),
+		);
+	}
 	return $data;
 }
 
@@ -527,7 +591,9 @@ function ladym_sm_order_line_item( $item, $cart_item_key, $values, $order ) {
 	}
 	$m = $values['ladym_sm'];
 	$item->add_meta_data( __( 'Textil', 'ladym-core' ), $m['textile_name'], true );
-	$item->add_meta_data( __( 'Méret', 'ladym-core' ), $m['size'], true );
+	if ( '' !== $m['size'] ) {
+		$item->add_meta_data( __( 'Méret', 'ladym-core' ), $m['size'], true );
+	}
 	// Rejtett technikai meta a készlet-csökkentéshez.
 	$item->add_meta_data( '_ladym_textile_id', (int) $m['textile_id'], true );
 }
