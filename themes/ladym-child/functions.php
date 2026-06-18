@@ -253,6 +253,40 @@ add_filter( 'woocommerce_order_button_text', function () {
     return __( 'Megrendelés véglegesítése', 'ladym' );
 } );
 
+// Pénztár: a "Megrendelés véglegesítése" gomb letiltva, amíg az ÁSZF-checkbox nincs
+// bepipálva, + látható (bordó) figyelmeztetés a gomb fölött, hogy a vevő tudja, miért.
+// (A szerveroldali WC-validáció marad a végső biztosíték; ez csak UX.)
+add_action( 'wp_enqueue_scripts', function () {
+    if ( ! function_exists( 'is_checkout' ) || ! is_checkout() ) {
+        return;
+    }
+    if ( function_exists( 'is_wc_endpoint_url' ) && is_wc_endpoint_url( 'order-received' ) ) {
+        return;
+    }
+    $msg = esc_js( __( 'A rendelés véglegesítéséhez fogadd el az Általános Szerződési Feltételeket.', 'ladym' ) );
+    $js  = <<<'JS'
+(function($){
+  function ladymTermsUpdate(){
+    var $terms = $('#terms'), $btn = $('#place_order');
+    if(!$btn.length){ return; }
+    $('#ladym-terms-msg').remove();
+    // Ha nincs ÁSZF-checkbox (nem kötelező), ne blokkoljunk.
+    var ok = ($terms.length === 0) || $terms.is(':checked');
+    $btn.prop('disabled', !ok).toggleClass('ladym-place-order--disabled', !ok);
+    if(!ok){
+      $('<p id="ladym-terms-msg" class="ladym-terms-msg" role="alert" aria-live="polite"></p>')
+        .text('__LADYM_MSG__').insertBefore($btn);
+    }
+  }
+  $(document.body).on('change', '#terms', ladymTermsUpdate);
+  $(document.body).on('updated_checkout', ladymTermsUpdate);
+  $(function(){ ladymTermsUpdate(); });
+})(jQuery);
+JS;
+    $js = str_replace( '__LADYM_MSG__', $msg, $js );
+    wp_add_inline_script( 'wc-checkout', $js );
+}, 99 );
+
 // "Your personal data will be used..." privacy szöveg – magyar verzió (link a /adatvedelem/-re, Fázis 7-ben jön az oldal).
 add_filter( 'woocommerce_get_privacy_policy_text', function ( $text, $type ) {
     return sprintf(
