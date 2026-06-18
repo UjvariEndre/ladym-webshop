@@ -32,6 +32,9 @@ require_once __DIR__ . '/kapcsolat.php';
 // "Rólunk" oldal márka-története (shortcode: [ladym_rolunk]).
 require_once __DIR__ . '/rolunk.php';
 
+// Ingyenes automatikus Számlázz.hu számlázás (a free plugin csak kézit tud).
+require_once __DIR__ . '/szamlazz-auto.php';
+
 // Egyedi funkciók ide kerülnek (pl. WooCommerce hookok, shortcode-ok).
 
 /**
