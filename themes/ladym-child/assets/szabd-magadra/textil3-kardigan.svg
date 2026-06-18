@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="800" viewBox="0 0 600 800" role="img" aria-label="Anyag 3 – Kardigán előnézet">
+  <defs>
+  <pattern id="tex3" width="34" height="34" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+    <path d="M17 0 L34 17 L17 34 L0 17 Z" fill="none" stroke="#b08fa0" stroke-width="1" opacity="0.18"/>
+  </pattern></defs>
+  <rect width="600" height="800" fill="#f1ecef"/>
+  <rect width="600" height="800" fill="url(#tex3)"/>
+  <g><path fill="#b08fa0" stroke="#6b4f5c" stroke-width="3" stroke-linejoin="round" d="M228 202 L300 238 L372 202 L388 250 L368 290 L374 500 L226 500 L232 290 L212 250 Z"/>
+    <path d="M300 238 L300 500" fill="none" stroke="#6b4f5c" stroke-width="3" opacity="0.55"/>
+    <path d="M300 238 L268 280 M300 238 L332 280" fill="none" stroke="#6b4f5c" stroke-width="2" opacity="0.45"/></g>
+  <rect x="40" y="688" width="520" height="72" fill="#ffffff" opacity="0.86"/>
+  <text x="300" y="722" text-anchor="middle" font-family="Georgia, 'Playfair Display', serif" font-size="30" fill="#6b4f5c">Kardigán</text>
+  <text x="300" y="748" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="15" letter-spacing="3" fill="#b08fa0">ANYAG 3</text>
+</svg>

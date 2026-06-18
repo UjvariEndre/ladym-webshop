@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="800" viewBox="0 0 600 800" role="img" aria-label="Anyag 1 – Táska előnézet">
+  <defs>
+  <pattern id="tex1" width="34" height="34" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+    <path d="M17 0 L34 17 L17 34 L0 17 Z" fill="none" stroke="#65273c" stroke-width="1" opacity="0.18"/>
+  </pattern></defs>
+  <rect width="600" height="800" fill="#f1e4e9"/>
+  <rect width="600" height="800" fill="url(#tex1)"/>
+  <g><path fill="#65273c" stroke="#4b1c2c" stroke-width="3" stroke-linejoin="round" d="M250 330 L350 330 L372 460 L228 460 Z"/>
+    <path d="M276 330 Q300 276 324 330" fill="none" stroke="#4b1c2c" stroke-width="7"/>
+    <path d="M228 362 L372 362" fill="none" stroke="#4b1c2c" stroke-width="2" opacity="0.5"/></g>
+  <rect x="40" y="688" width="520" height="72" fill="#ffffff" opacity="0.86"/>
+  <text x="300" y="722" text-anchor="middle" font-family="Georgia, 'Playfair Display', serif" font-size="30" fill="#4b1c2c">Táska</text>
+  <text x="300" y="748" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="15" letter-spacing="3" fill="#65273c">ANYAG 1</text>
+</svg>
