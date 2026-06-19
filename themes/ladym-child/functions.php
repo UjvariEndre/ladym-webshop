@@ -28,6 +28,32 @@ add_action( 'wp_enqueue_scripts', function () {
 }, 20 );
 
 /**
+ * Favicon – szabványos, Google-ajánlott szett (négyzet, 48px többszörösei).
+ *
+ * A WordPress alap site_icon kimenete (wp_site_icon) egy túl kicsi, nem 48px-többszörös
+ * forrásból dolgozott (100/300 px) → a Google nem feltétlenül ismeri fel. Helyette egy
+ * tiszta, saját szettet adunk ki a theme assets-éből: 192×192 PNG (a Google explicit
+ * ajánlott mérete), 32×32 PNG, apple-touch 180×180 és valódi multi-size /favicon.ico
+ * (16/32/48). A dizájn változatlan: a meglévő bordó „M"-monogramból lekicsinyítve.
+ */
+remove_action( 'wp_head', 'wp_site_icon', 99 );
+add_action( 'wp_head', function () {
+    $base = get_stylesheet_directory_uri() . '/assets/favicon/';
+    $dir  = get_stylesheet_directory() . '/assets/favicon/';
+    $ver  = function ( $file ) use ( $dir ) {
+        $path = $dir . $file;
+        return file_exists( $path ) ? '?v=' . filemtime( $path ) : '';
+    };
+    $links = array(
+        '<link rel="icon" href="' . esc_url( $base . 'favicon.ico' . $ver( 'favicon.ico' ) ) . '" sizes="any">',
+        '<link rel="icon" type="image/png" sizes="32x32" href="' . esc_url( $base . 'favicon-32.png' . $ver( 'favicon-32.png' ) ) . '">',
+        '<link rel="icon" type="image/png" sizes="192x192" href="' . esc_url( $base . 'icon-192.png' . $ver( 'icon-192.png' ) ) . '">',
+        '<link rel="apple-touch-icon" href="' . esc_url( $base . 'apple-touch-icon.png' . $ver( 'apple-touch-icon.png' ) ) . '">',
+    );
+    echo "\n" . implode( "\n", $links ) . "\n";
+}, 2 );
+
+/**
  * SVG feltöltés engedélyezése a médiatárba (a brand-logóhoz).
  * Csak a beállításokat kezelő szerepkörnek (admin) – kontrollált használat.
  */
@@ -56,8 +82,8 @@ add_filter( 'wp_check_filetype_and_ext', function ( $data, $file, $filename, $mi
  *
  * A logót INLINE SVG-ként adjuk vissza (nem <img>), így a `<text>` az oldalon már betöltött
  * Playfair Display + Inter Google-fontot használja — éles, font-független, könnyű. A favicon
- * (site_icon) változatlanul a bordó "M"-négyzet marad, mert az külön kódúton (wp_site_icon)
- * renderelődik, nem ezen a szűrőn keresztül.
+ * a bordó "M"-monogram marad, de külön, szabványos szettből renderelődik (lásd fent a
+ * favicon-blokkot, ami felülírja a WP alap wp_site_icon kimenetét).
  *
  * Scope: csak akkor cserélünk, ha (a) ez a custom_logo attachment ÉS (b) Blocksy a
  * `default-logo` osztállyal kéri (azaz tényleg fejléc-logóként) — tartalomba illesztett
