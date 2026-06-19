@@ -2235,16 +2235,30 @@ body.home {
 }
 
 /* --- Főoldali sáv (a "Kiemelt darabok" és "A márka" között) ---
-   Bordó→ink átlós gradient (a hero stílusában) + halvány folk-pattern textúra,
-   világos szöveg, sötét (ink) gomb. */
+   Bordó+ink gradient (a hero stílusában) + halvány folk-pattern textúra,
+   világos szöveg, sötét (ink) gomb.
+   A "fal/lezárás" érzet ellen: a sötét/ink a sáv KÖZEPÉN sűrűsödik, a két él
+   bordósabb-világosabb (2.), felül finom slate-beúszás a featured felől (3.),
+   és a JOBB SZÉL átlósan le van vágva ("/"), így a bordó nem ér végig a teljes
+   szélességen — a maradék a világos főoldali háttér (mobilon és desktopon is). */
 .ladym-szabd-band {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  padding: clamp(2.8rem, 6vw, 4.2rem) 1.5rem;
+  padding: clamp(2.8rem, 6vw, 4.2rem) 1.5rem clamp(3.8rem, 7vw, 5.6rem);
+  /* mobil: a jobb szél átlós levágása (desktopon a media query írja felül) */
+  -webkit-clip-path: polygon(0 0, 92% 0, 84% 100%, 0 100%);
+          clip-path: polygon(0 0, 92% 0, 84% 100%, 0 100%);
+  /* extra jobb padding, hogy a középre igazított szöveg a bordón maradjon */
+  padding-right: clamp(5rem, 20vw, 6.5rem);
   text-align: center;
   background-color: var(--color-burgundy);
-  background-image: linear-gradient(135deg, var(--color-burgundy) 0%, var(--color-ink) 100%);
+  background-image:
+    /* 3. lágy világos beúszás felülről (a featured slate-mist felől) — feljebb
+       húzva, hogy a felső él elmosódjon, ne legyen éles világos→sötét vonal */
+    linear-gradient(to bottom, rgba(235, 233, 239, 0.22) 0%, rgba(235, 233, 239, 0.07) 64px, transparent 150px),
+    /* 2. a mélység a középen ül, a két él bordósabb (nincs nehéz alsó sarok) */
+    linear-gradient(165deg, var(--color-burgundy) 0%, var(--color-ink) 54%, var(--color-burgundy) 100%);
   color: var(--color-ivory);
 }
 /* Halvány, világos folk-minta a gradient fölött (mask + token-szín, mint a sparkle). */
@@ -2259,16 +2273,17 @@ body.home {
   opacity: 0.4;
   pointer-events: none;
 }
-/* A sávban a gomb sötét legyen (a bordó háttéren ne olvadjon el a bordó primary gomb). */
+/* A sávban a gomb sötét (ink) töltésű, de VILÁGOS kerettel, hogy elváljon a
+   sötét/bordó háttértől és jól látszódjon. Hoveren invertál: világos töltés. */
 .ladym-szabd-band .ladym-btn--primary {
   background-color: var(--color-ink);
-  border-color: var(--color-ink);
+  border-color: var(--color-ivory);
   color: var(--color-ivory);
 }
 .ladym-szabd-band .ladym-btn--primary:hover {
-  background-color: var(--color-ink-soft);
-  border-color: var(--color-ink-soft);
-  color: var(--color-ivory);
+  background-color: var(--color-ivory);
+  border-color: var(--color-ivory);
+  color: var(--color-ink);
 }
 .ladym-szabd-band__inner {
   max-width: 620px;
@@ -2289,6 +2304,30 @@ body.home {
   line-height: 1.6;
   margin: 0 auto 1.3rem;
   max-width: 34rem;
+}
+
+/* --- Desktop: átlós "/" vágás (=======/___) ---
+   A bordó a bal ~70%-ot tölti, a jobb él átlós, a maradék a világos főoldali
+   háttér. A clip-path a teljes szekciót (gradient + folk + alsó ív) vágja, a
+   tartalom balra igazítva, hogy ne lógjon a világos sávba. Mobilon full-bleed
+   marad (lásd fent), ott a diagonál nem férne el. */
+@media (min-width: 900px) {
+  .ladym-szabd-band {
+    /* közel függőleges "/" (~75°): kis vízszintes eltérés a tető és az alja közt
+       (felül 80%, alul 74%) — finomabb dőlés, nem éles 45°-os vágás. A bordó
+       zóna szélesebb, hogy a középre tolt szöveg ne lógjon a világos részre. */
+    -webkit-clip-path: polygon(0 0, 80% 0, 74% 100%, 0 100%);
+            clip-path: polygon(0 0, 80% 0, 74% 100%, 0 100%);
+    /* a szöveg kb. az oldal 50%-ánál, középre igazítva (a két padding aszimmetriája
+       tolja jobbra a tartalom-doboz közepét) */
+    padding-left: clamp(3rem, 11vw, 10rem);
+    padding-right: clamp(4rem, 15vw, 9rem);
+  }
+  .ladym-szabd-band__inner {
+    margin: 0 auto; /* középre a bordó zónán belül */
+    max-width: 34rem;
+    text-align: center;
+  }
 }
 
 /* --- A konfigurátor oldal --- */
