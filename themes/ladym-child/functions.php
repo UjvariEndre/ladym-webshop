@@ -6,6 +6,68 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+/**
+ * Fordítások betöltése (Fázis 2 – többnyelvűség).
+ *
+ * A child theme forrás-stringjei magyarul vannak (text domain: `ladym`); az EN/DE verziót
+ * a `themes/ladym-child/languages/ladym-en_US.mo` (ill. `-de_DE.mo`) adja. A Polylang a
+ * locale-t a téma betöltése előtt átállítja, így a választott nyelv szótára töltődik.
+ */
+function ladym_load_theme_textdomain() {
+    // Explicit a `ladym-{locale}.mo` fájlt töltjük (a load_child_theme_textdomain a téma-
+    // konvenció szerint `{locale}.mo`-t keresne). A locale-t a Polylang ekkor már beállította.
+    $locale = determine_locale();
+    unload_textdomain( 'ladym' );
+    load_textdomain( 'ladym', get_stylesheet_directory() . '/languages/ladym-' . $locale . '.mo', $locale );
+}
+// after_setup_theme: admin/CLI + fallback. pll_language_defined: a fronton ekkor van kész
+// a Polylang nyelv/locale (en_US/de_DE), így a megfelelő .mo töltődik (az early betöltés még
+// hu_HU-t látna). Az unload+reload biztosítja a tiszta nyelvváltást.
+add_action( 'after_setup_theme', 'ladym_load_theme_textdomain' );
+add_action( 'pll_language_defined', 'ladym_load_theme_textdomain' );
+
+/**
+ * Igaz, ha az aktuális nyelv a magyar. A locale-ből döntünk (a Polylang a választott
+ * nyelv locale-ját állítja be: hu_HU / en_US / de_DE), így a fronton és az adminban is
+ * megbízható. A HU-ra kényszerítő gettext-szűrők ezzel guardolhatók, hogy EN/DE alatt
+ * ne írjanak felül angol/német szöveget magyarra.
+ */
+if ( ! function_exists( 'ladym_is_hu' ) ) {
+    function ladym_is_hu() {
+        return 0 === strpos( get_locale(), 'hu' );
+    }
+}
+
+/**
+ * Front-page sablon a lefordított (nem-default nyelvű) főoldalra is (Fázis 2).
+ *
+ * A Polylang a nem-default nyelv statikus főoldalát a saját slug-URL-jén szolgálja ki
+ * (pl. /en/home/), ahol a WordPress sablon-hierarchia a page.php-t választaná (üres oldal),
+ * nem a front-page.php-t. Ha a lekérdezett oldal BÁRMELY nyelv page_on_front-ja, ráerőltetjük
+ * a front-page.php-t, így az EN/DE főoldal is a hero-layoutot kapja (a stringek a .mo-ból
+ * a megfelelő nyelven). A HU (default) főoldal a gyökéren eleve front-page.php-t kap.
+ */
+add_filter( 'template_include', function ( $template ) {
+    if ( is_admin() || is_front_page() || ! is_page() ) {
+        return $template;
+    }
+    if ( ! function_exists( 'pll_get_post' ) || ! function_exists( 'pll_languages_list' ) ) {
+        return $template;
+    }
+    $qid   = (int) get_queried_object_id();
+    $front = (int) get_option( 'page_on_front' );
+    if ( ! $qid || ! $front ) {
+        return $template;
+    }
+    foreach ( pll_languages_list() as $lang ) {
+        if ( (int) pll_get_post( $front, $lang ) === $qid ) {
+            $fp = locate_template( 'front-page.php' );
+            return $fp ? $fp : $template;
+        }
+    }
+    return $template;
+}, 99 );
+
 add_action( 'wp_enqueue_scripts', function () {
     // Google Fonts: Inter (sans) + Playfair Display (serif).
     // A css2 endpoint a latin-ext készletet a magyar ékezetekhez automatikusan kiszolgálja.
@@ -105,6 +167,89 @@ add_shortcode( 'ladym_image', function ( $atts ) {
         'class' => '',
     ), $atts, 'ladym_image' );
     return ladym_lightbox_image( $atts );
+} );
+
+/**
+ * Nyelvválasztó (HU/EN/DE) – fejléc-dropdown (Fázis 2).
+ *
+ * A Polylang nyelvlistájából renderelődik (a nyelvek számától függően jelenik meg HU/EN/DE),
+ * a JS a fejléc search (desktop) / trigger (mobil) eleme elé injektálja a markupot. Polylang
+ * nélkül semmit nem tölt be. Shortcode-ként is használható: [ladym_lang_switcher].
+ */
+function ladym_lang_switcher_html() {
+    if ( ! function_exists( 'pll_the_languages' ) ) {
+        return '';
+    }
+    $langs = pll_the_languages( array(
+        'raw'                    => 1,
+        'hide_if_no_translation' => 0,
+        'hide_current'           => 0,
+        'display_names_as'       => 'name',
+    ) );
+    if ( empty( $langs ) || count( $langs ) < 2 ) {
+        return '';
+    }
+
+    $current = null;
+    foreach ( $langs as $l ) {
+        if ( ! empty( $l['current_lang'] ) ) {
+            $current = $l;
+            break;
+        }
+    }
+    if ( ! $current ) {
+        $current = reset( $langs );
+    }
+
+    $globe = '<svg class="ladym-langsw__globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.7 2.6 15.3 0 18M12 3c-2.6 2.7-2.6 15.3 0 18"/></svg>';
+    $chev  = '<svg class="ladym-langsw__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6"/></svg>';
+
+    ob_start();
+    ?>
+    <div class="ladym-langsw" data-ladym-langsw>
+        <button type="button" class="ladym-langsw__btn" aria-haspopup="true" aria-expanded="false" aria-label="<?php esc_attr_e( 'Nyelv választása', 'ladym' ); ?>">
+            <?php echo $globe; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+            <span class="ladym-langsw__cur"><?php echo esc_html( strtoupper( $current['slug'] ) ); ?></span>
+            <?php echo $chev; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+        </button>
+        <ul class="ladym-langsw__menu" role="menu">
+            <?php foreach ( $langs as $l ) : ?>
+                <li role="none">
+                    <a role="menuitem" class="ladym-langsw__link<?php echo empty( $l['current_lang'] ) ? '' : ' is-current'; ?>"
+                       href="<?php echo esc_url( $l['url'] ); ?>" lang="<?php echo esc_attr( $l['slug'] ); ?>" hreflang="<?php echo esc_attr( $l['slug'] ); ?>">
+                        <span class="ladym-langsw__name"><?php echo esc_html( $l['name'] ); ?></span>
+                        <span class="ladym-langsw__code"><?php echo esc_html( strtoupper( $l['slug'] ) ); ?></span>
+                    </a>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+    <?php
+    return ob_get_clean();
+}
+
+add_shortcode( 'ladym_lang_switcher', 'ladym_lang_switcher_html' );
+
+add_action( 'wp_enqueue_scripts', function () {
+    if ( ! function_exists( 'pll_the_languages' ) ) {
+        return;
+    }
+    $dir  = get_stylesheet_directory() . '/assets/lang-switcher/';
+    $base = get_stylesheet_directory_uri() . '/assets/lang-switcher/';
+    $ver  = function ( $f ) use ( $dir ) {
+        return file_exists( $dir . $f ) ? filemtime( $dir . $f ) : '1.0.0';
+    };
+    wp_enqueue_style( 'ladym-lang-switcher', $base . 'ladym-lang-switcher.css', array( 'ladym-child' ), $ver( 'ladym-lang-switcher.css' ) );
+    wp_enqueue_script( 'ladym-lang-switcher', $base . 'ladym-lang-switcher.js', array(), $ver( 'ladym-lang-switcher.js' ), true );
+}, 26 );
+
+// A switcher markupja egy rejtett <template>-ben; a JS a fejlécbe (search/trigger elé) injektálja.
+add_action( 'wp_footer', function () {
+    $html = ladym_lang_switcher_html();
+    if ( '' === $html ) {
+        return;
+    }
+    echo '<template id="ladym-langsw-tpl">' . $html . '</template>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 } );
 
 /**
@@ -437,7 +582,7 @@ add_filter( 'woocommerce_return_to_shop_text', function () {
 // Magyar feliratok a cart / checkout WC-szövegekre. Csak addig kell, amíg a Polylang
 // fordítási projektje fel nem dolgozta a `woocommerce` text domaint.
 add_filter( 'gettext', function ( $translated, $original, $domain ) {
-    if ( 'woocommerce' !== $domain ) {
+    if ( 'woocommerce' !== $domain || ! ladym_is_hu() ) {
         return $translated;
     }
     static $map = null;
@@ -500,7 +645,7 @@ add_filter( 'gettext', function ( $translated, $text, $domain ) {
 // használják a woo-szavakhoz (Product, Quantity, …), amit a Blocksy hu fordítása NEM fed → angolul
 // maradtak. Ezeket a telepített 'woocommerce' hu_HU fordításra irányítjuk (nincs duplikált szöveg).
 add_filter( 'gettext', function ( $translated, $text, $domain ) {
-    if ( 'blocksy' !== $domain ) {
+    if ( 'blocksy' !== $domain || ! ladym_is_hu() ) {
         return $translated;
     }
     static $woo = array(
@@ -524,16 +669,25 @@ add_filter( 'gettext', function ( $translated, $text, $domain ) {
  * szűrőn engedi át, így nem kell a footer-buildert állítgatni.
  */
 add_filter( 'blocksy:footer:copyright:value', function () {
-    $links = array(
-        '/aszf/'         => __( 'ÁSZF', 'ladym' ),
-        '/adatvedelem/'  => __( 'Adatvédelmi tájékoztató', 'ladym' ),
-        '/elallasi-jog/' => __( 'Elállási jog', 'ladym' ),
-        '/elallas/'      => __( 'Elállás a szerződéstől', 'ladym' ),
-        '/impresszum/'   => __( 'Impresszum', 'ladym' ),
+    // A jogi oldalakra HU oldal-ID alapján hivatkozunk: a Polylang az aktuális nyelv
+    // fordítását adja vissza (pll_get_post), így EN alatt a /en/... permalink jön, a
+    // label pedig a .mo-ból fordul. Fallback: a HU oldal + slug-alapú URL.
+    $pages = array(
+        59 => array( __( 'ÁSZF', 'ladym' ),                    '/aszf/' ),
+        60 => array( __( 'Adatvédelmi tájékoztató', 'ladym' ), '/adatvedelem/' ),
+        61 => array( __( 'Elállási jog', 'ladym' ),            '/elallasi-jog/' ),
+        86 => array( __( 'Elállás a szerződéstől', 'ladym' ),  '/elallas/' ),
+        62 => array( __( 'Impresszum', 'ladym' ),              '/impresszum/' ),
     );
     $items = array();
-    foreach ( $links as $url => $label ) {
-        $items[] = '<a href="' . esc_url( home_url( $url ) ) . '">' . esc_html( $label ) . '</a>';
+    foreach ( $pages as $hu_id => $info ) {
+        list( $label, $fallback ) = $info;
+        $id  = function_exists( 'pll_get_post' ) ? ( pll_get_post( $hu_id ) ?: $hu_id ) : $hu_id;
+        $url = get_permalink( $id );
+        if ( ! $url ) {
+            $url = home_url( $fallback );
+        }
+        $items[] = '<a href="' . esc_url( $url ) . '">' . esc_html( $label ) . '</a>';
     }
     return '<span class="ladym-footer-copy">&copy; ' . esc_html( date_i18n( 'Y' ) ) . ' Lady M Hungary — '
         . esc_html__( 'Kézzel készített, újragondolt divat', 'ladym' ) . '</span>'

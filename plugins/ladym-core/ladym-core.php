@@ -10,6 +10,34 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+/**
+ * Fordítások betöltése (Fázis 2 – többnyelvűség).
+ *
+ * A forrás-stringek magyarul vannak a kódban; a `-en_US.mo` (és később `-de_DE.mo`)
+ * a `plugins/ladym-core/languages/` mappából képezi le őket az adott nyelvre. A Polylang
+ * a locale-t korán (a `init` előtt) átállítja a választott nyelvre, így az `init`-en
+ * betöltött szótár már a helyes nyelvet adja.
+ */
+function ladym_core_load_textdomain() {
+    unload_textdomain( 'ladym-core' );
+    load_plugin_textdomain( 'ladym-core', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+}
+// init: admin/CLI + fallback. pll_language_defined: a fronton ekkor kész a Polylang
+// nyelv/locale, így a megfelelő nyelvű .mo töltődik (az early betöltés még hu_HU-t látna).
+add_action( 'init', 'ladym_core_load_textdomain' );
+add_action( 'pll_language_defined', 'ladym_core_load_textdomain' );
+
+/**
+ * Igaz, ha az aktuális nyelv a magyar (a locale alapján: hu_HU / en_US / de_DE).
+ * A HU-ra kényszerítő, literál-visszaadó szűrők ezzel guardolhatók. (A child theme is
+ * definiálja ugyanezt; a function_exists-guard miatt nincs ütközés.)
+ */
+if ( ! function_exists( 'ladym_is_hu' ) ) {
+    function ladym_is_hu() {
+        return 0 === strpos( get_locale(), 'hu' );
+    }
+}
+
 // Cloudflare R2 média-offload (könnyű, AWS SDK nélkül).
 require_once __DIR__ . '/r2-offload.php';
 
@@ -265,10 +293,17 @@ function ladym_dashboard_quick_actions() {
 add_filter( 'gettext', 'ladym_login_label_email_only', 20, 3 );
 
 function ladym_login_label_email_only( $translated, $text, $domain ) {
-    if ( 'woocommerce' === $domain
+    if ( ladym_is_hu()
+        && 'woocommerce' === $domain
         && ( 'Username or email address' === $text || 'Username or email' === $text )
     ) {
         return 'E-mail cím';
+    }
+    if ( ! ladym_is_hu()
+        && 'woocommerce' === $domain
+        && ( 'Username or email address' === $text || 'Username or email' === $text )
+    ) {
+        return 'Email address';
     }
     return $translated;
 }
@@ -277,8 +312,11 @@ function ladym_login_label_email_only( $translated, $text, $domain ) {
  * Elfelejtett jelszó intro-üzenet: e-mail alapú, felhasználónév nélkül.
  * (Dedikált WooCommerce szűrő – nem a template-et írjuk felül.)
  */
-add_filter( 'woocommerce_lost_password_message', function () {
-    return 'Elfelejtetted a jelszavad? Add meg az e-mail címed, és küldünk egy linket, amivel új jelszót állíthatsz be.';
+add_filter( 'woocommerce_lost_password_message', function ( $message ) {
+    if ( ladym_is_hu() ) {
+        return 'Elfelejtetted a jelszavad? Add meg az e-mail címed, és küldünk egy linket, amivel új jelszót állíthatsz be.';
+    }
+    return 'Forgot your password? Enter your email address and we\'ll send you a link to reset it.';
 } );
 
 /**

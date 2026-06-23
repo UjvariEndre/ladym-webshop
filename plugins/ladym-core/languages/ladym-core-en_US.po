@@ -1,0 +1,662 @@
+# Copyright (C) 2026 LadyMHungary
+# This file is distributed under the same license as the LadyM Core plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: LadyM Core 0.1.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/ladym-core\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: en_US\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-06-23T08:19:02+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: ladym-core\n"
+
+#. Plugin Name of the plugin
+#: ladym-core.php
+msgid "LadyM Core"
+msgstr ""
+
+#. Description of the plugin
+#: ladym-core.php
+msgid "LadyMHungary egyedi, témafüggetlen funkciói (hookok, testreszabások)."
+msgstr ""
+
+#. Author of the plugin
+#: ladym-core.php
+msgid "LadyMHungary"
+msgstr ""
+
+#: elallas.php:28
+#: elallas.php:31
+msgid "Elállási nyilatkozatok"
+msgstr "Withdrawal declarations"
+
+#: elallas.php:29
+#: elallas.php:139
+#: elallas.php:400
+msgid "Elállási nyilatkozat"
+msgstr "Withdrawal declaration"
+
+#: elallas.php:30
+msgid "Elállások"
+msgstr "Withdrawals"
+
+#: elallas.php:32
+msgid "Nyilatkozat megtekintése"
+msgstr "View declaration"
+
+#: elallas.php:79
+msgid "Elállás a szerződéstől"
+msgstr "Withdraw from contract"
+
+#: elallas.php:81
+msgid "A 45/2014. (II. 26.) Korm. rendelet alapján a termék átvételétől számított 14 napon belül indokolás nélkül elállhatsz a vásárlástól. Az elálláshoz add meg a rendelésed adatait – a beérkezésről automatikus visszaigazoló e-mailt küldünk."
+msgstr "Under Government Decree 45/2014 (II. 26.) you may withdraw from your purchase without giving a reason within 14 days of receiving the product. To withdraw, enter your order details — we'll send an automatic confirmation email on receipt."
+
+#: elallas.php:90
+msgid "Rendelésszám"
+msgstr "Order number"
+
+#: elallas.php:92
+msgid "pl. 84"
+msgstr "e.g. 84"
+
+#: elallas.php:95
+msgid "A rendeléshez tartozó e-mail cím"
+msgstr "Email address used for the order"
+
+#: elallas.php:98
+msgid "Rendelés betöltése"
+msgstr "Load order"
+
+#: elallas.php:101
+msgid "A rendelésszámot a rendelés-visszaigazoló e-mailben találod."
+msgstr "You'll find your order number in the order confirmation email."
+
+#: elallas.php:111
+#: elallas.php:209
+msgid "A munkamenet lejárt, próbáld újra."
+msgstr "Your session has expired, please try again."
+
+#: elallas.php:115
+msgid "Túl sok próbálkozás. Kérjük, próbáld újra később."
+msgstr "Too many attempts. Please try again later."
+
+#: elallas.php:126
+msgid "Nem találtunk a megadott adatokkal rendelést. Ellenőrizd a rendelésszámot és az e-mail címet."
+msgstr "We couldn't find an order with those details. Please check the order number and email address."
+
+#. translators: 1: rendelésszám, 2: rendelés dátuma
+#: elallas.php:144
+#, php-format
+msgid "Rendelés #%1$s · %2$s. Jelöld meg, mely tételektől állsz el:"
+msgstr "Order #%1$s · %2$s. Select the items you wish to withdraw from:"
+
+#: elallas.php:172
+msgid "Indok (nem kötelező)"
+msgstr "Reason (optional)"
+
+#: elallas.php:178
+msgid "Visszautaláshoz (utánvétes rendelés)"
+msgstr "For refund (cash-on-delivery order)"
+
+#: elallas.php:180
+msgid "Bankszámlaszám"
+msgstr "Bank account number"
+
+#: elallas.php:185
+msgid "Számlatulajdonos neve"
+msgstr "Account holder's name"
+
+#: elallas.php:194
+msgid "Kijelentem, hogy elállok a megjelölt tételek adásvételétől, és az elállási tájékoztatót megismertem."
+msgstr "I declare that I withdraw from the purchase of the selected items, and I have read the withdrawal information."
+
+#: elallas.php:199
+msgid "Elállás megerősítése"
+msgstr "Confirm withdrawal"
+
+#: elallas.php:219
+msgid "Érvénytelen kérés. Kezdd elölről."
+msgstr "Invalid request. Please start over."
+
+#: elallas.php:225
+msgid "A rendelés nem azonosítható."
+msgstr "The order could not be identified."
+
+#: elallas.php:231
+msgid "Jelölj meg legalább egy tételt, amelytől elállsz."
+msgstr "Select at least one item to withdraw from."
+
+#: elallas.php:235
+msgid "A nyilatkozat beküldéséhez el kell fogadnod a kijelentést."
+msgstr "To submit the declaration, you must accept the statement."
+
+#: elallas.php:247
+msgid "A megjelölt tétel nem tartozik ehhez a rendeléshez."
+msgstr "The selected item does not belong to this order."
+
+#: elallas.php:273
+#: elallas.php:361
+msgid "Elállási nyilatkozatát megkaptuk"
+msgstr "We have received your withdrawal declaration"
+
+#. translators: %s: email cím
+#: elallas.php:278
+#, php-format
+msgid "Köszönjük! Az elállási nyilatkozatod beérkezett, és a beérkezésről visszaigazoló e-mailt küldtünk a(z) %s címre. Munkatársunk hamarosan felveszi veled a kapcsolatot a visszatérítés részleteivel."
+msgstr "Thank you! Your withdrawal declaration has been received and we've sent a confirmation email to %s. Our team will contact you shortly with the refund details."
+
+#. translators: 1: tételek, 2: bankszámla (opcionális)
+#: elallas.php:346
+#, php-format
+msgid "⚠️ Elállási nyilatkozat érkezett. Érintett tételek: %1$s.%2$s"
+msgstr "⚠️ A withdrawal declaration has been received. Affected items: %1$s.%2$s"
+
+#: elallas.php:348
+#, php-format
+msgid "Visszautaláshoz: %s"
+msgstr "For refund: %s"
+
+#: elallas.php:362
+msgid "Köszönjük! Megerősítjük, hogy az alábbi elállási nyilatkozatod beérkezett:"
+msgstr "Thank you! We confirm that we have received your withdrawal declaration below:"
+
+#: elallas.php:363
+msgid "Rendelés:"
+msgstr "Order:"
+
+#: elallas.php:364
+msgid "Érintett tételek:"
+msgstr "Affected items:"
+
+#: elallas.php:366
+msgid "A nyilatkozat beküldésének időpontja:"
+msgstr "Time the declaration was submitted:"
+
+#: elallas.php:369
+msgid "Visszautaláshoz megadott bankszámla:"
+msgstr "Bank account provided for the refund:"
+
+#: elallas.php:371
+msgid "Munkatársunk hamarosan felveszi veled a kapcsolatot a visszatérítés részleteivel. A vételárat legkésőbb az elállás közlésétől számított 14 napon belül visszatérítjük."
+msgstr "Our team will contact you shortly with the refund details. We will refund the purchase price no later than 14 days from the notice of withdrawal."
+
+#: elallas.php:376
+msgid "Elállási nyilatkozat visszaigazolása – Lady M Hungary"
+msgstr "Withdrawal declaration confirmation – Lady M Hungary"
+
+#: elallas.php:386
+msgid "Új elállási nyilatkozat érkezett:"
+msgstr "A new withdrawal declaration has been received:"
+
+#: elallas.php:399
+#, php-format
+msgid "Új elállási nyilatkozat – #%s"
+msgstr "New withdrawal declaration – #%s"
+
+#: elallas.php:434
+msgid "Nyilatkozat részletei"
+msgstr "Declaration details"
+
+#: elallas.php:441
+msgid "Rendelés"
+msgstr "Order"
+
+#: elallas.php:442
+msgid "E-mail"
+msgstr "Email"
+
+#: elallas.php:443
+msgid "Tételek"
+msgstr "Items"
+
+#: elallas.php:444
+msgid "Indok"
+msgstr "Reason"
+
+#: elallas.php:445
+msgid "Bankszámla"
+msgstr "Bank account"
+
+#: elallas.php:446
+#: elallas.php:460
+msgid "Beérkezett"
+msgstr "Received"
+
+#: elallas.php:447
+msgid "IP-cím"
+msgstr "IP address"
+
+#: elallas.php:459
+msgid "Nyilatkozat"
+msgstr "Declaration"
+
+#: kapcsolat.php:69
+msgid "Kérdésed van, vagy egyedi darabot szeretnél? Írj, hívj, vagy keress minket a közösségi oldalainkon."
+msgstr "Have a question or want a custom piece? Write, call, or find us on our social channels."
+
+#: ladym-core.php:205
+msgid "LadyM — gyors műveletek"
+msgstr "LadyM — quick actions"
+
+#: ladym-core.php:240
+msgid "Új termék"
+msgstr "New product"
+
+#: ladym-core.php:241
+#: rolunk.php:77
+msgid "Termékek"
+msgstr "Products"
+
+#: ladym-core.php:242
+msgid "Rendelések"
+msgstr "Orders"
+
+#: ladym-core.php:243
+msgid "Médiatár"
+msgstr "Media library"
+
+#. translators: %s: a felhasználó neve
+#: ladym-core.php:249
+#, php-format
+msgid "Üdv, %s! Innen indíthatod a leggyakoribb műveleteket."
+msgstr "Hi %s! Start the most common actions from here."
+
+#: orokolt-kincsek.php:26
+msgid "Ruhadarab"
+msgstr "Garment"
+
+#: orokolt-kincsek.php:27
+msgid "Kézimunka / terítő"
+msgstr "Needlework / tablecloth"
+
+#: orokolt-kincsek.php:28
+msgid "Egyéb textil"
+msgstr "Other textile"
+
+#: orokolt-kincsek.php:35
+msgid "Ruha"
+msgstr "Garment"
+
+#: orokolt-kincsek.php:36
+#: szabd-magadra.php:145
+msgid "Táska"
+msgstr "Bag"
+
+#: orokolt-kincsek.php:37
+msgid "Kiegészítő"
+msgstr "Accessory"
+
+#: orokolt-kincsek.php:38
+msgid "Kérek ötletet"
+msgstr "I'd like ideas"
+
+#: orokolt-kincsek.php:86
+msgid "Küldés…"
+msgstr "Sending…"
+
+#: orokolt-kincsek.php:87
+msgid "Hiba történt. Kérlek próbáld újra."
+msgstr "Something went wrong. Please try again."
+
+#: orokolt-kincsek.php:88
+msgid "Legfeljebb 3 fotót tölthetsz fel."
+msgstr "You can upload up to 3 photos."
+
+#: orokolt-kincsek.php:89
+msgid "Ez a fotó túl nagy (max. 15 MB)."
+msgstr "This photo is too large (max. 15 MB)."
+
+#: orokolt-kincsek.php:90
+msgid "Csak képet tölthetsz fel."
+msgstr "You can only upload images."
+
+#: orokolt-kincsek.php:91
+msgid "Kérlek válassz egy lehetőséget."
+msgstr "Please choose an option."
+
+#: orokolt-kincsek.php:92
+#: orokolt-kincsek.php:217
+msgid "Kérlek add meg a neved és egy érvényes e-mail-címet."
+msgstr "Please enter your name and a valid email address."
+
+#: orokolt-kincsek.php:108
+#: orokolt-kincsek.php:118
+msgid "Örökölt kincsek Rád szabva"
+msgstr "Inherited treasures, tailored to you"
+
+#: orokolt-kincsek.php:117
+msgid "Második történet"
+msgstr "A second story"
+
+#: orokolt-kincsek.php:119
+msgid "Van egy ruhadarab, kézimunka vagy textil, amelyhez különleges emlékek kötnek? Ahelyett, hogy a szekrény mélyén maradna, új életet adunk neki. Nagymama ruhájából, egy szeretett terítőből vagy más értékes textilből modern, hordható ruhát, táskát vagy kiegészítőt készítünk – úgy, hogy a története tovább élhessen."
+msgstr "Is there a garment, a piece of needlework or a textile tied to special memories? Instead of leaving it at the back of the wardrobe, we give it a new life. From grandma's dress, a beloved tablecloth or another treasured textile we create a modern, wearable garment, bag or accessory — so its story can live on."
+
+#: orokolt-kincsek.php:126
+msgid "Mit hoznál?"
+msgstr "What would you bring?"
+
+#: orokolt-kincsek.php:139
+msgid "Mit álmodtál belőle?"
+msgstr "What did you dream of making?"
+
+#: orokolt-kincsek.php:152
+msgid "Mutasd meg!"
+msgstr "Show us!"
+
+#: orokolt-kincsek.php:156
+msgid "Tölts fel 1–3 fotót a textilről (kattints vagy húzd ide)"
+msgstr "Upload 1–3 photos of the textile (click or drag here)"
+
+#: orokolt-kincsek.php:160
+msgid "Mesélj a darabról vagy az elképzelésedről (nem kötelező)"
+msgstr "Tell us about the piece or your idea (optional)"
+
+#: orokolt-kincsek.php:166
+msgid "Hogyan érünk el?"
+msgstr "How can we reach you?"
+
+#: orokolt-kincsek.php:168
+msgid "Neved *"
+msgstr "Your name *"
+
+#: orokolt-kincsek.php:172
+msgid "E-mail *"
+msgstr "Email *"
+
+#: orokolt-kincsek.php:176
+msgid "Telefon (nem kötelező)"
+msgstr "Phone (optional)"
+
+#: orokolt-kincsek.php:184
+msgid "Vissza"
+msgstr "Back"
+
+#: orokolt-kincsek.php:185
+msgid "Tovább"
+msgstr "Next"
+
+#: orokolt-kincsek.php:186
+msgid "Ajánlatkérés elküldése"
+msgstr "Send request"
+
+#: orokolt-kincsek.php:192
+msgid "Köszönjük!"
+msgstr "Thank you!"
+
+#: orokolt-kincsek.php:193
+#: orokolt-kincsek.php:286
+msgid "1-2 napon belül jelentkezünk egy egyedi ajánlattal."
+msgstr "We'll get back to you within 1–2 days with a custom offer."
+
+#: orokolt-kincsek.php:220
+#: orokolt-kincsek.php:221
+msgid "(nincs megadva)"
+msgstr "(not provided)"
+
+#: orokolt-kincsek.php:254
+#, php-format
+msgid "Új egyedi megrendelés (Örökölt kincsek) – %s"
+msgstr "New custom order (Inherited Treasures) – %s"
+
+#: orokolt-kincsek.php:275
+msgid "Köszönjük az érdeklődésed – Lady M Hungary"
+msgstr "Thank you for your interest – Lady M Hungary"
+
+#: orokolt-kincsek.php:276
+#, php-format
+msgid "Kedves %s!"
+msgstr "Dear %s,"
+
+#: orokolt-kincsek.php:277
+msgid "Köszönjük, hogy nálunk gondolod újra a kincsedet! Megkaptuk a kérésedet, és 1-2 napon belül jelentkezünk egy egyedi ajánlattal."
+msgstr "Thank you for choosing to reimagine your treasure with us! We've received your request and will get back to you within 1–2 days with a custom offer."
+
+#: rolunk.php:22
+msgid "A múlt értékei új formában"
+msgstr "The values of the past in a new form"
+
+#: rolunk.php:23
+msgid "Hiszünk abban, hogy az igazi érték nem múlik el az idővel. Gondosan válogatott, karakteres textilekből készítünk kabátokat, mellényeket és kiegészítőket, amelyek magukban hordozzák a múlt szépségét, miközben tökéletesen illeszkednek a modern gardróbba.<br><br>Minden alkotás egy apró darabja a történelemnek — viselhető formában. Olyan részlet, amely megőrzi a hagyományokat, mégis friss, stílusos és aktuális."
+msgstr "We believe that true value doesn't fade with time. From carefully selected, characterful textiles we craft coats, vests and accessories that carry the beauty of the past while fitting perfectly into a modern wardrobe.<br><br>Every creation is a small piece of history — in wearable form. A detail that preserves tradition, yet stays fresh, stylish and current."
+
+#: rolunk.php:26
+msgid "Kézműves minőség Magyarországról"
+msgstr "Artisan quality from Hungary"
+
+#: rolunk.php:27
+msgid "A Lady M Hungary darabjai Magyarországon, nagy odafigyeléssel készülnek. A tervezés során a textilek különleges mintavilága és karaktere inspirál bennünket, a kivitelezés pedig tapasztalt kézműves munka eredménye.<br><br>Nem tömeggyártásban gondolkodunk. Minden darab mögött idő, szakértelem és gondos kézi munka áll."
+msgstr "Lady M Hungary pieces are made in Hungary with great care. During design we are inspired by the distinctive patterns and character of the textiles, while the making is the result of experienced craftsmanship.<br><br>We don't think in mass production. Behind every piece there is time, expertise and careful handwork."
+
+#: rolunk.php:30
+msgid "Több mint divat"
+msgstr "More than fashion"
+
+#: rolunk.php:31
+msgid "A gyorsan változó trendek világában mi az egyéniséget választjuk. Darabjaink azoknak szólnak, akik értékelik a különlegességet, a minőséget és a stílust, amely túlmutat egyetlen szezonon.<br><br>Egy Lady M kabát vagy mellény nem csupán ruhadarab. Egy karakteres statement, amely egy hétköznapi összeállítást is különlegessé tesz. Merész minták, egyedi részletek és megismételhetetlen textúrák, amelyek segítenek megmutatni azt, aki valóban vagy."
+msgstr "In a world of fast-changing trends, we choose individuality. Our pieces are for those who appreciate distinctiveness, quality and a style that reaches beyond a single season.<br><br>A Lady M coat or vest is more than a garment. It's a characterful statement that makes even an everyday outfit special. Bold patterns, unique details and one-of-a-kind textures that help you show who you truly are."
+
+#: rolunk.php:34
+msgid "Nem egy újabb fast fashion darab"
+msgstr "Not just another fast-fashion piece"
+
+#: rolunk.php:35
+msgid "Miközben a divatipar egyre inkább az egyformaság felé halad, mi a személyes stílusban hiszünk. Olyan ruhákat készítünk, amelyeknek lelke van, amelyek értéket őriznek, és amelyek éveken át a gardrób kedvenc darabjai maradhatnak."
+msgstr "While the fashion industry moves ever more towards uniformity, we believe in personal style. We make garments that have a soul, that hold their value, and that can remain wardrobe favourites for years."
+
+#: rolunk.php:38
+msgid "Lady M Hungary — ahol a múlt szépsége találkozik a modern eleganciával."
+msgstr "Lady M Hungary — where the beauty of the past meets modern elegance."
+
+#: rolunk.php:39
+msgid "Miközben a divatipar egyre nagyobb terhet ró a környezetre, mi hiszünk az értékek megőrzésében. Olyan kivételes minőségű, időtálló textileket választunk, amelyek megérdemelnek egy új fejezetet. Azáltal, hogy ezekből egyedi ruhadarabokat alkotunk, egyszerre őrizzük meg a múlt kézműves örökségét és támogatjuk a fenntarthatóbb divatkultúra kialakulását."
+msgstr "While the fashion industry places an ever greater burden on the environment, we believe in preserving value. We choose exceptional-quality, timeless textiles that deserve a new chapter. By turning them into unique garments, we both preserve the artisan heritage of the past and support the rise of a more sustainable fashion culture."
+
+#: rolunk.php:55
+msgid "A márka"
+msgstr "The brand"
+
+#: rolunk.php:56
+msgid "A Lady M Hungary olyan kézzel készített divatmárka, ahol a különleges textilek és a kézműves alkotás találkoznak.<br><br>Minden darabunk egyedi, megismételhetetlen és kizárólag kis számban készül — azoknak, akik nem szeretnének beleolvadni a tömegbe."
+msgstr "Lady M Hungary is a handcrafted fashion brand where extraordinary textiles meet artisan craftsmanship.<br><br>Every piece is unique, one of a kind and made only in small numbers — for those who would rather not blend into the crowd."
+
+#: rolunk.php:67
+msgid "Lady M Hungary — kézzel készült, újragondolt divat"
+msgstr "Lady M Hungary — handcrafted, reimagined fashion"
+
+#: rolunk.php:70
+msgid "Lady M Hungary — kézműves részletek"
+msgstr "Lady M Hungary — artisan details"
+
+#: rolunk.php:81
+#: szabd-magadra.php:486
+msgid "Szabd magadra"
+msgstr "Make It Your Own"
+
+#: szabd-magadra-admin.php:55
+msgid "Szabd magadra – textil képek"
+msgstr "Make It Your Own – textile images"
+
+#: szabd-magadra-admin.php:75
+msgid "Ez a panel a „Szabd magadra” konfigurátorhoz tartozik. Tedd a terméket a Textil kategóriába, töltsd fel a mintát Kiemelt képként, és add meg a 3 előnézetet alább."
+msgstr "This panel belongs to the 'Make It Your Own' configurator. Put the product in the Textile category, upload the pattern as the Featured image, and provide the 3 previews below."
+
+#: szabd-magadra-admin.php:85
+msgid "Textil kategóriában van"
+msgstr "Is in the Textile category"
+
+#: szabd-magadra-admin.php:86
+msgid "Minta = Kiemelt kép feltöltve"
+msgstr "Pattern = Featured image uploaded"
+
+#: szabd-magadra-admin.php:87
+msgid "Rejtett katalógus-láthatóság"
+msgstr "Hidden catalogue visibility"
+
+#: szabd-magadra-admin.php:88
+msgid "Készletkezelés bekapcsolva"
+msgstr "Stock management enabled"
+
+#: szabd-magadra-admin.php:91
+msgid "A láthatóságot, készletet és indexet mentéskor automatikusan beállítjuk."
+msgstr "Visibility, stock and index are set automatically on save."
+
+#. translators: %s a fazon neve, pl. Mellény
+#: szabd-magadra-admin.php:107
+#, php-format
+msgid "Előnézet – %s"
+msgstr "Preview – %s"
+
+#: szabd-magadra-admin.php:119
+msgid "Kép kiválasztása"
+msgstr "Select image"
+
+#: szabd-magadra-admin.php:123
+msgid "Törlés"
+msgstr "Remove"
+
+#: szabd-magadra-admin.php:232
+msgid "Előnézeti kép kiválasztása"
+msgstr "Select preview image"
+
+#: szabd-magadra-admin.php:233
+msgid "Használom ezt a képet"
+msgstr "Use this image"
+
+#: szabd-magadra.php:54
+msgid "Mérettáblázat"
+msgstr "Size chart"
+
+#: szabd-magadra.php:60
+#: szabd-magadra.php:375
+#: szabd-magadra.php:412
+#: szabd-magadra.php:413
+#: szabd-magadra.php:577
+#: szabd-magadra.php:595
+msgid "Méret"
+msgstr "Size"
+
+#: szabd-magadra.php:61
+msgid "EU"
+msgstr "EU"
+
+#: szabd-magadra.php:62
+msgid "Mellbőség"
+msgstr "Bust"
+
+#: szabd-magadra.php:63
+msgid "Derékbőség"
+msgstr "Waist"
+
+#: szabd-magadra.php:64
+msgid "Csípőbőség"
+msgstr "Hips"
+
+#: szabd-magadra.php:79
+msgid "A bőség a megadott ponton mért teljes körméret. Bizonytalanságnál válaszd a nagyobb méretet, vagy írj nekünk – egyedi méretre is készítünk!"
+msgstr "Each measurement is the full circumference at the given point. If unsure, choose the larger size, or write to us — we also make custom sizes!"
+
+#: szabd-magadra.php:146
+msgid "Mellény"
+msgstr "Vest"
+
+#: szabd-magadra.php:147
+msgid "Kardigán"
+msgstr "Cardigan"
+
+#: szabd-magadra.php:315
+msgid "A konfigurátor hamarosan elérhető."
+msgstr "The configurator will be available soon."
+
+#: szabd-magadra.php:370
+#: szabd-magadra.php:390
+msgid "Válassz textilt és fazont az előnézethez."
+msgstr "Choose a textile and cut for the preview."
+
+#: szabd-magadra.php:371
+#: szabd-magadra.php:531
+msgid "Ez a textil sajnos elfogyott."
+msgstr "Unfortunately this textile is out of stock."
+
+#: szabd-magadra.php:372
+msgid "Kosárba teszem…"
+msgstr "Adding to cart…"
+
+#: szabd-magadra.php:373
+msgid "Hiba történt. Próbáld újra."
+msgstr "Something went wrong. Please try again."
+
+#: szabd-magadra.php:374
+#: szabd-magadra.php:399
+#: szabd-magadra.php:400
+#: szabd-magadra.php:572
+#: szabd-magadra.php:593
+msgid "Textil"
+msgstr "Textile"
+
+#: szabd-magadra.php:376
+#: szabd-magadra.php:424
+#: szabd-magadra.php:425
+msgid "Fazon"
+msgstr "Cut"
+
+#: szabd-magadra.php:440
+msgid "Megrendelés"
+msgstr "Order"
+
+#: szabd-magadra.php:482
+msgid "Egyedi rendelés"
+msgstr "Custom order"
+
+#: szabd-magadra.php:483
+msgid "Szeretnél valami teljesen egyedit? Nálunk a saját darabodat is megtervezheted — válaszd ki a textilt, a méreted és a fazont, és elkészítjük neked."
+msgstr "Want something completely unique? Here you can design your own piece — choose the textile, your size and the cut, and we'll make it for you."
+
+#: szabd-magadra.php:507
+msgid "Érvénytelen méret."
+msgstr "Invalid size."
+
+#: szabd-magadra.php:516
+msgid "Érvénytelen fazon."
+msgstr "Invalid cut."
+
+#: szabd-magadra.php:522
+msgid "A termék nem érhető el."
+msgstr "The product is not available."
+
+#: szabd-magadra.php:528
+msgid "Érvénytelen textil."
+msgstr "Invalid textile."
+
+#: szabd-magadra.php:555
+msgid "Nem sikerült a kosárhoz adni."
+msgstr "Could not add to cart."
+
+#. translators: %s: textil neve
+#: szabd-magadra.php:617
+#, php-format
+msgid "A(z) „%s” textil időközben elfogyott, kérjük válassz másikat a „Szabd magadra” oldalon."
+msgstr "The '%s' textile has sold out in the meantime; please choose another on the 'Make It Your Own' page."
+
+#. translators: 1: textil neve, 2: régi készlet, 3: új készlet
+#: szabd-magadra.php:657
+#, php-format
+msgid "Szabd magadra – „%1$s” textil készlete: %2$d → %3$d."
+msgstr "Make It Your Own – '%1$s' textile stock: %2$d → %3$d."
+
+#: szamlazz-auto.php:64
+msgid "ismeretlen hiba"
+msgstr "unknown error"
+
+#. translators: %s: a Számlázz.hu hibaüzenete
+#: szamlazz-auto.php:68
+#, php-format
+msgid "Automatikus Számlázz.hu számla NEM készült el: %s"
+msgstr "Automatic Számlázz.hu invoice was NOT created: %s"

@@ -1,0 +1,125 @@
+/**
+ * LadyM nyelvválasztó – fejléc-dropdown (HU/EN/DE).
+ *
+ * A Polylang nyelvlistájából renderelődik; a JS a fejléc search (desktop) / trigger (mobil)
+ * eleme elé injektálja. A megjelenés a brand-tokenekhez igazodik (lásd style.css :root).
+ */
+.ladym-langsw {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  margin-right: 0.4rem;
+  font-family: var(--font-sans, "Inter", sans-serif);
+}
+
+.ladym-langsw__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.32em;
+  padding: 0.35em 0.5em;
+  background: transparent;
+  border: 0;
+  border-radius: 4px;
+  color: currentColor;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  line-height: 1;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 0.2s ease;
+}
+.ladym-langsw__btn:hover {
+  opacity: 0.7;
+}
+.ladym-langsw__btn:focus-visible {
+  outline: 2px solid var(--color-burgundy, #8e1f2e);
+  outline-offset: 2px;
+}
+.ladym-langsw__globe {
+  width: 1.05em;
+  height: 1.05em;
+  flex: 0 0 auto;
+}
+.ladym-langsw__chev {
+  width: 0.7em;
+  height: 0.7em;
+  flex: 0 0 auto;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.ladym-langsw.is-open .ladym-langsw__chev {
+  transform: rotate(180deg);
+}
+
+.ladym-langsw__menu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  z-index: 1000;
+  min-width: 9.5rem;
+  margin: 0;
+  padding: 0.3rem;
+  list-style: none;
+  background: var(--color-paper, #fff);
+  border: 1px solid var(--color-line, #e5ded1);
+  border-radius: 8px;
+  box-shadow: 0 14px 34px -16px rgba(19, 24, 48, 0.4);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.2s;
+}
+.ladym-langsw.is-open .ladym-langsw__menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.ladym-langsw__menu li {
+  margin: 0;
+}
+.ladym-langsw__link {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.5em 0.7em;
+  border-radius: 5px;
+  color: var(--color-ink, #131830);
+  font-size: 0.9rem;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.ladym-langsw__link:hover,
+.ladym-langsw__link:focus-visible {
+  background: var(--color-cream-warm, #f4eee3);
+  color: var(--color-burgundy, #8e1f2e);
+  outline: none;
+}
+.ladym-langsw__link.is-current {
+  color: var(--color-burgundy, #8e1f2e);
+  font-weight: 600;
+}
+.ladym-langsw__code {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-mocha, #5a6585);
+  margin-left: auto;
+}
+
+/* A JS-injektálás előtt rejtett forrás-template. */
+#ladym-langsw-tpl {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ladym-langsw__menu,
+  .ladym-langsw__chev,
+  .ladym-langsw__btn {
+    transition: none;
+  }
+}

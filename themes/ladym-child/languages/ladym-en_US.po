@@ -1,0 +1,362 @@
+# Copyright (C) 2026 LadyMHungary
+# This file is distributed under the same license as the LadyM Child theme.
+msgid ""
+msgstr ""
+"Project-Id-Version: LadyM Child 0.7.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/theme/ladym-child\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: en_US\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-06-23T08:19:01+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: ladym\n"
+
+#. Theme Name of the theme
+#: style.css
+msgid "LadyM Child"
+msgstr ""
+
+#. Theme URI of the theme
+#: style.css
+msgid "https://ladymhungary.hu"
+msgstr ""
+
+#. Description of the theme
+#: style.css
+msgid "LadyMHungary egyedi child theme (szülő: Blocksy). Arculat a webellus.com/ladym landing page alapján."
+msgstr ""
+
+#. Author of the theme
+#: style.css
+msgid "LadyMHungary"
+msgstr ""
+
+#: front-page.php:107
+msgid "A múltból újragondolva · Nyúl, Magyarország"
+msgstr "Reimagined from the past · Nyúl, Hungary"
+
+#: front-page.php:109
+msgid "Fedezd fel az"
+msgstr "Discover the"
+
+#: front-page.php:110
+msgid "egyedi darabokat."
+msgstr "one-of-a-kind pieces."
+
+#: front-page.php:112
+#: front-page.php:220
+msgid "Megfizethető luxus. Egyedi történetek. Időtlen stílus."
+msgstr "Affordable luxury. Unique stories. Timeless style."
+
+#: front-page.php:115
+#: woocommerce/cart/cart-empty.php:20
+msgid "Vásárlás"
+msgstr "Shop now"
+
+#: front-page.php:118
+msgid "Görgess lejjebb"
+msgstr "Scroll down"
+
+#: front-page.php:122
+msgid "Görgess"
+msgstr "Scroll"
+
+#: front-page.php:134
+msgid "A műhelyből"
+msgstr "From the workshop"
+
+#: front-page.php:135
+msgid "Kiemelt darabok"
+msgstr "Featured pieces"
+
+#: front-page.php:139
+msgid "Kategóriák"
+msgstr "Categories"
+
+#: front-page.php:186
+msgid "Összes termék"
+msgstr "All products"
+
+#: front-page.php:205
+msgid "Egyedi rendelés"
+msgstr "Custom order"
+
+#: front-page.php:206
+msgid "Szabd magadra — válaszd ki a textilt, a méreted és a fazont, és elkészítjük neked, egyedileg."
+msgstr "Make It Your Own — choose the fabric, your size and the cut, and we'll craft it just for you."
+
+#: front-page.php:210
+msgid "Szabd magadra"
+msgstr "Make It Your Own"
+
+#: front-page.php:219
+msgid "A márka"
+msgstr "The brand"
+
+#: front-page.php:221
+msgid "A Lady M Hungary olyan kézzel készített divatmárka, ahol a különleges textilek és a kézműves alkotás találkoznak. Minden darabunk egyedi, megismételhetetlen és kizárólag kis számban készül — azoknak, akik nem szeretnének beleolvadni a tömegbe."
+msgstr "Lady M Hungary is a handcrafted fashion brand where extraordinary textiles meet artisan craftsmanship. Every piece is unique, one of a kind and made only in small numbers — for those who would rather not blend into the crowd."
+
+#: front-page.php:225
+msgid "Rólunk"
+msgstr "About us"
+
+#: front-page.php:234
+msgid "Lady M Hungary — kézzel készült, újragondolt divat"
+msgstr "Lady M Hungary — handcrafted, reimagined fashion"
+
+#: functions.php:236
+msgid "Kollekció"
+msgstr "Collection"
+
+#: functions.php:237
+msgid "Aktuális darabok"
+msgstr "Current pieces"
+
+#: functions.php:238
+msgid "Minden ruha és kiegészítő egyetlen példányban készül, gondosan válogatott vintage textíliák újraértelmezésével."
+msgstr "Every garment and accessory is made as a single edition, reinterpreting carefully selected vintage textiles."
+
+#: functions.php:294
+msgid "Hozzáadás a kosárhoz"
+msgstr "Add to cart"
+
+#: functions.php:315
+#: woocommerce/cart/cart-empty.php:15
+msgid "Kosár"
+msgstr "Cart"
+
+#: functions.php:316
+msgid "A kosarad"
+msgstr "Your cart"
+
+#: functions.php:317
+msgid "Egy lépéssel közelebb a saját darabodhoz."
+msgstr "One step closer to your own piece."
+
+#: functions.php:333
+msgid "Pénztár"
+msgstr "Checkout"
+
+#: functions.php:334
+msgid "Befejezés"
+msgstr "Complete your order"
+
+#: functions.php:335
+msgid "Add meg az adataid, és pár nap múlva érkezik a darabod."
+msgstr "Enter your details and your piece will arrive in a few days."
+
+#: functions.php:370
+msgid "Megrendelés véglegesítése"
+msgstr "Place order"
+
+#: functions.php:383
+msgid "A rendelés véglegesítéséhez fogadd el az Általános Szerződési Feltételeket."
+msgstr "To place your order, please accept the Terms and Conditions."
+
+#: functions.php:418
+#, php-format
+msgid "KÖZLEMÉNY az utaláshoz: #%s"
+msgstr "PAYMENT REFERENCE for the transfer: #%s"
+
+#: functions.php:422
+#, php-format
+msgid "Közlemény az utaláshoz: #%s"
+msgstr "Payment reference for the transfer: #%s"
+
+#: functions.php:439
+msgid "A személyes adataid kezelése az Adatvédelmi tájékoztatónk szerint történik."
+msgstr "Your personal data is handled in accordance with our Privacy Policy."
+
+#: functions.php:445
+#: woocommerce/checkout/thankyou.php:82
+msgid "Vissza a kollekcióhoz"
+msgstr "Back to the collection"
+
+#: functions.php:487
+#: woocommerce/content-product.php:40
+#: woocommerce/content-single-product.php:83
+msgid "Elkelt"
+msgstr "Sold"
+
+#: functions.php:505
+msgid "Bankkártya"
+msgstr "Bank card"
+
+#: functions.php:539
+#: woocommerce/emails/email-footer.php:50
+msgid "ÁSZF"
+msgstr "Terms & Conditions"
+
+#: functions.php:540
+msgid "Adatvédelmi tájékoztató"
+msgstr "Privacy Policy"
+
+#: functions.php:541
+#: woocommerce/emails/email-footer.php:54
+msgid "Elállási jog"
+msgstr "Right of Withdrawal"
+
+#: functions.php:542
+msgid "Elállás a szerződéstől"
+msgstr "Withdraw from contract"
+
+#: functions.php:543
+#: woocommerce/emails/email-footer.php:56
+msgid "Impresszum"
+msgstr "Imprint"
+
+#: functions.php:550
+msgid "Kézzel készített, újragondolt divat"
+msgstr "Handcrafted, reimagined fashion"
+
+#: functions.php:551
+msgid "Jogi információk"
+msgstr "Legal information"
+
+#: functions.php:557
+msgid "Szállítás"
+msgstr "Shipping"
+
+#: functions.php:667
+msgid "Főoldal"
+msgstr "Home"
+
+#: functions.php:701
+#: woocommerce/checkout/thankyou.php:32
+msgid "Fiókom"
+msgstr "My account"
+
+#: functions.php:701
+msgid "Bejelentkezés / Regisztráció"
+msgstr "Log in / Register"
+
+#: woocommerce/cart/cart-empty.php:16
+msgid "A kosarad még üres"
+msgstr "Your cart is still empty"
+
+#: woocommerce/cart/cart-empty.php:17
+msgid "Nézz körül a kollekcióban — minden darab egyetlen példányban készül a műhelyünkben."
+msgstr "Take a look at the collection — every piece is made as a single edition in our workshop."
+
+#: woocommerce/checkout/thankyou.php:24
+msgid "Hiba"
+msgstr "Error"
+
+#: woocommerce/checkout/thankyou.php:25
+msgid "A rendelés feldolgozása sikertelen"
+msgstr "Order processing failed"
+
+#: woocommerce/checkout/thankyou.php:26
+msgid "A bankod elutasította a tranzakciót. Kérjük, próbáld újra."
+msgstr "Your bank declined the transaction. Please try again."
+
+#: woocommerce/checkout/thankyou.php:30
+msgid "Fizetés újra"
+msgstr "Pay again"
+
+#: woocommerce/checkout/thankyou.php:39
+#: woocommerce/checkout/thankyou.php:91
+msgid "Köszönjük"
+msgstr "Thank you"
+
+#: woocommerce/checkout/thankyou.php:40
+#: woocommerce/checkout/thankyou.php:92
+msgid "Megérkezett a rendelésed"
+msgstr "Your order has arrived"
+
+#: woocommerce/checkout/thankyou.php:41
+msgid "Egy egyedi darab vár rád. Hamarosan jelentkezem a részletekkel."
+msgstr "A unique piece awaits you. I'll be in touch shortly with the details."
+
+#: woocommerce/checkout/thankyou.php:47
+msgid "Rendelés száma"
+msgstr "Order number"
+
+#: woocommerce/checkout/thankyou.php:52
+msgid "Dátum"
+msgstr "Date"
+
+#: woocommerce/checkout/thankyou.php:58
+msgid "E-mail"
+msgstr "Email"
+
+#: woocommerce/checkout/thankyou.php:64
+msgid "Végösszeg"
+msgstr "Total"
+
+#: woocommerce/checkout/thankyou.php:70
+msgid "Fizetési mód"
+msgstr "Payment method"
+
+#: woocommerce/content-single-product.php:44
+msgid "Kategória:"
+msgid_plural "Kategóriák:"
+msgstr[0] "Category:"
+msgstr[1] "Categories:"
+
+#: woocommerce/content-single-product.php:50
+msgid "Címke:"
+msgid_plural "Címkék:"
+msgstr[0] "Tag:"
+msgstr[1] "Tags:"
+
+#: woocommerce/content-single-product.php:65
+msgid "Morzsa-útvonal"
+msgstr "Breadcrumb"
+
+#: woocommerce/content-single-product.php:67
+msgid "Shop"
+msgstr "Shop"
+
+#: woocommerce/content-single-product.php:113
+#, php-format
+msgid "Kép %d megjelenítése"
+msgstr "Show image %d"
+
+#: woocommerce/content-single-product.php:145
+msgid "Elkelt — gazdára talált"
+msgstr "Sold — found its owner"
+
+#: woocommerce/content-single-product.php:147
+msgid "1 / 1 — EGYEDI DARAB"
+msgstr "1 / 1 — ONE OF A KIND"
+
+#. translators: %s: vevő keresztneve
+#: woocommerce/emails/customer-processing-order.php:21
+#, php-format
+msgid "Kedves %s!"
+msgstr "Dear %s,"
+
+#: woocommerce/emails/customer-processing-order.php:23
+msgid "Kedves Vásárlónk!"
+msgstr "Dear Customer,"
+
+#: woocommerce/emails/customer-processing-order.php:27
+msgid "Megkaptuk a rendelésed, jelenleg feldolgozás alatt van."
+msgstr "We've received your order and it's currently being processed."
+
+#: woocommerce/emails/customer-processing-order.php:28
+msgid "Emlékeztetőül, ezt rendelted:"
+msgstr "As a reminder, here's what you ordered:"
+
+#: woocommerce/emails/email-footer.php:52
+msgid "Adatvédelem"
+msgstr "Privacy"
+
+#: woocommerce/emails/email-header.php:61
+msgid "A múltból újragondolva"
+msgstr "Reimagined from the past"
+
+#: woocommerce/single-product/related.php:25
+msgid "Még a kollekcióból"
+msgstr "More from the collection"
+
+#: woocommerce/single-product/related.php:26
+msgid "Hasonló darabok"
+msgstr "Similar pieces"
