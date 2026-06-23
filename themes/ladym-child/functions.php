@@ -28,6 +28,86 @@ add_action( 'wp_enqueue_scripts', function () {
 }, 20 );
 
 /**
+ * LadyM Lightbox – újrahasználható kép-nagyító / galéria komponens.
+ *
+ * Az asseteket globálisan betöltjük (kicsi, és a JS egy delegált klikk-figyelővel dolgozik,
+ * ezért semmibe nem kerül, ha az oldalon nincs nagyítható kép). Bekötés: tegyél bármely
+ * elemre `data-ladym-lb` attribútumot (+ opcionálisan `data-ladym-lb-full` a nagy felbontású
+ * forráshoz és `data-ladym-lb-group` a több képes, lapozható galériához). Markup-generáláshoz
+ * használd a `ladym_lightbox_image()` helpert vagy a `[ladym_image]` shortcode-ot.
+ */
+add_action( 'wp_enqueue_scripts', function () {
+    $dir  = get_stylesheet_directory() . '/assets/lightbox/';
+    $base = get_stylesheet_directory_uri() . '/assets/lightbox/';
+    $ver  = function ( $file ) use ( $dir ) {
+        return file_exists( $dir . $file ) ? filemtime( $dir . $file ) : '1.0.0';
+    };
+    wp_enqueue_style( 'ladym-lightbox', $base . 'ladym-lightbox.css', array( 'ladym-child' ), $ver( 'ladym-lightbox.css' ) );
+    wp_enqueue_script( 'ladym-lightbox', $base . 'ladym-lightbox.js', array(), $ver( 'ladym-lightbox.js' ), true );
+}, 25 );
+
+/**
+ * Nagyítható kép markup-ja (a Lightbox komponenshez).
+ *
+ * @param array $args {
+ *   @type string $src    Megjelenített (thumbnail) kép URL-je. Kötelező.
+ *   @type string $full   Nagy felbontású forrás a nézethez. Alapért. = $src.
+ *   @type string $alt    Alternatív szöveg.
+ *   @type string $group  Galéria-csoport kulcs (azonos kulcs = lapozható együtt).
+ *   @type string $class  Extra CSS-osztály(ok) az <img>-en.
+ *   @type bool   $lazy   loading="lazy" (alapért. true).
+ * }
+ * @return string Az <img> markup, vagy üres string ha nincs src.
+ */
+function ladym_lightbox_image( $args = array() ) {
+    $a = wp_parse_args( $args, array(
+        'src'   => '',
+        'full'  => '',
+        'alt'   => '',
+        'group' => '',
+        'class' => '',
+        'lazy'  => true,
+    ) );
+    if ( empty( $a['src'] ) ) {
+        return '';
+    }
+    if ( empty( $a['full'] ) ) {
+        $a['full'] = $a['src'];
+    }
+    $attrs = array(
+        'class="ladym-zoomable ' . esc_attr( trim( $a['class'] ) ) . '"',
+        'src="' . esc_url( $a['src'] ) . '"',
+        'alt="' . esc_attr( $a['alt'] ) . '"',
+        'data-ladym-lb',
+        'data-ladym-lb-full="' . esc_url( $a['full'] ) . '"',
+        'tabindex="0"',
+        'role="button"',
+        'decoding="async"',
+    );
+    if ( ! empty( $a['group'] ) ) {
+        $attrs[] = 'data-ladym-lb-group="' . esc_attr( $a['group'] ) . '"';
+    }
+    if ( $a['lazy'] ) {
+        $attrs[] = 'loading="lazy"';
+    }
+    return '<img ' . implode( ' ', $attrs ) . ' />';
+}
+
+/**
+ * Shortcode: [ladym_image src="" full="" alt="" group="" class=""]
+ */
+add_shortcode( 'ladym_image', function ( $atts ) {
+    $atts = shortcode_atts( array(
+        'src'   => '',
+        'full'  => '',
+        'alt'   => '',
+        'group' => '',
+        'class' => '',
+    ), $atts, 'ladym_image' );
+    return ladym_lightbox_image( $atts );
+} );
+
+/**
  * Favicon – szabványos, Google-ajánlott szett (négyzet, 48px többszörösei).
  *
  * A WordPress alap site_icon kimenete (wp_site_icon) egy túl kicsi, nem 48px-többszörös

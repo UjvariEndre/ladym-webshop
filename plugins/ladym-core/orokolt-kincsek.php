@@ -101,6 +101,19 @@ function ladym_ok_render() {
 	?>
 	<div id="ladym-ok" class="ladym-ok">
 		<header class="ladym-ok__hero">
+			<?php $ladym_ok_hero = get_stylesheet_directory_uri() . '/assets/orokolt-kincsek/orokolt-kincsek.png'; ?>
+			<img
+				class="ladym-ok__hero-img ladym-zoomable"
+				src="<?php echo esc_url( $ladym_ok_hero ); ?>"
+				alt="<?php esc_attr_e( 'Örökölt kincsek Rád szabva', 'ladym-core' ); ?>"
+				loading="lazy"
+				decoding="async"
+				data-ladym-lb
+				data-ladym-lb-full="<?php echo esc_url( $ladym_ok_hero ); ?>"
+				data-ladym-lb-group="orokolt-kincsek"
+				tabindex="0"
+				role="button"
+			/>
 			<p class="ladym-ok__eyebrow"><?php esc_html_e( 'Második történet', 'ladym-core' ); ?></p>
 			<h1 class="ladym-ok__title"><?php esc_html_e( 'Örökölt kincsek Rád szabva', 'ladym-core' ); ?></h1>
 			<p class="ladym-ok__lead"><?php esc_html_e( 'Van egy ruhadarab, kézimunka vagy textil, amelyhez különleges emlékek kötnek? Ahelyett, hogy a szekrény mélyén maradna, új életet adunk neki. Nagymama ruhájából, egy szeretett terítőből vagy más értékes textilből modern, hordható ruhát, táskát vagy kiegészítőt készítünk – úgy, hogy a története tovább élhessen.', 'ladym-core' ); ?></p>

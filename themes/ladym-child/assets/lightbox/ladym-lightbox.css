@@ -1,0 +1,169 @@
+/**
+ * LadyM Lightbox – újrahasználható kép-nagyító / galéria komponens.
+ *
+ * Bármely elem, amin `data-ladym-lb` attribútum van (jellemzően egy <img>), kattintásra
+ * megnyílik teljes képernyős nézetben, zoomolható (egérgörgő / dupla katt PC-n, pinch /
+ * dupla koppintás mobilon) és – ha azonos `data-ladym-lb-group` csoportban több kép van –
+ * lapozható. A stílus a brand-tokeneket használja (lásd style.css :root).
+ */
+
+/* Kattintható forrás-kép jelzése. */
+.ladym-zoomable {
+  cursor: zoom-in;
+}
+
+/* Teljes képernyős réteg. */
+.ladym-lb {
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(19, 24, 48, 0.92); /* --color-ink, áttetsző */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.28s;
+  /* iOS notch / safe-area. */
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+.ladym-lb.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* A kép „színpada”: itt zajlik a gesztus-kezelés, ezért a böngésző saját
+   görgetés/zoom viselkedését kikapcsoljuk (touch-action: none). */
+.ladym-lb__stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  touch-action: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ladym-lb__img {
+  max-width: 94%;
+  max-height: 92%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+  transform-origin: center center;
+  will-change: transform;
+  cursor: grab;
+}
+/* Aktív gesztus alatt nincs átmenet (különben „úszik" a kép). */
+.ladym-lb__img.is-animating {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.ladym-lb.is-zoomed .ladym-lb__img {
+  cursor: grab;
+}
+.ladym-lb.is-panning .ladym-lb__img {
+  cursor: grabbing;
+}
+
+/* Vezérlőgombok – letisztult, kerek, ivory ikon. */
+.ladym-lb__btn {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-ivory, #fbfaf6);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
+}
+.ladym-lb__btn:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+.ladym-lb__btn:focus-visible {
+  outline: 2px solid var(--color-ivory, #fbfaf6);
+  outline-offset: 2px;
+}
+.ladym-lb__btn:active {
+  transform: scale(0.94);
+}
+.ladym-lb__btn svg {
+  width: 24px;
+  height: 24px;
+  display: block;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ladym-lb__close {
+  top: clamp(0.8rem, 2vw, 1.4rem);
+  right: clamp(0.8rem, 2vw, 1.4rem);
+}
+.ladym-lb__nav {
+  top: 50%;
+  transform: translateY(-50%);
+}
+.ladym-lb__nav:active {
+  transform: translateY(-50%) scale(0.94);
+}
+.ladym-lb__prev {
+  left: clamp(0.6rem, 2vw, 1.4rem);
+}
+.ladym-lb__next {
+  right: clamp(0.6rem, 2vw, 1.4rem);
+}
+
+/* Számláló (csak galériában, több képnél). */
+.ladym-lb__counter {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(0.8rem, 2.5vw, 1.6rem);
+  transform: translateX(-50%);
+  z-index: 2;
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  color: rgba(251, 250, 246, 0.85);
+  background: rgba(19, 24, 48, 0.45);
+  padding: 0.3em 0.85em;
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+/* Egyetlen kép esetén a lapozó és a számláló rejtve. */
+.ladym-lb.is-single .ladym-lb__nav,
+.ladym-lb.is-single .ladym-lb__counter {
+  display: none;
+}
+
+/* Reszponzív: kisebb gombok mobilon. */
+@media (max-width: 600px) {
+  .ladym-lb__btn {
+    width: 42px;
+    height: 42px;
+  }
+  .ladym-lb__btn svg {
+    width: 21px;
+    height: 21px;
+  }
+}
+
+/* Mozgáscsökkentés tisztelete. */
+@media (prefers-reduced-motion: reduce) {
+  .ladym-lb,
+  .ladym-lb__img.is-animating,
+  .ladym-lb__btn {
+    transition: none;
+  }
+}
