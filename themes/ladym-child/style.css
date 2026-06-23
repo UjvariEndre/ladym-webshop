@@ -1714,10 +1714,7 @@ body.home {
 }
 
 /* Blocksy default hero le ezekre az oldalakra (a saját kiemelt blokk veszi át). */
-.page-id-59 .hero-section,
-.page-id-60 .hero-section,
-.page-id-61 .hero-section,
-.page-id-62 .hero-section {
+.ladym-legal-page .hero-section {
   display: none !important;
 }
 
@@ -1740,20 +1737,13 @@ body.home {
   color: var(--color-burgundy);
 }
 
-/* Editorial tipográfia a jogi oldalakon (ÁSZF, Adatvédelem, Elállás, Impresszum). */
-.page-id-59 .entry-content,
-.page-id-60 .entry-content,
-.page-id-61 .entry-content,
-.page-id-62 .entry-content {
+/* Editorial tipográfia + szűk content-width a jogi oldalakon (ÁSZF, Adatvédelem,
+   Elállási jog, Impresszum) – nyelvfüggetlen .ladym-legal-page osztályon (lásd functions.php). */
+.ladym-legal-page .entry-content {
   max-width: 65ch;
   margin-left: auto;
   margin-right: auto;
   padding-bottom: clamp(2rem, 5vw, 4rem);
-}
-.page-id-59 .entry-content,
-.page-id-60 .entry-content,
-.page-id-61 .entry-content,
-.page-id-62 .entry-content {
   font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
   color: var(--color-ink-soft);
   font-size: 1.02rem;
@@ -1958,19 +1948,22 @@ body.home {
   color: var(--color-ivory) !important;
 }
 
-/* Gomb-elrendezés: a keskeny (bottom-right) banneren a Complianz egy sorba
-   flexeli a gombokat (nowrap, fix 45px magasság). A nagybetűs + betűközös,
-   nagyobb paddingű brand-gombok így túlcsordulnak és az utolsó kilóg.
-   Megoldás: full-szélességű, egymás alá tördelt gombok, auto magassággal. */
+/* Gomb-elrendezés: a Complianz a gomb-konténert flex-COLUMN-ra teszi FIX magassággal
+   (mobilon 155px), és a default gombok `flex:1`-gyel kitöltik azt → a brand-gombok
+   függőlegesen szétnyúlnak ("hatalmas gombok"). Megoldás: a konténer auto-magasságú,
+   nem törhet oszlopokba, a gombok pedig NEM nyúlnak (flex:0 0 auto), így full-szélességű,
+   természetes magasságú, egymás alá rendezett gombok lesznek mobilon és desktopon is. */
 #cmplz-cookiebanner-container .cmplz-cookiebanner .cmplz-buttons {
-  flex-wrap: wrap !important;
+  flex-direction: column !important;
+  flex-wrap: nowrap !important;
+  height: auto !important;
 }
 #cmplz-cookiebanner-container .cmplz-cookiebanner .cmplz-buttons .cmplz-btn {
-  flex: 1 1 100% !important;
+  flex: 0 0 auto !important;
   width: 100% !important;
   white-space: normal !important;
   height: auto !important;
-  min-height: 45px !important;
+  min-height: 44px !important;
 }
 
 /* Toggle-kapcsoló (slider) – burgundy aktív állapot */

@@ -68,6 +68,31 @@ add_filter( 'template_include', function ( $template ) {
     return $template;
 }, 99 );
 
+/**
+ * Jogi oldalak body-class-a (nyelvfüggetlen) – a layout-szabályok (szűk content-width,
+ * editorial tipográfia, Blocksy-hero elrejtés) korábban a HU oldal-ID-kre (.page-id-59..62)
+ * voltak kötve, így a lefordított EN/DE párokra (más ID) nem hatottak → szélesebbek lettek.
+ * Itt a HU-eredeti ID alapján (a Polylang-fordításon át visszafejtve) adunk egy stabil
+ * `ladym-legal-page` osztályt, amire a CSS köthető – nyelvtől és környezettől (lokál/prod) függetlenül.
+ */
+add_filter( 'body_class', function ( $classes ) {
+    if ( ! function_exists( 'is_page' ) || ! is_page() ) {
+        return $classes;
+    }
+    $legal_hu = array( 59, 60, 61, 62 ); // ÁSZF, Adatvédelem, Elállási jog, Impresszum.
+    $id = (int) get_queried_object_id();
+    if ( function_exists( 'pll_get_post' ) ) {
+        $hu = (int) pll_get_post( $id, 'hu' ); // a HU-eredeti (vagy önmaga, ha HU).
+        if ( $hu ) {
+            $id = $hu;
+        }
+    }
+    if ( in_array( $id, $legal_hu, true ) ) {
+        $classes[] = 'ladym-legal-page';
+    }
+    return $classes;
+}, 20 );
+
 add_action( 'wp_enqueue_scripts', function () {
     // Google Fonts: Inter (sans) + Playfair Display (serif).
     // A css2 endpoint a latin-ext készletet a magyar ékezetekhez automatikusan kiszolgálja.
