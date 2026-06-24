@@ -342,22 +342,15 @@ function ladym_ai_render_button( $post ) {
 					product_id: btn.data( 'product' ),
 					nonce: btn.data( 'nonce' )
 				} ).done( function ( r ) {
-					btn.prop( 'disabled', false );
 					if ( ! r || ! r.success ) {
+						btn.prop( 'disabled', false );
 						status.css( 'color', '#a00' ).text( ( r && r.data && r.data.message ) ? r.data.message : 'Hiba.' );
 						return;
 					}
-					Object.keys( r.data ).forEach( function ( lang ) {
-						var f = r.data[ lang ];
-						if ( f.title !== undefined ) { $( '#ladym_title_' + lang ).val( f.title ); }
-						if ( f.short !== undefined ) { $( '#ladym_short_' + lang ).val( f.short ); }
-						if ( f.desc !== undefined ) {
-							var ed = ( window.tinymce && tinymce.get( 'ladym_desc_' + lang ) );
-							if ( ed && ! ed.isHidden() ) { ed.setContent( f.desc || '' ); }
-							else { $( '#ladym_desc_' + lang ).val( f.desc || '' ); }
-						}
-					} );
-					status.css( 'color', '#1a7f37' ).text( <?php echo wp_json_encode( __( 'Kész — nézd át, majd mentsd a terméket.', 'ladym-core' ) ); ?> );
+					// A fordítás szerveroldalon ELMENTVE → újratöltjük az oldalt, hogy a mezők
+					// (cím + rövid + a wp_editor hosszú leírás) friss rendereléssel, kitöltve jelenjenek meg.
+					status.css( 'color', '#1a7f37' ).text( <?php echo wp_json_encode( __( 'Elmentve ✓ — oldal frissítése…', 'ladym-core' ) ); ?> );
+					window.location.reload();
 				} ).fail( function () {
 					btn.prop( 'disabled', false );
 					status.css( 'color', '#a00' ).text( <?php echo wp_json_encode( __( 'Hálózati hiba.', 'ladym-core' ) ); ?> );
@@ -380,6 +373,9 @@ add_action( 'wp_ajax_ladym_ai_translate_product', function () {
 	if ( is_wp_error( $res ) ) {
 		wp_send_json_error( array( 'message' => $res->get_error_message() ) );
 	}
+	// Szerveroldali mentés (a kliens ezután újratölti az oldalt → a mezők kitöltve jelennek meg,
+	// nincs törékeny wp_editor/TinyMCE-kitöltés). Csak a nem-üres értékeket írja.
+	ladym_ai_save_product( $product_id, $res );
 	wp_send_json_success( $res );
 } );
 
