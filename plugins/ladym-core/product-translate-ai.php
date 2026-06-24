@@ -225,17 +225,21 @@ function ladym_ai_translate_product( $product_id, array $langs ) {
 		'desc'  => $post->post_content,
 	);
 	$res = ladym_ai_translate_fields( $fields, $langs );
-	if ( is_wp_error( $res ) ) {
+	return ladym_ai_postprocess_fields( $res );
+}
+
+/**
+ * Termék-fordítás utófeldolgozása: a leírás jól formált HTML legyen (sortörés-megőrzés),
+ * a rövid leírás plain maradjon. Mind a DB-forrású, mind a form-forrású úton ezt használjuk.
+ */
+function ladym_ai_postprocess_fields( $res ) {
+	if ( is_wp_error( $res ) || ! is_array( $res ) ) {
 		return $res;
 	}
 	foreach ( $res as $lang => $row ) {
-		// A leírás legyen jól formált HTML, hogy a sortörések a szerkesztőben és a fronton is
-		// megmaradjanak (sima szöveges forrásnál a TinyMCE / wpautop összevonná a `\n`-eket).
 		if ( isset( $row['desc'] ) ) {
 			$res[ $lang ]['desc'] = ladym_ai_ensure_html( $row['desc'] );
 		}
-		// A rövid leírás maradjon plain (mint a magyar) – a `<p>`-t a WooCommerce úgyis
-		// megjelenítéskor teszi rá; a meta-doboz textareájában a tag csúnyán látszana.
 		if ( isset( $row['short'] ) ) {
 			$res[ $lang ]['short'] = ladym_ai_strip_block_html( $row['short'] );
 		}
@@ -332,25 +336,46 @@ function ladym_ai_render_button( $post ) {
 	</p>
 	<script>
 	( function ( $ ) {
+		// Egy szerkesztő-mező értéke (TinyMCE-ből, ha vizuális; különben a textareából).
+		function readField( id ) {
+			var ed = window.tinymce && window.tinymce.get( id );
+			if ( ed && ! ed.isHidden() ) { return ed.getContent(); }
+			return $( '#' + id ).val() || '';
+		}
+		// Egy érték beírása mezőbe (TinyMCE + textarea együtt → mindig látszik és mentődik is).
+		function writeField( id, html ) {
+			html = html || '';
+			var ed = window.tinymce && window.tinymce.get( id );
+			if ( ed ) { ed.setContent( html ); try { ed.save(); } catch ( e ) {} }
+			$( '#' + id ).val( html );
+		}
 		$( function () {
 			$( '#ladym-ai-translate-btn' ).on( 'click', function () {
 				var btn = $( this ), status = $( '#ladym-ai-status' );
-				status.css( 'color', '#646970' ).text( <?php echo wp_json_encode( __( 'Fordítás folyamatban… (10–30 mp)', 'ladym-core' ) ); ?> );
-				btn.prop( 'disabled', true );
-				$.post( ajaxurl, {
+				// A magyar forrást a szerkesztő mezőiből olvassuk → új/mentetlen terméknél is működik.
+				var payload = {
 					action: 'ladym_ai_translate_product',
 					product_id: btn.data( 'product' ),
-					nonce: btn.data( 'nonce' )
-				} ).done( function ( r ) {
+					nonce: btn.data( 'nonce' ),
+					src_title: $( '#title' ).val() || '',
+					src_short: readField( 'excerpt' ),
+					src_desc: readField( 'content' )
+				};
+				status.css( 'color', '#646970' ).text( <?php echo wp_json_encode( __( 'Fordítás folyamatban… (5–20 mp)', 'ladym-core' ) ); ?> );
+				btn.prop( 'disabled', true );
+				$.post( ajaxurl, payload ).done( function ( r ) {
+					btn.prop( 'disabled', false );
 					if ( ! r || ! r.success ) {
-						btn.prop( 'disabled', false );
 						status.css( 'color', '#a00' ).text( ( r && r.data && r.data.message ) ? r.data.message : 'Hiba.' );
 						return;
 					}
-					// A fordítás szerveroldalon ELMENTVE → újratöltjük az oldalt, hogy a mezők
-					// (cím + rövid + a wp_editor hosszú leírás) friss rendereléssel, kitöltve jelenjenek meg.
-					status.css( 'color', '#1a7f37' ).text( <?php echo wp_json_encode( __( 'Elmentve ✓ — oldal frissítése…', 'ladym-core' ) ); ?> );
-					window.location.reload();
+					Object.keys( r.data ).forEach( function ( lang ) {
+						var f = r.data[ lang ];
+						if ( f.title !== undefined ) { $( '#ladym_title_' + lang ).val( f.title ); }
+						if ( f.short !== undefined ) { $( '#ladym_short_' + lang ).val( f.short ); }
+						if ( f.desc !== undefined ) { writeField( 'ladym_desc_' + lang, f.desc ); }
+					} );
+					status.css( 'color', '#1a7f37' ).text( <?php echo wp_json_encode( __( 'Kész — nézd át, majd mentsd a terméket.', 'ladym-core' ) ); ?> );
 				} ).fail( function () {
 					btn.prop( 'disabled', false );
 					status.css( 'color', '#a00' ).text( <?php echo wp_json_encode( __( 'Hálózati hiba.', 'ladym-core' ) ); ?> );
@@ -369,13 +394,30 @@ add_action( 'wp_ajax_ladym_ai_translate_product', function () {
 		wp_send_json_error( array( 'message' => __( 'Nincs jogosultság.', 'ladym-core' ) ) );
 	}
 	$langs = function_exists( 'ladym_pi18n_languages' ) ? array_keys( ladym_pi18n_languages() ) : array( 'en', 'de' );
-	$res   = ladym_ai_translate_product( $product_id, $langs );
+
+	// A forrást a SZERKESZTŐ mezőiből kapjuk (a kliens onnan olvassa) → új/mentetlen terméknél is
+	// működik, és a friss (még nem mentett) szöveget fordítja. Ha nem jött form-forrás (pl. más
+	// szerkesztő), visszaesünk a DB-ben mentett értékre.
+	$src_title = isset( $_POST['src_title'] ) ? trim( wp_unslash( (string) $_POST['src_title'] ) ) : '';
+	$src_short = isset( $_POST['src_short'] ) ? wp_unslash( (string) $_POST['src_short'] ) : '';
+	$src_desc  = isset( $_POST['src_desc'] ) ? wp_unslash( (string) $_POST['src_desc'] ) : '';
+
+	if ( '' !== $src_title || '' !== trim( $src_short ) || '' !== trim( $src_desc ) ) {
+		$res = ladym_ai_postprocess_fields(
+			ladym_ai_translate_fields(
+				array( 'title' => $src_title, 'short' => $src_short, 'desc' => $src_desc ),
+				$langs
+			)
+		);
+	} else {
+		$res = ladym_ai_translate_product( $product_id, $langs );
+	}
+
 	if ( is_wp_error( $res ) ) {
 		wp_send_json_error( array( 'message' => $res->get_error_message() ) );
 	}
-	// Szerveroldali mentés (a kliens ezután újratölti az oldalt → a mezők kitöltve jelennek meg,
-	// nincs törékeny wp_editor/TinyMCE-kitöltés). Csak a nem-üres értékeket írja.
-	ladym_ai_save_product( $product_id, $res );
+	// NEM mentünk és NEM töltünk újra: a kliens tölti ki a mezőket, a felhasználó átnézi és menti
+	// a terméket. Így új terméknél nem vész el a beírt szöveg, és nem marad vázlat a listában.
 	wp_send_json_success( $res );
 } );
 
