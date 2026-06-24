@@ -66,6 +66,15 @@ require_once __DIR__ . '/szamlazz-auto.php';
 // "Örökölt kincsek" – egyedi megrendelés/ajánlatkérő (shortcode: [ladym_orokolt_kincsek]).
 require_once __DIR__ . '/orokolt-kincsek.php';
 
+// Termék- és kategória-fordítás (egy termék, közös készlet; EN/DE meta-réteg).
+require_once __DIR__ . '/product-i18n.php';
+
+// AI-alapú fordító (OpenAI Responses API): admin „AI-fordítás” gomb + `wp ladym translate` CLI.
+require_once __DIR__ . '/product-translate-ai.php';
+
+// Termék single-oldal EN/DE útvonala (közös slug: /en/termek/<slug>/), Polylang-redirect nélkül.
+require_once __DIR__ . '/product-i18n-routing.php';
+
 // Egyedi funkciók ide kerülnek (pl. WooCommerce hookok, shortcode-ok).
 
 /**

@@ -215,6 +215,16 @@ function ladym_lang_switcher_html() {
         return '';
     }
 
+    // Single termékoldalon a Polylang minden nem-HU nyelvre a főoldalt adná (nincs külön
+    // termék-poszt) → minden nyelvre az ADOTT termék közös-slug URL-jét tesszük be helyette.
+    if ( is_singular( 'product' ) && function_exists( 'ladym_pi18n_product_lang_url' ) ) {
+        $pid = get_queried_object_id();
+        foreach ( $langs as $slug => &$l ) {
+            $l['url'] = ladym_pi18n_product_lang_url( $pid, $l['slug'] );
+        }
+        unset( $l );
+    }
+
     $current = null;
     foreach ( $langs as $l ) {
         if ( ! empty( $l['current_lang'] ) ) {
