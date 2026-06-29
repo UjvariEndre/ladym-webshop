@@ -10,6 +10,7 @@
 defined( 'ABSPATH' ) || exit;
 
 $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'shop' ) : home_url( '/shop/' );
+$shop_url = function_exists( 'ladym_loc_url' ) ? ladym_loc_url( $shop_url ) : $shop_url;
 ?>
 
 <div class="woocommerce-order ladym-thankyou">
@@ -29,7 +30,7 @@ $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 
 			<p class="woocommerce-notice woocommerce-notice--error woocommerce-thankyou-order-failed-actions">
 				<a href="<?php echo esc_url( $order->get_checkout_payment_url() ); ?>" class="ladym-btn ladym-btn--primary"><?php esc_html_e( 'Fizetés újra', 'ladym' ); ?></a>
 				<?php if ( is_user_logged_in() ) : ?>
-					<a href="<?php echo esc_url( wc_get_page_permalink( 'myaccount' ) ); ?>" class="ladym-btn ladym-btn--ghost"><?php esc_html_e( 'Fiókom', 'ladym' ); ?></a>
+					<a href="<?php echo esc_url( function_exists( 'ladym_loc_url' ) ? ladym_loc_url( wc_get_page_permalink( 'myaccount' ) ) : wc_get_page_permalink( 'myaccount' ) ); ?>" class="ladym-btn ladym-btn--ghost"><?php esc_html_e( 'Fiókom', 'ladym' ); ?></a>
 				<?php endif; ?>
 			</p>
 

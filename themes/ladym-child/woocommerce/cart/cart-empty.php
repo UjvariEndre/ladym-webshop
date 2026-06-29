@@ -9,6 +9,7 @@ defined( 'ABSPATH' ) || exit;
 
 // A WC alapértelmezett "wc_empty_cart_message"-üzenetet ne hívjuk meg, helyette saját markup.
 $shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'shop' ) : home_url( '/shop/' );
+$shop_url = function_exists( 'ladym_loc_url' ) ? ladym_loc_url( $shop_url ) : $shop_url;
 ?>
 
 <div class="ladym-cart-empty">

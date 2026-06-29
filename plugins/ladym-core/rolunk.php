@@ -16,6 +16,10 @@ add_shortcode( 'ladym_rolunk', 'ladym_rolunk_render' );
 function ladym_rolunk_render() {
 	$shop_url  = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'shop' ) : home_url( '/termekek/' );
 	$szabd_url = home_url( '/szabd-magadra/' );
+	if ( function_exists( 'ladym_pi18n_localize_url' ) ) {
+		$shop_url  = ladym_pi18n_localize_url( $shop_url );
+		$szabd_url = ladym_pi18n_localize_url( $szabd_url );
+	}
 
 	$sections = array(
 		array(

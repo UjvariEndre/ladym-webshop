@@ -56,6 +56,7 @@ $is_one_of_one = $product->managing_stock() && 1 === (int) $product->get_stock_q
 
 // Saját breadcrumb (Shop / Kategória / Termék).
 $shop_url      = function_exists( 'wc_get_page_id' ) ? get_permalink( wc_get_page_id( 'shop' ) ) : home_url( '/shop/' );
+$shop_url      = function_exists( 'ladym_loc_url' ) ? ladym_loc_url( $shop_url ) : $shop_url;
 $first_cat_id  = current( $product->get_category_ids() );
 $first_cat_obj = $first_cat_id ? get_term( $first_cat_id, 'product_cat' ) : null;
 ?>

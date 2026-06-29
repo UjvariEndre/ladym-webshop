@@ -604,7 +604,7 @@ add_action( 'woocommerce_thankyou_bacs', function ( $order_id ) {
 add_filter( 'woocommerce_get_privacy_policy_text', function ( $text, $type ) {
     return sprintf(
         '<a href="%s">%s</a>',
-        esc_url( home_url( '/adatvedelem/' ) ),
+        esc_url( ladym_loc_url( home_url( '/adatvedelem/' ) ) ),
         esc_html__( 'A személyes adataid kezelése az Adatvédelmi tájékoztatónk szerint történik.', 'ladym' )
     );
 }, 10, 2 );
@@ -867,6 +867,14 @@ add_filter( 'wp_nav_menu_objects', function ( $items, $args ) {
 }, 20, 2 );
 
 /**
+ * Egy belső URL-t az aktuális nyelvre lokalizál (védő wrapper a ladym-core resolveréhez),
+ * hogy a témából kiírt gombok/linkek EN/DE alatt ne váltsanak vissza magyarra.
+ */
+function ladym_loc_url( $url ) {
+    return function_exists( 'ladym_pi18n_localize_url' ) ? ladym_pi18n_localize_url( $url ) : $url;
+}
+
+/**
  * Profil-ikon a fejlécben (a kosár mellett). A Blocksy `text` header-elem rendereli
  * ezt a shortcode-ot. A link a WooCommerce "My Account" oldalra mutat: kijelentkezve
  * a bejelentkezés/regisztráció űrlap, belépve a fiók-vezérlőpult jelenik meg ugyanott.
@@ -876,6 +884,7 @@ add_shortcode( 'ladym_account', function () {
     if ( ! $url ) {
         $url = home_url( '/my-account/' );
     }
+    $url   = ladym_loc_url( $url );
     $label = is_user_logged_in() ? __( 'Fiókom', 'ladym' ) : __( 'Bejelentkezés / Regisztráció', 'ladym' );
 
     return sprintf(

@@ -23,6 +23,102 @@ function ladym_pi18n_product_base() {
 	return 'termek';
 }
 
+/** A termék-kategória báziscsúszka (alap: 'termek-kategoria'). */
+function ladym_pi18n_category_base() {
+	$opts = get_option( 'woocommerce_permalinks' );
+	if ( is_array( $opts ) && ! empty( $opts['category_base'] ) ) {
+		return trim( $opts['category_base'], '/' );
+	}
+	return 'product-category';
+}
+
+/** A termék-címke báziscsúszka (alap: 'product-tag'). */
+function ladym_pi18n_tag_base() {
+	$opts = get_option( 'woocommerce_permalinks' );
+	if ( is_array( $opts ) && ! empty( $opts['tag_base'] ) ) {
+		return trim( $opts['tag_base'], '/' );
+	}
+	return 'product-tag';
+}
+
+/**
+ * Egy belső (HU) URL átalakítása az AKTUÁLIS nyelvre, hogy a gombok/linkek ne váltsanak
+ * vissza magyarra. Az ingyenes Polylang NEM fordítja a WooCommerce-oldal-URL-eket
+ * (kosár/pénztár/fiók/shop) és a hardcode-olt `home_url('/.../')` linkeket — ezt pótolja.
+ *
+ * Logika: a HU permalinket oldallá oldjuk (`get_page_by_path`), és ha van Polylang-fordítása,
+ * annak a (már prefixelt) permalinkjét adjuk. Ha csak a path ELSŐ szegmense oldal (pl.
+ * `fiokom/elveszett-jelszo`), azt cseréljük a fordított oldal bázisára. Végső esetben nyers
+ * `/<lang>/<path>` prefix (a termék/kategória közös-slug útvonalak így is helyesek).
+ *
+ * @param string $url Abszolút, saját domainű URL (más visszaadva változatlanul).
+ * @return string
+ */
+function ladym_pi18n_localize_url( $url ) {
+	if ( ! is_string( $url ) || '' === $url || is_admin() || ! function_exists( 'ladym_pi18n_lang' ) ) {
+		return $url;
+	}
+	$lang = ladym_pi18n_lang();
+	if ( 'hu' === $lang || ! in_array( $lang, ladym_pi18n_routing_langs(), true ) ) {
+		return $url;
+	}
+	$home = home_url( '/' );
+	if ( 0 !== strpos( $url, $home ) ) {
+		return $url; // Külső link.
+	}
+	$rest = substr( $url, strlen( $home ) );
+
+	// A query/fragment leválasztása (megőrizzük).
+	$suffix = '';
+	foreach ( array( '?', '#' ) as $sep ) {
+		$pos = strpos( $rest, $sep );
+		if ( false !== $pos ) {
+			$suffix = substr( $rest, $pos ) . $suffix;
+			$rest   = substr( $rest, 0, $pos );
+		}
+	}
+	$path = trim( $rest, '/' );
+	if ( '' === $path ) {
+		return $url; // Főoldal – a nyelvváltó/Polylang kezeli.
+	}
+
+	// Már prefixelt (pl. /en/...)? Ne nyúljunk hozzá.
+	$segs = explode( '/', $path );
+	if ( in_array( $segs[0], ladym_pi18n_routing_langs(), true ) ) {
+		return $url;
+	}
+
+	if ( function_exists( 'pll_get_post' ) ) {
+		// 1) A teljes path mint oldal.
+		$page = get_page_by_path( $path );
+		if ( $page ) {
+			$tr = pll_get_post( $page->ID, $lang );
+			if ( $tr ) {
+				return rtrim( get_permalink( $tr ), '/' ) . '/' . $suffix;
+			}
+		}
+		// 2) Csak az első szegmens oldal (pl. fiók-végpontok).
+		if ( count( $segs ) > 1 ) {
+			$first = get_page_by_path( $segs[0] );
+			if ( $first ) {
+				$tr = pll_get_post( $first->ID, $lang );
+				if ( $tr ) {
+					$tail = implode( '/', array_slice( $segs, 1 ) );
+					return rtrim( get_permalink( $tr ), '/' ) . '/' . $tail . '/' . $suffix;
+				}
+			}
+		}
+	}
+
+	// 3) Végső esetben nyers nyelvi prefix.
+	return $home . $lang . '/' . $path . '/' . $suffix;
+}
+
+/* WooCommerce-oldal-URL-ek lokalizálása (fejléc-kosár, lost-password, wc_get_*_url hívások). */
+add_filter( 'woocommerce_get_cart_url', 'ladym_pi18n_localize_url', 20 );
+add_filter( 'woocommerce_get_checkout_url', 'ladym_pi18n_localize_url', 20 );
+add_filter( 'lostpassword_url', 'ladym_pi18n_localize_url', 20 );
+
 /** A routinghoz használt idegen nyelvek (a fordítási nyelvekből). */
 function ladym_pi18n_routing_langs() {
 	if ( function_exists( 'ladym_pi18n_languages' ) ) {
@@ -47,6 +143,32 @@ add_action( 'init', function () {
 	add_rewrite_rule(
 		'^(' . $langs . ')/' . $base . '/([^/]+)/?$',
 		'index.php?product=$matches[2]&ladym_plang=$matches[1]',
+		'top'
+	);
+
+	// Kategória-archívum: /<lang>/termek-kategoria/<slug>/ (+ /page/N/) → ugyanaz a term, ladym_plang jelzéssel.
+	$cat = preg_quote( ladym_pi18n_category_base(), '#' );
+	add_rewrite_rule(
+		'^(' . $langs . ')/' . $cat . '/([^/]+)/page/([0-9]+)/?$',
+		'index.php?product_cat=$matches[2]&paged=$matches[3]&ladym_plang=$matches[1]',
+		'top'
+	);
+	add_rewrite_rule(
+		'^(' . $langs . ')/' . $cat . '/([^/]+)/?$',
+		'index.php?product_cat=$matches[2]&ladym_plang=$matches[1]',
+		'top'
+	);
+
+	// Címke-archívum: /<lang>/termek-cimke/<slug>/ (+ /page/N/) → ugyanaz a term, ladym_plang jelzéssel.
+	$tag = preg_quote( ladym_pi18n_tag_base(), '#' );
+	add_rewrite_rule(
+		'^(' . $langs . ')/' . $tag . '/([^/]+)/page/([0-9]+)/?$',
+		'index.php?product_tag=$matches[2]&paged=$matches[3]&ladym_plang=$matches[1]',
+		'top'
+	);
+	add_rewrite_rule(
+		'^(' . $langs . ')/' . $tag . '/([^/]+)/?$',
+		'index.php?product_tag=$matches[2]&ladym_plang=$matches[1]',
 		'top'
 	);
 } );
@@ -103,27 +225,75 @@ add_filter( 'post_type_link', function ( $url, $post ) {
 	return $url;
 }, 20, 2 );
 
+/**
+ * Egy kategória-archívum URL-je adott nyelven (közös term): HU prefix nélkül, EN/DE prefixszel.
+ *
+ * @param int    $term_id product_cat term ID.
+ * @param string $lang    Nyelv-slug ('hu' / 'en' / 'de').
+ */
+function ladym_pi18n_category_lang_url( $term_id, $lang ) {
+	$slug = get_term_field( 'slug', $term_id, 'product_cat' );
+	if ( is_wp_error( $slug ) || '' === (string) $slug ) {
+		return home_url( '/' );
+	}
+	$path = ladym_pi18n_category_base() . '/' . $slug . '/';
+	return ( 'hu' === $lang ) ? home_url( '/' . $path ) : home_url( '/' . $lang . '/' . $path );
+}
+
+/* 5b) Kategória- és címke-permalink lokalizálása: nem-magyar nyelven /<lang>/<bázis>/<slug>/-re mutat. */
+add_filter( 'term_link', function ( $url, $term, $taxonomy ) {
+	if ( is_admin() || ! in_array( $taxonomy, array( 'product_cat', 'product_tag' ), true ) ) {
+		return $url;
+	}
+	if ( ! function_exists( 'ladym_pi18n_lang' ) ) {
+		return $url;
+	}
+	$lang = ladym_pi18n_lang();
+	if ( 'hu' === $lang || ! in_array( $lang, ladym_pi18n_routing_langs(), true ) ) {
+		return $url;
+	}
+	$home = home_url( '/' );
+	if ( 0 === strpos( $url, $home ) ) {
+		return $home . $lang . '/' . substr( $url, strlen( $home ) );
+	}
+	return $url;
+}, 20, 3 );
+
 /* 6b) Self-canonical az EN/DE termékoldalra (ne a HU-ra mutasson – Rank Math). */
 add_filter( 'rank_math/frontend/canonical', function ( $url ) {
 	$plang = get_query_var( 'ladym_plang' );
-	if ( $plang && is_singular( 'product' ) ) {
+	if ( ! $plang ) {
+		return $url;
+	}
+	if ( is_singular( 'product' ) ) {
 		return ladym_pi18n_product_lang_url( get_queried_object_id(), $plang );
+	}
+	if ( is_tax( 'product_cat' ) ) {
+		return ladym_pi18n_category_lang_url( get_queried_object_id(), $plang );
 	}
 	return $url;
 } );
 
-/* 6) hreflang alternatívák a termék single-oldalán (HU + EN + DE, ugyanaz a termék). */
+/* 6) hreflang alternatívák a termék single-oldalán + kategória-archívumon (HU + EN + DE, közös tartalom). */
 add_action( 'wp_head', function () {
-	if ( ! is_singular( 'product' ) ) {
-		return;
-	}
-	$id    = get_queried_object_id();
 	$langs = array_merge( array( 'hu' ), ladym_pi18n_routing_langs() );
-	foreach ( $langs as $l ) {
-		printf(
-			'<link rel="alternate" hreflang="%s" href="%s" />' . "\n",
-			esc_attr( $l ),
-			esc_url( ladym_pi18n_product_lang_url( $id, $l ) )
-		);
+	if ( is_singular( 'product' ) ) {
+		$id = get_queried_object_id();
+		foreach ( $langs as $l ) {
+			printf(
+				'<link rel="alternate" hreflang="%s" href="%s" />' . "\n",
+				esc_attr( $l ),
+				esc_url( ladym_pi18n_product_lang_url( $id, $l ) )
+			);
+		}
+	} elseif ( is_tax( 'product_cat' ) ) {
+		$id = get_queried_object_id();
+		foreach ( $langs as $l ) {
+			printf(
+				'<link rel="alternate" hreflang="%s" href="%s" />' . "\n",
+				esc_attr( $l ),
+				esc_url( ladym_pi18n_category_lang_url( $id, $l ) )
+			);
+		}
 	}
 }, 1 );

@@ -17,6 +17,7 @@ $shop_url = function_exists( 'wc_get_page_id' ) ? get_permalink( wc_get_page_id(
 if ( ! $shop_url ) {
 	$shop_url = home_url( '/shop/' );
 }
+$shop_url = ladym_loc_url( $shop_url );
 
 /** Közösségi linkek (a tényleges profilok filterrel állíthatók; ld. ladym-core/kapcsolat.php). */
 $ig_url = apply_filters( 'ladym_instagram_url', 'https://www.instagram.com/ladymfashionstyle/' );
@@ -205,7 +206,7 @@ function ladym_spark( $mod = '' ) {
 			<span class="ladym-szabd-band__eyebrow"><?php esc_html_e( 'Egyedi rendelés', 'ladym' ); ?></span>
 			<?php esc_html_e( 'Szabd magadra — válaszd ki a textilt, a méreted és a fazont, és elkészítjük neked, egyedileg.', 'ladym' ); ?>
 		</p>
-		<a class="ladym-btn ladym-btn--primary ladym-btn--icon" href="<?php echo esc_url( home_url( '/szabd-magadra/' ) ); ?>">
+		<a class="ladym-btn ladym-btn--primary ladym-btn--icon" href="<?php echo esc_url( ladym_loc_url( home_url( '/szabd-magadra/' ) ) ); ?>">
 			<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
 			<span><?php esc_html_e( 'Szabd magadra', 'ladym' ); ?></span>
 		</a>
@@ -220,7 +221,7 @@ function ladym_spark( $mod = '' ) {
 			<h2 class="ladym-about__title"><?php esc_html_e( 'Megfizethető luxus. Egyedi történetek. Időtlen stílus.', 'ladym' ); ?></h2>
 			<p class="ladym-about__lead"><?php esc_html_e( 'A Lady M Hungary olyan kézzel készített divatmárka, ahol a különleges textilek és a kézműves alkotás találkoznak. Minden darabunk egyedi, megismételhetetlen és kizárólag kis számban készül — azoknak, akik nem szeretnének beleolvadni a tömegbe.', 'ladym' ); ?></p>
 
-			<a class="ladym-btn ladym-btn--ghost ladym-btn--icon" href="<?php echo esc_url( home_url( '/rolunk/' ) ); ?>">
+			<a class="ladym-btn ladym-btn--ghost ladym-btn--icon" href="<?php echo esc_url( ladym_loc_url( home_url( '/rolunk/' ) ) ); ?>">
 				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
 				<span><?php esc_html_e( 'Rólunk', 'ladym' ); ?></span>
 			</a>
