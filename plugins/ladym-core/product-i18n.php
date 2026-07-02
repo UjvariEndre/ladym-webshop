@@ -170,6 +170,27 @@ add_filter( 'rank_math/frontend/description', function ( $desc ) {
     return ( is_string( $val ) && '' !== $val ) ? wp_strip_all_tags( $val ) : $desc;
 } );
 
+/* Rank Math SEO – kategória-archívum (product_cat) idegen nyelvű címe + leírása.
+   A magyar archívum a term natív `rank_math_title` / `rank_math_description` metáját
+   kapja (azt a Rank Math maga olvassa); az EN/DE-t itt a term META-jából adjuk
+   (`_ladym_seo_title_<lang>` / `_ladym_seo_desc_<lang>`), üresnél a Rank Math alap marad.
+   A tárolt cím a TELJES dokumentum-cím (márkanévvel együtt) → közvetlenül visszaadjuk. */
+add_filter( 'rank_math/frontend/title', function ( $title ) {
+    if ( ! ladym_pi18n_translating() || ! is_tax( 'product_cat' ) ) {
+        return $title;
+    }
+    $val = get_term_meta( get_queried_object_id(), '_ladym_seo_title_' . ladym_pi18n_lang(), true );
+    return ( is_string( $val ) && '' !== $val ) ? $val : $title;
+} );
+
+add_filter( 'rank_math/frontend/description', function ( $desc ) {
+    if ( ! ladym_pi18n_translating() || ! is_tax( 'product_cat' ) ) {
+        return $desc;
+    }
+    $val = get_term_meta( get_queried_object_id(), '_ladym_seo_desc_' . ladym_pi18n_lang(), true );
+    return ( is_string( $val ) && '' !== $val ) ? $val : $desc;
+} );
+
 /* =========================================================================
    ADMIN – termék meta-doboz (EN cím / rövid leírás / leírás)
    ========================================================================= */
@@ -295,6 +316,16 @@ add_action( 'product_cat_add_form_fields', function () {
             <input type="text" name="ladym_name_<?php echo esc_attr( $slug ); ?>" id="ladym_name_<?php echo esc_attr( $slug ); ?>" value="" />
             <p><?php esc_html_e( 'Az idegen nyelvű oldalon ez a név jelenik meg. Üresen a magyar marad.', 'ladym-core' ); ?></p>
         </div>
+        <div class="form-field">
+            <label for="ladym_seo_title_<?php echo esc_attr( $slug ); ?>"><?php echo esc_html( ladym_pi18n_flag( $slug ) ); ?> <?php /* translators: %s: language label */ printf( esc_html__( 'SEO cím (%s)', 'ladym-core' ), esc_html( $label ) ); ?></label>
+            <input type="text" name="ladym_seo_title_<?php echo esc_attr( $slug ); ?>" id="ladym_seo_title_<?php echo esc_attr( $slug ); ?>" value="" />
+            <p><?php esc_html_e( 'Az idegen nyelvű archívumoldal böngésző-/keresőcíme (a teljes cím, márkanévvel). Üresen a Rank Math alap marad.', 'ladym-core' ); ?></p>
+        </div>
+        <div class="form-field">
+            <label for="ladym_seo_desc_<?php echo esc_attr( $slug ); ?>"><?php echo esc_html( ladym_pi18n_flag( $slug ) ); ?> <?php /* translators: %s: language label */ printf( esc_html__( 'SEO leírás (%s)', 'ladym-core' ), esc_html( $label ) ); ?></label>
+            <textarea name="ladym_seo_desc_<?php echo esc_attr( $slug ); ?>" id="ladym_seo_desc_<?php echo esc_attr( $slug ); ?>" rows="2"></textarea>
+            <p><?php esc_html_e( 'Az idegen nyelvű archívumoldal kereső-leírása (~150–160 karakter). Üresen a Rank Math alap marad.', 'ladym-core' ); ?></p>
+        </div>
         <?php
     }
 } );
@@ -303,13 +334,29 @@ add_action( 'product_cat_add_form_fields', function () {
 add_action( 'product_cat_edit_form_fields', function ( $term ) {
     wp_nonce_field( 'ladym_pi18n_term_save', 'ladym_pi18n_term_nonce' );
     foreach ( ladym_pi18n_languages() as $slug => $label ) {
-        $val = get_term_meta( $term->term_id, '_ladym_name_' . $slug, true );
+        $name  = get_term_meta( $term->term_id, '_ladym_name_' . $slug, true );
+        $title = get_term_meta( $term->term_id, '_ladym_seo_title_' . $slug, true );
+        $desc  = get_term_meta( $term->term_id, '_ladym_seo_desc_' . $slug, true );
         ?>
         <tr class="form-field">
             <th scope="row"><label for="ladym_name_<?php echo esc_attr( $slug ); ?>"><?php echo esc_html( ladym_pi18n_flag( $slug ) ); ?> <?php /* translators: %s: language label */ printf( esc_html__( 'Kategórianév (%s)', 'ladym-core' ), esc_html( $label ) ); ?></label></th>
             <td>
-                <input type="text" name="ladym_name_<?php echo esc_attr( $slug ); ?>" id="ladym_name_<?php echo esc_attr( $slug ); ?>" value="<?php echo esc_attr( $val ); ?>" />
+                <input type="text" name="ladym_name_<?php echo esc_attr( $slug ); ?>" id="ladym_name_<?php echo esc_attr( $slug ); ?>" value="<?php echo esc_attr( $name ); ?>" />
                 <p class="description"><?php esc_html_e( 'Az idegen nyelvű oldalon ez a név jelenik meg. Üresen a magyar marad.', 'ladym-core' ); ?></p>
+            </td>
+        </tr>
+        <tr class="form-field">
+            <th scope="row"><label for="ladym_seo_title_<?php echo esc_attr( $slug ); ?>"><?php echo esc_html( ladym_pi18n_flag( $slug ) ); ?> <?php /* translators: %s: language label */ printf( esc_html__( 'SEO cím (%s)', 'ladym-core' ), esc_html( $label ) ); ?></label></th>
+            <td>
+                <input type="text" name="ladym_seo_title_<?php echo esc_attr( $slug ); ?>" id="ladym_seo_title_<?php echo esc_attr( $slug ); ?>" value="<?php echo esc_attr( $title ); ?>" class="widefat" />
+                <p class="description"><?php esc_html_e( 'Az idegen nyelvű archívumoldal böngésző-/keresőcíme (a teljes cím, márkanévvel). Üresen a Rank Math alap marad.', 'ladym-core' ); ?></p>
+            </td>
+        </tr>
+        <tr class="form-field">
+            <th scope="row"><label for="ladym_seo_desc_<?php echo esc_attr( $slug ); ?>"><?php echo esc_html( ladym_pi18n_flag( $slug ) ); ?> <?php /* translators: %s: language label */ printf( esc_html__( 'SEO leírás (%s)', 'ladym-core' ), esc_html( $label ) ); ?></label></th>
+            <td>
+                <textarea name="ladym_seo_desc_<?php echo esc_attr( $slug ); ?>" id="ladym_seo_desc_<?php echo esc_attr( $slug ); ?>" rows="3" class="widefat"><?php echo esc_textarea( $desc ); ?></textarea>
+                <p class="description"><?php esc_html_e( 'Az idegen nyelvű archívumoldal kereső-leírása (~150–160 karakter). Üresen a Rank Math alap marad.', 'ladym-core' ); ?></p>
             </td>
         </tr>
         <?php
@@ -325,11 +372,17 @@ $ladym_pi18n_save_term = function ( $term_id ) {
         return;
     }
     foreach ( array_keys( ladym_pi18n_languages() ) as $slug ) {
-        $val = isset( $_POST[ 'ladym_name_' . $slug ] ) ? sanitize_text_field( wp_unslash( $_POST[ 'ladym_name_' . $slug ] ) ) : '';
-        if ( '' === $val ) {
-            delete_term_meta( $term_id, '_ladym_name_' . $slug );
-        } else {
-            update_term_meta( $term_id, '_ladym_name_' . $slug, $val );
+        $fields = array(
+            '_ladym_name_' . $slug       => isset( $_POST[ 'ladym_name_' . $slug ] ) ? sanitize_text_field( wp_unslash( $_POST[ 'ladym_name_' . $slug ] ) ) : '',
+            '_ladym_seo_title_' . $slug  => isset( $_POST[ 'ladym_seo_title_' . $slug ] ) ? sanitize_text_field( wp_unslash( $_POST[ 'ladym_seo_title_' . $slug ] ) ) : '',
+            '_ladym_seo_desc_' . $slug   => isset( $_POST[ 'ladym_seo_desc_' . $slug ] ) ? sanitize_textarea_field( wp_unslash( $_POST[ 'ladym_seo_desc_' . $slug ] ) ) : '',
+        );
+        foreach ( $fields as $meta_key => $val ) {
+            if ( '' === $val ) {
+                delete_term_meta( $term_id, $meta_key );
+            } else {
+                update_term_meta( $term_id, $meta_key, $val );
+            }
         }
     }
 };
