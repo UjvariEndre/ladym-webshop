@@ -2637,6 +2637,51 @@ body.home {
 .ladym-contact__link:focus-visible {
   color: var(--color-burgundy);
 }
+.ladym-contact__stores-title {
+  text-align: center;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.35rem;
+  font-weight: 500;
+  color: var(--color-ink);
+  margin: 2.5rem 0 1rem;
+}
+.ladym-contact__stores {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.ladym-contact__store {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem 0.25rem;
+  border-bottom: 1px solid var(--color-line);
+}
+.ladym-contact__store:first-child {
+  border-top: 1px solid var(--color-line);
+}
+.ladym-contact__store .ladym-contact__icon {
+  margin-top: 0.15rem;
+}
+.ladym-contact__store-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.ladym-contact__store-name {
+  color: var(--color-ink);
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+.ladym-contact__store-address {
+  font-size: 0.95rem;
+  color: var(--color-ink-soft);
+}
+.ladym-contact__store-address:hover,
+.ladym-contact__store-address:focus-visible {
+  color: var(--color-burgundy);
+}
 
 /* =========================================================
    Rólunk oldal – márka-történet ([ladym_rolunk])

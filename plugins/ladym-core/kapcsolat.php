@@ -23,6 +23,7 @@ function ladym_kapcsolat_icons() {
 		'phone'     => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>',
 		'instagram' => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>',
 		'facebook'  => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>',
+		'pin'       => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>',
 	);
 }
 
@@ -35,6 +36,21 @@ function ladym_kapcsolat_render() {
 	$facebook  = apply_filters( 'ladym_facebook_url', 'https://www.facebook.com/ladymfashionstyle' );
 
 	$icons = ladym_kapcsolat_icons();
+
+	// Üzletek / átvételi helyek. Filterezhető, hogy admin nélkül is bővíthető legyen.
+	$stores = apply_filters(
+		'ladym_contact_stores',
+		array(
+			array(
+				'name'    => 'Lady M Fashion',
+				'address' => "Tavasz 14, Nyúl, 9082",
+			),
+			array(
+				'name'    => 'Unikat Győr',
+				'address' => "Gyógyszertár utca 4, Győr, 9022",
+			),
+		)
+	);
 
 	$rows = array(
 		array(
@@ -77,6 +93,22 @@ function ladym_kapcsolat_render() {
 				</li>
 			<?php endforeach; ?>
 		</ul>
+
+		<?php if ( ! empty( $stores ) ) : ?>
+			<h2 class="ladym-contact__stores-title"><?php esc_html_e( 'Üzleteink', 'ladym-core' ); ?></h2>
+			<ul class="ladym-contact__stores">
+				<?php foreach ( $stores as $store ) : ?>
+					<?php $maps_url = 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode( $store['name'] . ', ' . $store['address'] ); ?>
+					<li class="ladym-contact__store">
+						<span class="ladym-contact__icon" aria-hidden="true"><?php echo $icons['pin']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- statikus, megbízható SVG ?></span>
+						<span class="ladym-contact__store-body">
+							<span class="ladym-contact__store-name"><?php echo esc_html( $store['name'] ); ?></span>
+							<a class="ladym-contact__link ladym-contact__store-address" href="<?php echo esc_url( $maps_url ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( $store['address'] ); ?></a>
+						</span>
+					</li>
+				<?php endforeach; ?>
+			</ul>
+		<?php endif; ?>
 	</div>
 	<?php
 	return ob_get_clean();
